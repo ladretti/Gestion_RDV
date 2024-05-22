@@ -1,39 +1,40 @@
 ﻿namespace Gestion_RDV.Models.EntityFramework
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("t_user")]
+    [Table("Users")]
     public class User
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required, Column("first_name"), StringLength(100)]
+        [Column("FirstName"), Required]
         public string FirstName { get; set; }
 
-        [Required, Column("last_name"), StringLength(100)]
+        [Column("LastName"), Required]
         public string LastName { get; set; }
 
-        [Required, Column("email"), StringLength(255)]
+        [Column("Email"), Required/*, Unique*/]
         public string Email { get; set; }
 
-        [Required, Column("password"), StringLength(255)]
+        [Column("Password"), Required]
         public string Password { get; set; }
 
-        [Required, Column("birth_date")]
+        [Column("BirthDate"), Required]
         public DateTime BirthDate { get; set; }
 
-        [Column("activated")]
+        [Column("Activated")]
         public bool Activated { get; set; } = false;
 
-        [Column("secret_token"), StringLength(255)]
+        [Column("SecretToken")]
         public string SecretToken { get; set; }
 
-        [Required, Column("role"), StringLength(50)]
+        [Column("Role"), Required]
         public string Role { get; set; }
 
-        [Column("sexe"), StringLength(50)]
+        [Column("Sexe")]
         public string Sexe { get; set; }
     }
 

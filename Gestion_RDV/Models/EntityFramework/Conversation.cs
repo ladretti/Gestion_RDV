@@ -1,19 +1,23 @@
 ﻿namespace Gestion_RDV.Models.EntityFramework
 {
+
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("t_conversation")]
+    [Table("Conversations")]
     public class Conversation
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("participants")]
-        public ICollection<string> Participants { get; set; } = new List<string>();
+        [Column("Participants")]
+        public string Participants { get; set; } 
 
-        [Required, Column("name"), StringLength(100)]
+        [Required, StringLength(100), Column("Name")]
         public string Name { get; set; }
-    }
 
+        // Navigation property for related Messages
+        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+    }
 }

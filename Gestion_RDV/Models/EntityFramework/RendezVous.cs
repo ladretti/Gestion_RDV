@@ -1,45 +1,55 @@
 ﻿namespace Gestion_RDV.Models.EntityFramework
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("t_rendezvous")]
+    public enum Etats
+    {
+        Free,
+        Occupied,
+        Confirmed
+    }
+
+    [Table("RendezVous")]
     public class RendezVous
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("Professionel"), Column("professionel_id")]
+        [ForeignKey("Profile"), Column("ProfessionelId")]
         public int ProfessionelId { get; set; }
-        public virtual Profile Professionel { get; set; }
 
-        [ForeignKey("Patient"), Column("patient_id")]
+        [ForeignKey("Profile"), Column("PatientId")]
         public int PatientId { get; set; }
-        public virtual Profile Patient { get; set; }
 
-        [Column("start_date")]
+        [Column("StartDate")]
         public DateTime StartDate { get; set; }
 
-        [Column("end_date")]
+        [Column("EndDate")]
         public DateTime EndDate { get; set; }
 
-        [Column("etat"), StringLength(50)]
-        public string Etat { get; set; }
+        [Column("Etat")]
+        public Etats Etat { get; set; }
 
-        [Column("type_rendezvous"), StringLength(100)]
+        [Column("TypeRendezVous")]
         public string TypeRendezVous { get; set; }
 
-        [Column("description"), StringLength(500)]
+        [Column("Description")]
         public string Description { get; set; }
 
-        [Column("prix")]
-        public decimal Prix { get; set; }
+        [Column("Prix")]
+        public double Prix { get; set; }
 
-        [Column("idevent")]
-        public Guid Idevent { get; set; }
+        [Column("Idevent")]
+        public int Idevent { get; set; }
 
-        [Column("fichier_joint"), StringLength(255)]
+        [Column("FichierJoint")]
         public string FichierJoint { get; set; }
+
+        // Navigation properties
+        public virtual Profile Professionel { get; set; }
+        public virtual Profile Patient { get; set; }
     }
 
 }

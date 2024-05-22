@@ -1,42 +1,51 @@
 ﻿namespace Gestion_RDV.Models.EntityFramework
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("t_notification")]
+    public enum Etats
+    {
+        Read,
+        Unread
+    }
+
+    [Table("Notifications")]
     public class Notification
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("Professionel"), Column("professionel_id")]
+        [ForeignKey("Profile"), Column("ProfessionelId")]
         public int ProfessionelId { get; set; }
-        public virtual Profile Professionel { get; set; }
 
-        [ForeignKey("Patient"), Column("patient_id")]
+        [ForeignKey("Profile"), Column("PatientId")]
         public int PatientId { get; set; }
-        public virtual Profile Patient { get; set; }
 
-        [ForeignKey("Sender"), Column("sender_id")]
+        [ForeignKey("Profile"), Column("SenderId")]
         public int SenderId { get; set; }
-        public virtual Profile Sender { get; set; }
 
-        [ForeignKey("Receiver"), Column("receiver_id")]
+        [ForeignKey("Profile"), Column("ReceiverId")]
         public int ReceiverId { get; set; }
-        public virtual Profile Receiver { get; set; }
 
-        [ForeignKey("RendezVous"), Column("rendezvous_id")]
+        [ForeignKey("RendezVous"), Column("RendezVousId")]
         public int RendezVousId { get; set; }
-        public virtual RendezVous RendezVous { get; set; }
 
-        [Column("etat"), StringLength(50)]
-        public string Etat { get; set; }
+        [Column("Etat")]
+        public Etats Etat { get; set; }
 
-        [Column("title"), StringLength(100)]
+        [StringLength(100), Column("Title")]
         public string Title { get; set; }
 
-        [Column("date")]
+        [Column("Date")]
         public DateTime Date { get; set; } = DateTime.Now;
+
+        // Navigation properties
+        public virtual Profile Professionel { get; set; }
+        public virtual Profile Patient { get; set; }
+        public virtual Profile Sender { get; set; }
+        public virtual Profile Receiver { get; set; }
+        public virtual RendezVous RendezVous { get; set; }
     }
 
 }

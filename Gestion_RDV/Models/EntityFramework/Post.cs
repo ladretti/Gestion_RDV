@@ -1,28 +1,31 @@
 ﻿namespace Gestion_RDV.Models.EntityFramework
 {
+    using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("t_post")]
+    [Table("Posts")]
     public class Post
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("User"), Column("user_id")]
+        [ForeignKey("Profile"), Column("UserId")]
         public int UserId { get; set; }
-        public virtual Profile User { get; set; }
 
-        [Required, Column("text")]
+        [Required, Column("Text")]
         public string Text { get; set; }
 
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
-        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
-        [Column("date")]
+        [Column("Date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
-        [Column("type"), StringLength(50)]
+        [Column("Type")]
         public string Type { get; set; } = "text";
+
+        // Navigation properties
+        public virtual Profile User { get; set; }
+        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
