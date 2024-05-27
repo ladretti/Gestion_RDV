@@ -11,5 +11,7 @@ namespace Gestion_RDV.Models.EntityFramework
 
         [Column("Name"), Required]
         public String Name { get; set; }
+
+        public virtual ICollection<Notification>? Notifications { get; set; } = new List<Notification>();
     }
 }

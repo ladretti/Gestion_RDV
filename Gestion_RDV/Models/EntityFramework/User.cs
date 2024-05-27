@@ -38,7 +38,8 @@
         public string Sexe { get; set; }
 
 
-        public virtual Conversation Converstation { get; set; }
+        public virtual ICollection<Conversation> Conversation { get; set; } = new List<Conversation>();
+        public virtual Profile Profile { get; set; }
 
     }
 

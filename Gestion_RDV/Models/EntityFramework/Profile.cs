@@ -14,6 +14,9 @@
         [ForeignKey("User"), Column("UserId")]
         public int UserId { get; set; }
 
+        [ForeignKey("Address")]
+        public int AddressId { get; set; }
+
         [Column("Diplome")]
         public string Diplome { get; set; }
 
@@ -63,5 +66,7 @@
         public virtual ICollection<Profile> Abonnes { get; set; } = new List<Profile>();
         public virtual ICollection<string> DomaineSecondaires { get; set; } = new List<string>();
         public virtual ICollection<string> Tags { get; set; } = new List<string>();
+        public virtual ICollection<Comment>? Comments { get; set; } = new List<Comment>();
+
     }
 }

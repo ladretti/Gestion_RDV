@@ -41,6 +41,8 @@
         public virtual Profile Sender { get; set; }
         public virtual Profile Receiver { get; set; }
         public virtual RendezVous RendezVous { get; set; }
+
+        public virtual Etat? Etat { get; set; }
     }
 
 }

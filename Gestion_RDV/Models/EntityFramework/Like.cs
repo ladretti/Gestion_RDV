@@ -18,5 +18,6 @@ namespace Gestion_RDV.Models.EntityFramework
         // Navigation properties
         public virtual Profile User { get; set; }
         public virtual Post Post { get; set; }
+        
     }
 }
