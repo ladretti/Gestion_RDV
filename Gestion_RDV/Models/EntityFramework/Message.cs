@@ -1,25 +1,28 @@
 ﻿namespace Gestion_RDV.Models.EntityFramework
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("t_message")]
+    [Table("Messages")]
     public class Message
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required, Column("created")]
+        [Required, Column("Created")]
         public DateTime Created { get; set; }
 
-        [Required, Column("from"), StringLength(100)]
+        [Required, StringLength(100), Column("From")]
         public string From { get; set; }
 
-        [Required, Column("text")]
+        [Required, Column("Text")]
         public string Text { get; set; }
 
-        [Required, ForeignKey("Conversation"), Column("conversation_id")]
+        [Required, Column("ConversationId")]
         public int ConversationId { get; set; }
+
+        // Navigation property for related Conversation
         public virtual Conversation Conversation { get; set; }
     }
 

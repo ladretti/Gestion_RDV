@@ -3,19 +3,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gestion_RDV.Models.EntityFramework
 {
-    [Table("t_address")]
+    [Table("Addresses")]
     public class Address
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("gouvernerat"), StringLength(100)]
+        [Column("Gouvernerat")]
         public string Gouvernerat { get; set; }
 
-        [Column("ville"), StringLength(100)]
+        [Column("Ville")]
         public string Ville { get; set; }
 
-        [Column("cite"), StringLength(100)]
+        [Column("Cite")]
         public string Cite { get; set; }
+
+        // Navigation property
+        public virtual Profile Profile { get; set; }
     }
 }
