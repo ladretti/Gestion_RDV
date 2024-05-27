@@ -4,12 +4,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public enum Etats
-    {
-        Free,
-        Occupied,
-        Confirmed
-    }
 
     [Table("RendezVous")]
     public class RendezVous
@@ -29,8 +23,8 @@
         [Column("EndDate")]
         public DateTime EndDate { get; set; }
 
-        [Column("Etat")]
-        public Etats Etat { get; set; }
+        [ForeignKey("Etat"), Column("EtatId")]
+        public int EtatId { get; set; }
 
         [Column("TypeRendezVous")]
         public string TypeRendezVous { get; set; }
