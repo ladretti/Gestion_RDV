@@ -23,5 +23,7 @@ namespace Gestion_RDV.Models.EntityFramework
 
         [Column("type"), StringLength(50)]
         public string Type { get; set; }
+
+        public virtual Profile Profile { get; set; }
     }
 }

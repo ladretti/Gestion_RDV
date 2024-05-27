@@ -13,7 +13,10 @@ namespace Gestion_RDV.Models.EntityFramework
         public int UserId { get; set; }
 
         [ForeignKey("Post"), Column("PostId")]
-        public int PostId { get; set; }
+        public int PostId { get; set; } 
+        
+        [ForeignKey("Review"), Column("ReviewId")]
+        public int ReviewId { get; set; }
 
         [Required, Column("Text")]
         public string Text { get; set; }
@@ -24,6 +27,6 @@ namespace Gestion_RDV.Models.EntityFramework
         // Navigation properties
         public virtual Profile User { get; set; }
         public virtual Post Post { get; set; }
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual Review Review { get; set; }
     }
 }

@@ -14,5 +14,7 @@ namespace Gestion_RDV.Models.EntityFramework
 
         [Column("end_date")]
         public DateTime EndDate { get; set; }
+
+        public virtual Profile Profile { get; set; }
     }
 }

@@ -23,5 +23,7 @@ namespace Gestion_RDV.Models.EntityFramework
 
         [Column("instagram"), StringLength(255)]
         public string Instagram { get; set; }
+
+        public virtual Profile Profile { get; set; }
     }
 }

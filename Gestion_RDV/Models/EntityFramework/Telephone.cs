@@ -14,5 +14,8 @@ namespace Gestion_RDV.Models.EntityFramework
 
         [Column("fix")]
         public ICollection<string> Fix { get; set; } = new List<string>();
+
+        public virtual Profile Profile { get; set; }
+
     }
 }
