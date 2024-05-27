@@ -4,11 +4,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public enum Etats
-    {
-        Read,
-        Unread
-    }
 
     [Table("Notifications")]
     public class Notification
@@ -31,8 +26,8 @@
         [ForeignKey("RendezVous"), Column("RendezVousId")]
         public int RendezVousId { get; set; }
 
-        [Column("Etat")]
-        public Etats Etat { get; set; }
+        [ForeignKey("Etat"), Column("EtatId")]
+        public int EtatId { get; set; }
 
         [StringLength(100), Column("Title")]
         public string Title { get; set; }

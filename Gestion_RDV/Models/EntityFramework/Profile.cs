@@ -58,7 +58,7 @@
         public virtual Address Address { get; set; }
         public virtual Telephone Telephone { get; set; }
         public virtual Social Social { get; set; }
-        public virtual ICollection<Available> Availables { get; set; } = new List<Available>();
+        public virtual ICollection<Availability> Availables { get; set; } = new List<Availability>();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         public virtual ICollection<Profile> Abonnes { get; set; } = new List<Profile>();
         public virtual ICollection<string> DomaineSecondaires { get; set; } = new List<string>();
