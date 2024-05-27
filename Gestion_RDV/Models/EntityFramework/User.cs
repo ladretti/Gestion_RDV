@@ -36,6 +36,10 @@
 
         [Column("Sexe")]
         public string Sexe { get; set; }
+
+
+        public virtual Conversation Converstation { get; set; }
+
     }
 
 }
