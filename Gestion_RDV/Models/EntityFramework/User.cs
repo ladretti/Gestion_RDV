@@ -31,8 +31,8 @@
         [Column("SecretToken")]
         public string SecretToken { get; set; }
 
-        [Column("Role"), Required]
-        public string Role { get; set; }
+        [ForeignKey("Role"), Column("role_id")]
+        public int Role { get; set; }
 
         [Column("Sexe")]
         public string Sexe { get; set; }
