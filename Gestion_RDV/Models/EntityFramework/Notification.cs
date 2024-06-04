@@ -5,44 +5,36 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
 
-    [Table("Notifications")]
+    [Table("t_e_notification_ntf")]
     public class Notification
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("Profile"), Column("ProfessionelId")]
+        [ForeignKey("Profile"), Column("msg_professionel_id")]
         public int ProfessionelId { get; set; }
 
-        [ForeignKey("Profile"), Column("PatientId")]
+        [ForeignKey("Profile"), Column("msg_patient_id")]
         public int PatientId { get; set; }
 
-        [ForeignKey("Profile"), Column("SenderId")]
+        [ForeignKey("Profile"), Column("msg_sender_id")]
         public int SenderId { get; set; }
 
-        [ForeignKey("Profile"), Column("ReceiverId")]
+        [ForeignKey("Profile"), Column("msg_receiver_id")]
         public int ReceiverId { get; set; }
 
-        [ForeignKey("RendezVous"), Column("RendezVousId")]
+        [ForeignKey("RendezVous"), Column("msg_rendezvous_id")]
         public int RendezVousId { get; set; }
 
-        [ForeignKey("Etat"), Column("EtatId")]
+        [ForeignKey("Etat"), Column("msg_etat_id")]
         public int EtatId { get; set; }
 
-        [StringLength(100), Column("Title")]
+        [StringLength(100), Column("msg_title")]
         public string Title { get; set; }
 
-        [Column("Date")]
+        [Column("msg_date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
-        // Navigation properties
-        public virtual Profile Professionel { get; set; }
-        public virtual Profile Patient { get; set; }
-        public virtual Profile Sender { get; set; }
-        public virtual Profile Receiver { get; set; }
-        public virtual RendezVous RendezVous { get; set; }
-
-        public virtual Etat? Etat { get; set; }
     }
 
 }

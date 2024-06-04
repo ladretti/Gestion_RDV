@@ -3,21 +3,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gestion_RDV.Models.EntityFramework
 {
-    [Table("Likes")]
+    [Table("t_e_like_lke")]
     public class Like
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("lke_id")]
         public int Id { get; set; }
 
-        [ForeignKey("Profile"), Column("UserId")]
+        [ForeignKey("Profile"), Column("lke_userid")]
         public int UserId { get; set; }
 
-        [ForeignKey("Post"), Column("PostId")]
+        [ForeignKey("Post"), Column("lke_postid")]
         public int PostId { get; set; }
 
-        // Navigation properties
-        public virtual Profile User { get; set; }
-        public virtual Post Post { get; set; }
         
     }
 }
