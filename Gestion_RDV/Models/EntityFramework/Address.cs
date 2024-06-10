@@ -18,6 +18,7 @@ namespace Gestion_RDV.Models.EntityFramework
         [Column("adr_codepostal")]
         public int CodePostal { get; set; }
 
-
+        [InverseProperty("Adresse")]
+        public User User { get; set; }
     }
 }

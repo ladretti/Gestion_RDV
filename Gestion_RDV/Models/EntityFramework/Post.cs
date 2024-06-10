@@ -11,9 +11,6 @@
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("pst_id")]
         public int PostId { get; set; }
 
-        [ForeignKey("Profile"), Column("pst_user_id")]
-        public int UserId { get; set; }
-
         [Required, Column("pst_text")]
         public string Text { get; set; }
 
@@ -23,5 +20,13 @@
         [Column("pst_type")]
         public string Type { get; set; } = "text";
 
+
+        //ForeignKey
+        [Column("usr_id")]
+        public int UserId { get; set; }
+
+        // Navigation property
+        [InverseProperty("Post"), ForeignKey("UserId")]
+        public User User { get; set; }
     }
 }

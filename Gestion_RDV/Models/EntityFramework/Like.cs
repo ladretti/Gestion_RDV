@@ -9,12 +9,18 @@ namespace Gestion_RDV.Models.EntityFramework
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("lke_id")]
         public int Id { get; set; }
 
-        [ForeignKey("Profile"), Column("lke_userid")]
-        public int UserId { get; set; }
-
         [ForeignKey("Post"), Column("lke_postid")]
         public int PostId { get; set; }
 
-        
+
+
+        //ForeignKey
+        [Column("usr_id")]
+        public int UserId { get; set; }
+
+        // Navigation property
+        [InverseProperty("Likes"), ForeignKey("UserId")]
+        public User User { get; set; }
+
     }
 }

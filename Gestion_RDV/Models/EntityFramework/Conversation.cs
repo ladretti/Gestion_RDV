@@ -15,7 +15,12 @@
         [Required, StringLength(100), Column("cnv_name")]
         public string Name { get; set; }
 
+        //ForeignKey
 
+
+        // Navigation property
+        [InverseProperty("Conversations")]
+        public virtual ICollection<User>? Users { get; }
 
     }
 }

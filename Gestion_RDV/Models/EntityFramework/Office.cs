@@ -50,10 +50,12 @@
         [Column("ofc_telephone")]
         public string Telephone { get; set; }
 
-        [ForeignKey("User"), Column("ofc_user_id")]
+        //ForeignKey
+        [Column("usr_id")]
         public int UserId { get; set; }
 
         // Navigation property
+        [ForeignKey("UserId"), InverseProperty("Office")]
         public User User { get; set; }
 
     }

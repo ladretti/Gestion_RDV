@@ -22,6 +22,13 @@
         [Required, Column("msg_conversationid")]
         public int ConversationId { get; set; }
 
+        //ForeignKey
+        [Column("usr_id")]
+        public int UserId { get; set; }
+
+        // Navigation property
+        [ForeignKey("UserId"), InverseProperty("Messages")]
+        public User User { get; set; }
     }
 
 }

@@ -7,7 +7,7 @@
     [Table("t_e_user_usr")]
     public class User
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column("usr_id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
         [Column("usr_first_name"), Required]
@@ -45,8 +45,29 @@
 
 
         // Navigation property
+        [InverseProperty("User")]
         public Office Office { get; set; }
-    
+
+        [ForeignKey("AdresseId"), InverseProperty("User")]
+        public Address Adresse { get; set; }
+
+        [InverseProperty("User")]
+        public virtual ICollection<Post>? Posts { get; }
+        
+        [InverseProperty("User")]
+        public virtual ICollection<Like>? Likes { get; }
+
+        [InverseProperty("User")]
+        public virtual ICollection<Comment>? Comments { get; }
+
+        [InverseProperty("User")]
+        public virtual ICollection<RendezVous>? RendezVous { get; }
+        [InverseProperty("User")]
+        public virtual ICollection<Notification>? Notifications { get; }
+        [InverseProperty("User")]
+        public virtual ICollection<Message>? Messages { get; }
+        [InverseProperty("Users")]
+        public virtual ICollection<Conversation>? Conversations { get; }
 
     }
 

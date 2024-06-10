@@ -11,12 +11,6 @@
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("rdv_id")]
         public int RendezVousId { get; set; }
 
-        [ForeignKey("Profile"), Column("rdv_professionel_id")]
-        public int ProfessionelId { get; set; }
-
-        [ForeignKey("Profile"), Column("rdv_patient_id")]
-        public int PatientId { get; set; }
-
         [Column("rdv_start_date")]
         public DateTime StartDate { get; set; }
 
@@ -41,6 +35,13 @@
         [Column("rdv_fichier_joint")]
         public string FichierJoint { get; set; }
 
+        //ForeignKey
+        [Column("usr_id")]
+        public int UserId { get; set; }
+
+        // Navigation property
+        [ForeignKey("UserId"), InverseProperty("RendezVous")]
+        public User User { get; set; }
     }
 
 }

@@ -11,18 +11,6 @@
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NotificationId { get; set; }
 
-        [ForeignKey("Profile"), Column("msg_professionel_id")]
-        public int ProfessionelId { get; set; }
-
-        [ForeignKey("Profile"), Column("msg_patient_id")]
-        public int PatientId { get; set; }
-
-        [ForeignKey("Profile"), Column("msg_sender_id")]
-        public int SenderId { get; set; }
-
-        [ForeignKey("Profile"), Column("msg_receiver_id")]
-        public int ReceiverId { get; set; }
-
         [ForeignKey("RendezVous"), Column("msg_rendezvous_id")]
         public int RendezVousId { get; set; }
 
@@ -35,6 +23,14 @@
         [Column("msg_date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
+
+        //ForeignKey
+        [Column("usr_id")]
+        public int UserId { get; set; }
+
+        // Navigation property
+        [ForeignKey("UserId"), InverseProperty("Notifications")]
+        public User User { get; set; }
     }
 
 }
