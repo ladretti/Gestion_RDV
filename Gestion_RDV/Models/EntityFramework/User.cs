@@ -33,9 +33,9 @@
 
         [Column("usr_secret_token")]
         public string SecretToken { get; set; }
-
         [Column("usr_role"), Required]
         public string Role { get; set; }
+     
 
         [Column("usr_sexe")]
         public string Sexe { get; set; }
