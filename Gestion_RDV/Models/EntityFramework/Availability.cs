@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Availability
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("avb_id")]
-        public int Id { get; set; }
+        public int AvailabilityId { get; set; }
 
         [Column("avb_start_date")]
         public DateTime StartDate { get; set; }

@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Comment
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("cmt_id")]
-        public int Id { get; set; }
+        public int CommentId { get; set; }
 
         [ForeignKey("Profile"), Column("cmt_userid")]
         public int UserId { get; set; }

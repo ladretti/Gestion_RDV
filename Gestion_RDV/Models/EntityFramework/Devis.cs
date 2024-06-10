@@ -10,7 +10,7 @@
     public class Devis
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("dvs_id")]
-        public int Id { get; set; }
+        public int DevisId { get; set; }
 
         [ForeignKey("Profile"), Column("dvs_professionelid")]
         public int ProfessionelId { get; set; }

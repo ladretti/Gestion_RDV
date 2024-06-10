@@ -9,7 +9,7 @@
     public class Conversation
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("cnv_id")]
-        public int Id { get; set; }
+        public int ConversationId { get; set; }
 
 
         [Required, StringLength(100), Column("cnv_name")]

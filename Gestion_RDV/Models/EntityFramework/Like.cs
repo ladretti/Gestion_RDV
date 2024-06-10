@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Like
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("lke_id")]
-        public int Id { get; set; }
+        public int LikeId { get; set; }
 
         [ForeignKey("Profile"), Column("lke_userid")]
         public int UserId { get; set; }

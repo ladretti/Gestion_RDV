@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Etat
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("stt_id")]
-        public int Id { get; set; }
+        public int EtatId { get; set; }
 
         [Column("stt_name"), Required]
         public String Name { get; set; }

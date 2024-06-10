@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Address
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("adr_id")]
-        public int Id { get; set; }
+        public int AddressId { get; set; }
 
         [Column("adr_adresse")]
         public string Adresse { get; set; }
