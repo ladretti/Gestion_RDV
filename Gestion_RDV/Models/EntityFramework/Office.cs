@@ -9,7 +9,7 @@
     public class Office
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("ofc_id")]
-        public int Id { get; set; }
+        public int OfficeId { get; set; }
 
         [Column("ofc_diplome")]
         public string Diplome { get; set; }

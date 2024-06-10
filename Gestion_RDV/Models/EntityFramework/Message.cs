@@ -8,7 +8,7 @@
     public class Message
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("msg_id")]
-        public int Id { get; set; }
+        public int MessageId { get; set; }
 
         [Required, Column("msg_created")]
         public DateTime Created { get; set; }

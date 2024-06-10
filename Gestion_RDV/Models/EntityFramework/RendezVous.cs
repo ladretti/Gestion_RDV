@@ -9,7 +9,7 @@
     public class RendezVous
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("rdv_id")]
-        public int Id { get; set; }
+        public int RendezVousId { get; set; }
 
         [ForeignKey("Profile"), Column("rdv_professionel_id")]
         public int ProfessionelId { get; set; }

@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Social
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("scl_id")]
-        public int Id { get; set; }
+        public int SocialId { get; set; }
 
         [Column("scl_youtube"), StringLength(255)]
         public string Youtube { get; set; }

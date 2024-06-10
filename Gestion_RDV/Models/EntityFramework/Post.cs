@@ -9,7 +9,7 @@
     public class Post
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("pst_id")]
-        public int Id { get; set; }
+        public int PostId { get; set; }
 
         [ForeignKey("Profile"), Column("pst_user_id")]
         public int UserId { get; set; }

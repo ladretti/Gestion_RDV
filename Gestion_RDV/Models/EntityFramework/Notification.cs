@@ -9,7 +9,7 @@
     public class Notification
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int NotificationId { get; set; }
 
         [ForeignKey("Profile"), Column("msg_professionel_id")]
         public int ProfessionelId { get; set; }

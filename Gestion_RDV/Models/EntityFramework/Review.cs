@@ -7,11 +7,11 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Review
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("rvw_id")]
-        public int Id { get; set; }
+        public int ReviewId { get; set; }
 
         [ForeignKey("User"), Column("rvw_user_id")]
         public int UserId { get; set; }
-        public virtual Profile User { get; set; }
+        public virtual User User { get; set; }
 
         [Required, Column("rvw_description"), StringLength(500)]
         public string Description { get; set; }
