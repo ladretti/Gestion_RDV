@@ -3,18 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gestion_RDV.Models.EntityFramework
 {
-    [Table("t_availability")]
+    [Table("t_e_availability_avb")]
     public class Availability
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("avb_id")]
         public int Id { get; set; }
 
-        [Column("start_date")]
+        [Column("avb_start_date")]
         public DateTime StartDate { get; set; }
 
-        [Column("end_date")]
+        [Column("avb_end_date")]
         public DateTime EndDate { get; set; }
 
-        public virtual Profile Profile { get; set; }
     }
 }

@@ -6,34 +6,31 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Devis")]
+    [Table("t_e_devis_dvs")]
     public class Devis
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("dvs_id")]
         public int Id { get; set; }
 
-        [ForeignKey("Profile"), Column("ProfessionelId")]
+        [ForeignKey("Profile"), Column("dvs_professionelid")]
         public int ProfessionelId { get; set; }
 
 
-        [ForeignKey("Profile"), Column("PatientId")]
+        [ForeignKey("Profile"), Column("dvs_patientid")]
         public int PatientId { get; set; }
 
-        [ForeignKey("RendezVous"), Column("AppointmentId")]
+        [ForeignKey("RendezVous"), Column("dvs_appointmentid")]
         public int AppointmentId { get; set; }
 
-        [Column("PrixAvantTva")]
+        [Column("dvs_prix_avant_tva")]
         public decimal PrixAvantTva { get; set; }
 
-        [Column("Tva")]
+        [Column("dvs_tva")]
         public decimal Tva { get; set; }
 
-        [Column("PrixFinal")]
+        [Column("dvs_prix_final")]
         public decimal PrixFinal { get; set; }
 
-        public virtual Profile Professionel { get; set; }
-        public virtual Profile Patient { get; set; }
-        public virtual RendezVous Appointment { get; set; }
     }
 
 }

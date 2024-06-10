@@ -5,45 +5,42 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
 
-    [Table("RendezVous")]
+    [Table("t_e_rendezvous_rdv")]
     public class RendezVous
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("rdv_id")]
         public int Id { get; set; }
 
-        [ForeignKey("Profile"), Column("ProfessionelId")]
+        [ForeignKey("Profile"), Column("rdv_professionel_id")]
         public int ProfessionelId { get; set; }
 
-        [ForeignKey("Profile"), Column("PatientId")]
+        [ForeignKey("Profile"), Column("rdv_patient_id")]
         public int PatientId { get; set; }
 
-        [Column("StartDate")]
+        [Column("rdv_start_date")]
         public DateTime StartDate { get; set; }
 
-        [Column("EndDate")]
+        [Column("rdv_end_date")]
         public DateTime EndDate { get; set; }
 
-        [ForeignKey("Etat"), Column("EtatId")]
+        [ForeignKey("Etat"), Column("rdv_etat_id")]
         public int EtatId { get; set; }
 
-        [Column("TypeRendezVous")]
+        [Column("rdv_type_rendezvous")]
         public string TypeRendezVous { get; set; }
 
-        [Column("Description")]
+        [Column("rdv_description")]
         public string Description { get; set; }
 
-        [Column("Prix")]
+        [Column("rdv_prix")]
         public double Prix { get; set; }
 
-        [Column("Idevent")]
+        [Column("rdv_id_event")]
         public int Idevent { get; set; }
 
-        [Column("FichierJoint")]
+        [Column("rdv_fichier_joint")]
         public string FichierJoint { get; set; }
 
-        // Navigation properties
-        public virtual Profile Professionel { get; set; }
-        public virtual Profile Patient { get; set; }
     }
 
 }

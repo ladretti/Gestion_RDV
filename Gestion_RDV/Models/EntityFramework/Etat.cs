@@ -3,15 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gestion_RDV.Models.EntityFramework
 {
-    [Table("Etats")]
+    [Table("t_e_state_stt")]
     public class Etat
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("stt_id")]
         public int Id { get; set; }
 
-        [Column("Name"), Required]
+        [Column("stt_name"), Required]
         public String Name { get; set; }
 
-        public virtual ICollection<Notification>? Notifications { get; set; } = new List<Notification>();
     }
 }

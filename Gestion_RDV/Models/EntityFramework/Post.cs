@@ -5,27 +5,23 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Posts")]
+    [Table("t_e_post_pst")]
     public class Post
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("pst_id")]
         public int Id { get; set; }
 
-        [ForeignKey("Profile"), Column("UserId")]
+        [ForeignKey("Profile"), Column("pst_user_id")]
         public int UserId { get; set; }
 
-        [Required, Column("Text")]
+        [Required, Column("pst_text")]
         public string Text { get; set; }
 
-        [Column("Date")]
+        [Column("pst_date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
-        [Column("Type")]
+        [Column("pst_type")]
         public string Type { get; set; } = "text";
 
-        // Navigation properties
-        public virtual Profile User { get; set; }
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
-        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

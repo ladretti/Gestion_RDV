@@ -3,27 +3,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Gestion_RDV.Models.EntityFramework
 {
-    [Table("t_review")]
+    [Table("t_e_review_rvw")]
     public class Review
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("id")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("rvw_id")]
         public int Id { get; set; }
 
-        [ForeignKey("User"), Column("user_id")]
+        [ForeignKey("User"), Column("rvw_user_id")]
         public int UserId { get; set; }
         public virtual Profile User { get; set; }
 
-        [Required, Column("description"), StringLength(500)]
+        [Required, Column("rvw_description"), StringLength(500)]
         public string Description { get; set; }
 
-        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
-        [Column("date")]
+        [Column("rvw_date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
-        [Column("type"), StringLength(50)]
+        [Column("rvw_type"), StringLength(50)]
         public string Type { get; set; }
 
-        public virtual Profile Profile { get; set; }
     }
 }

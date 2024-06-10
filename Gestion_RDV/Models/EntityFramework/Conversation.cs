@@ -5,18 +5,17 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Conversations")]
+    [Table("t_e_conversation_cnv")]
     public class Conversation
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("cnv_id")]
         public int Id { get; set; }
 
 
-        [Required, StringLength(100), Column("Name")]
+        [Required, StringLength(100), Column("cnv_name")]
         public string Name { get; set; }
 
 
-        public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
-        public virtual ICollection<User> Participant { get; set; } = new List<User>();
+
     }
 }

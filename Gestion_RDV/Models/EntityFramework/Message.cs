@@ -4,26 +4,24 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Messages")]
+    [Table("t_e_message_msg")]
     public class Message
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("msg_id")]
         public int Id { get; set; }
 
-        [Required, Column("Created")]
+        [Required, Column("msg_created")]
         public DateTime Created { get; set; }
 
-        [Required, StringLength(100), Column("From")]
+        [Required, StringLength(100), Column("msg_from")]
         public string From { get; set; }
 
-        [Required, Column("Text")]
+        [Required, Column("msg_text")]
         public string Text { get; set; }
 
-        [Required, Column("ConversationId")]
+        [Required, Column("msg_conversationid")]
         public int ConversationId { get; set; }
 
-        // Navigation property for related Conversation
-        public virtual Conversation Conversation { get; set; }
     }
 
 }

@@ -4,42 +4,49 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Users")]
+    [Table("t_e_user_usr")]
     public class User
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("FirstName"), Required]
+        [Column("usr_first_name"), Required]
         public string FirstName { get; set; }
 
-        [Column("LastName"), Required]
+        [Column("usr_last_name"), Required]
         public string LastName { get; set; }
 
-        [Column("Email"), Required/*, Unique*/]
+        [Column("usr_email"), Required]
         public string Email { get; set; }
 
-        [Column("Password"), Required]
+        [Column("usr_password"), Required]
         public string Password { get; set; }
 
-        [Column("BirthDate"), Required]
+        [Column("usr_birth_date"), Required]
         public DateTime BirthDate { get; set; }
 
-        [Column("Activated")]
+        [Column("usr_activated")]
         public bool Activated { get; set; } = false;
 
-        [Column("SecretToken")]
+        [Column("usr_avatar")]
+        public string Avatar { get; set; }
+
+        [Column("usr_secret_token")]
         public string SecretToken { get; set; }
+        [Column("usr_role"), Required]
+        public string Role { get; set; }
+     
 
-        [ForeignKey("Role"), Column("role_id")]
-        public int Role { get; set; }
-
-        [Column("Sexe")]
+        [Column("usr_sexe")]
         public string Sexe { get; set; }
 
+        [Column("usr_telephone")]
+        public string Telephone { get; set; }
 
-        public virtual ICollection<Conversation> Conversation { get; set; } = new List<Conversation>();
-        public virtual Profile Profile { get; set; }
+
+        // Navigation property
+        public Office Office { get; set; }
+    
 
     }
 
