@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Address
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("adr_id")]
-        public int Id { get; set; }
+        public int AdresseId { get; set; }
 
         [Column("adr_adresse")]
         public string Adresse { get; set; }
@@ -18,7 +18,14 @@ namespace Gestion_RDV.Models.EntityFramework
         [Column("adr_codepostal")]
         public int CodePostal { get; set; }
 
+        //ForeignKey
+
+        // Navigation property
         [InverseProperty("Adresse")]
-        public User User { get; set; }
+        public virtual ICollection<User>? Users { get; }
+
+        [InverseProperty("Adresse")]
+        public virtual ICollection<Office>? Offices { get; }
+
     }
 }

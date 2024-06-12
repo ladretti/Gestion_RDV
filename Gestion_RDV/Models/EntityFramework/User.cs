@@ -44,19 +44,24 @@
         public string Telephone { get; set; }
 
 
+
+        //Foreign Key
+        [Column("adr_id")]
+        public int AdresseId { get; set; }
+
         // Navigation property
         [InverseProperty("User")]
         public Office Office { get; set; }
 
-        [ForeignKey("AdresseId"), InverseProperty("User")]
+        [ForeignKey("AdresseId"), InverseProperty("Users")]
         public Address Adresse { get; set; }
-
-        [InverseProperty("User")]
-        public virtual ICollection<Post>? Posts { get; }
         
         [InverseProperty("User")]
-        public virtual ICollection<Like>? Likes { get; }
-
+        public virtual ICollection<LikePost>? LikesPosts { get; }
+        [InverseProperty("User")]
+        public virtual ICollection<LikeReview>? LikesReview { get; }
+         [InverseProperty("User")]
+        public virtual ICollection<Subscription>? Subscriptions { get; }
         [InverseProperty("User")]
         public virtual ICollection<Comment>? Comments { get; }
 
@@ -66,8 +71,13 @@
         public virtual ICollection<Notification>? Notifications { get; }
         [InverseProperty("User")]
         public virtual ICollection<Message>? Messages { get; }
-        [InverseProperty("Users")]
-        public virtual ICollection<Conversation>? Conversations { get; }
+        [InverseProperty("User")]
+        public virtual ICollection<ConversationUser>? ConversationsUser { get; }
+        [InverseProperty("User")]
+        public virtual ICollection<SocialMediaAccount>? Socials { get; }
+        [InverseProperty("User")]
+        public virtual ICollection<Post>? Posts { get; }
+
 
     }
 

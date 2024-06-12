@@ -38,10 +38,25 @@
         //ForeignKey
         [Column("usr_id")]
         public int UserId { get; set; }
+         [Column("ofc_id")]
+        public int OfficeId { get; set; }
 
         // Navigation property
         [ForeignKey("UserId"), InverseProperty("RendezVous")]
         public User User { get; set; }
+
+        [ForeignKey("OfficeId"), InverseProperty("RendezVous")]
+        public Office Office { get; set; }
+
+        [InverseProperty("RendezVous")]
+        public Review Review { get; set; }
+
+        [InverseProperty("RendezVous")]
+        public virtual ICollection<Notification>? Notifications { get; }
+
+        [InverseProperty("RendezVous")]
+        public Facture Facture { get; set; }
+
     }
 
 }

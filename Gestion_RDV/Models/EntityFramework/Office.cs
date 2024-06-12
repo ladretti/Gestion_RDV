@@ -54,9 +54,27 @@
         [Column("usr_id")]
         public int UserId { get; set; }
 
+        [Column("adr_id")]
+        public int AdresseId { get; set; }
+
         // Navigation property
         [ForeignKey("UserId"), InverseProperty("Office")]
         public User User { get; set; }
+
+        [ForeignKey("AdresseId"), InverseProperty("Offices")]
+        public Address Adresse { get; set; }
+
+        [InverseProperty("Office")]
+        public virtual ICollection<RendezVous>? RendezVous { get; }
+
+        [InverseProperty("Office")]
+        public virtual ICollection<Notification>? Notifications { get; }
+
+        [InverseProperty("Office")]
+        public virtual ICollection<Availability>? Availabilities { get; }
+
+        [InverseProperty("Office")]
+        public virtual ICollection<Subscription>? Subscriptions { get; }
 
     }
 }

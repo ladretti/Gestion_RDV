@@ -24,9 +24,20 @@
         //ForeignKey
         [Column("usr_id")]
         public int UserId { get; set; }
+        [Column("p_pst_id")]
+        public int? ParentPostId { get; set; }
 
         // Navigation property
-        [InverseProperty("Post"), ForeignKey("UserId")]
+        [InverseProperty("Posts"), ForeignKey("UserId")]
         public User User { get; set; }
+
+        [ForeignKey("ParentPostId"), InverseProperty("ChildPosts")]
+        public Post ParentPost { get; set; }
+
+        [InverseProperty("ParentPost")]
+        public ICollection<Post> ChildPosts { get; set; }
+
+        [InverseProperty("Post")]
+        public virtual ICollection<LikePost>? LikesPosts { get; }
     }
 }

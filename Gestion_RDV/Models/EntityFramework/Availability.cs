@@ -7,13 +7,20 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Availability
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("avb_id")]
-        public int Id { get; set; }
+        public int AvailabilityId { get; set; }
 
         [Column("avb_start_date")]
         public DateTime StartDate { get; set; }
 
         [Column("avb_end_date")]
         public DateTime EndDate { get; set; }
+
+        //Foreign Key
+        [Column("ofc_id")]
+        public int OfficeId { get; set; }
+        //Inverse Property
+        [ForeignKey("OfficeId"), InverseProperty("Availabilities")]
+        public Office Office { get; set; }
 
     }
 }

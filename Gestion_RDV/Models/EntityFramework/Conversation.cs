@@ -9,7 +9,7 @@
     public class Conversation
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("cnv_id")]
-        public int Id { get; set; }
+        public int ConversationId { get; set; }
 
 
         [Required, StringLength(100), Column("cnv_name")]
@@ -19,8 +19,10 @@
 
 
         // Navigation property
-        [InverseProperty("Conversations")]
-        public virtual ICollection<User>? Users { get; }
+        [InverseProperty("Conversation")]
+        public virtual ICollection<ConversationUser>? ConversationsUser { get; }
 
+        [InverseProperty("Conversation")]
+        public virtual ICollection<Message>? Messages { get; }
     }
 }

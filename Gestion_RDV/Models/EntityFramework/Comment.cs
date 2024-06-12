@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.EntityFramework
     public class Comment
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("cmt_id")]
-        public int Id { get; set; }
+        public int CommentId { get; set; }
 
         [Required, Column("cmt_text")]
         public string Text { get; set; }
@@ -18,10 +18,16 @@ namespace Gestion_RDV.Models.EntityFramework
         //ForeignKey
         [Column("usr_id")]
         public int UserId { get; set; }
+        [Column("rvw")]
+        public int ReviewId { get; set; }
 
         // Navigation property
         [InverseProperty("Comments"), ForeignKey("UserId")]
         public User User { get; set; }
+
+        [InverseProperty("Comments"), ForeignKey("ReviewId")]
+        public Review Review { get; set; }
+
 
     }
 }
