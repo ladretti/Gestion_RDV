@@ -18,7 +18,7 @@ namespace Gestion_RDV.Models.EntityFramework
         //ForeignKey
         [Column("usr_id")]
         public int UserId { get; set; }
-        [Column("rvw")]
+        [Column("rvw_id")]
         public int ReviewId { get; set; }
 
         // Navigation property

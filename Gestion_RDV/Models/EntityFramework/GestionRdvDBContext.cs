@@ -14,27 +14,27 @@ namespace Gestion_RDV.Models.EntityFramework
         {
 
         }
-        public DbSet<Address> Address { get; set; }
-        public DbSet<Availability> Availability { get; set; }
-        public DbSet<Comment> Comment { get; set; }
-        public DbSet<Conversation> Conversation { get; set; }
-        public DbSet<ConversationUser> ConversationUser { get; set; }
-        public DbSet<Facture> Facture { get; set; }
-        public DbSet<LikePost> LikePost { get; set; }
-        public DbSet<LikeReview> LikeReview { get; set; }
-        public DbSet<Message> Message { get; set; }
-        public DbSet<Notification> Notification { get; set; }
-        public DbSet<Office> Office { get; set; }
-        public DbSet<Post> Post { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Availability> Availabilities { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<ConversationUser> ConversationsUser { get; set; }
+        public DbSet<Facture> Factures { get; set; }
+        public DbSet<LikePost> LikesPost { get; set; }
+        public DbSet<LikeReview> LikesReview { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Office> Officies { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public DbSet<RendezVous> RendezVous { get; set; }
-        public DbSet<Review> Review { get; set; }
-        public DbSet<SocialMediaAccount> SocialMediaAccount { get; set; }
-        public DbSet<Subscription> Subscription { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<SocialMediaAccount> SocialMediaAccounts { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=GestionRDV; uid=postgres; password=postgres");
+            optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=GestionRDV2; uid=postgres; password=postgres");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -125,7 +125,7 @@ namespace Gestion_RDV.Models.EntityFramework
                       .IsRequired();
 
                 entity.Property(e => e.ReviewId)
-                      .HasColumnName("rvw")
+                      .HasColumnName("rvw_id")
                       .IsRequired();
 
                 entity.HasOne(d => d.User)
@@ -441,7 +441,8 @@ namespace Gestion_RDV.Models.EntityFramework
 
                 entity.Property(e => e.UserId).HasColumnName("usr_id");
 
-                entity.Property(e => e.ParentPostId).HasColumnName("p_pst_id");
+                entity.Property(e => e.ParentPostId).HasColumnName("p_pst_id").IsRequired(false);
+
 
                 entity.HasOne(e => e.User)
                     .WithMany(u => u.Posts)

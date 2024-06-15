@@ -95,7 +95,7 @@ namespace Gestion_RDV.Migrations
 
                     b.Property<int>("ReviewId")
                         .HasColumnType("integer")
-                        .HasColumnName("rvw");
+                        .HasColumnName("rvw_id");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -407,7 +407,6 @@ namespace Gestion_RDV.Migrations
                         .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("ParentPostId")
-                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("p_pst_id");
 

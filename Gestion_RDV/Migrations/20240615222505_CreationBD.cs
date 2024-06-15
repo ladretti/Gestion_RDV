@@ -119,7 +119,7 @@ namespace Gestion_RDV.Migrations
                     pst_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     pst_type = table.Column<string>(type: "text", nullable: false, defaultValue: "text"),
                     usr_id = table.Column<int>(type: "integer", nullable: false),
-                    p_pst_id = table.Column<int>(type: "integer", nullable: false)
+                    p_pst_id = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -402,14 +402,14 @@ namespace Gestion_RDV.Migrations
                     cmt_text = table.Column<string>(type: "text", nullable: false),
                     cmt_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     usr_id = table.Column<int>(type: "integer", nullable: false),
-                    rvw = table.Column<int>(type: "integer", nullable: false)
+                    rvw_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comment", x => x.cmt_id);
                     table.ForeignKey(
                         name: "FK_Comment_Review",
-                        column: x => x.rvw,
+                        column: x => x.rvw_id,
                         principalTable: "t_e_review_rvw",
                         principalColumn: "rvw_id",
                         onDelete: ReferentialAction.Cascade);
@@ -451,9 +451,9 @@ namespace Gestion_RDV.Migrations
                 column: "ofc_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_e_comment_cmt_rvw",
+                name: "IX_t_e_comment_cmt_rvw_id",
                 table: "t_e_comment_cmt",
-                column: "rvw");
+                column: "rvw_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_t_e_comment_cmt_usr_id",

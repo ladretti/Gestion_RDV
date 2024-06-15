@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     [DbContext(typeof(GestionRdvDbContext))]
-    [Migration("20240612133927_CreationBD")]
+    [Migration("20240615222505_CreationBD")]
     partial class CreationBD
     {
         /// <inheritdoc />
@@ -98,7 +98,7 @@ namespace Gestion_RDV.Migrations
 
                     b.Property<int>("ReviewId")
                         .HasColumnType("integer")
-                        .HasColumnName("rvw");
+                        .HasColumnName("rvw_id");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -410,7 +410,6 @@ namespace Gestion_RDV.Migrations
                         .HasDefaultValueSql("NOW()");
 
                     b.Property<int?>("ParentPostId")
-                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("p_pst_id");
 
