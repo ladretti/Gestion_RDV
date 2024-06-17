@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     [DbContext(typeof(GestionRdvDbContext))]
-    [Migration("20240615222505_CreationBD")]
+    [Migration("20240617123756_CreationBD")]
     partial class CreationBD
     {
         /// <inheritdoc />

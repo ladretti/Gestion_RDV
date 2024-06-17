@@ -34,7 +34,7 @@ namespace Gestion_RDV.Models.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=GestionRDV2; uid=postgres; password=postgres");
+            optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=GestionRDV; uid=postgres; password=postgres");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
