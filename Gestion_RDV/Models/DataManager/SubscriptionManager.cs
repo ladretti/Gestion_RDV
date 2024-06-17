@@ -1,0 +1,55 @@
+﻿using Gestion_RDV.Models.EntityFramework;
+using Gestion_RDV.Models.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace Gestion_RDV.Models.DataManager
+{
+    namespace API_Gymbrodyssey.Models.DataManager
+    {
+        public class SubscriptionManager : IDataRepositoryTJ<Subscription>
+        {
+            private readonly GestionRdvDbContext _context;
+
+            public SubscriptionManager(GestionRdvDbContext context)
+            {
+                _context = context;
+            }
+
+            public async Task<ActionResult<IEnumerable<Subscription>>> GetAllAsync()
+            {
+                return new ActionResult<IEnumerable<Subscription>>(await _context.Subscriptions.ToListAsync());
+            }
+
+            public async Task<ActionResult<Subscription>> GetByIdAsync(int userId, int officeId)
+            {
+                var subscription = await _context.Subscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.OfficeId == officeId);
+                if (subscription == null) return new NotFoundResult();
+                return new ActionResult<Subscription>(subscription);
+            }
+            public async Task<ActionResult<Subscription>> GetByIdAsync(int id)
+            {
+                return null;
+            }
+            public async Task AddAsync(Subscription entity)
+            {
+                _context.Subscriptions.Add(entity);
+                await _context.SaveChangesAsync();
+            }
+
+            public async Task UpdateAsync(Subscription entityToUpdate, Subscription entity)
+            {
+                _context.Entry(entityToUpdate).CurrentValues.SetValues(entity);
+                await _context.SaveChangesAsync();
+            }
+
+            public async Task DeleteAsync(Subscription entity)
+            {
+                _context.Subscriptions.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
+
+}
