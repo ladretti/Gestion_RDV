@@ -19,7 +19,7 @@ builder.Services.AddScoped<IDataRepository<RendezVous>, RendezVousManager>();
 builder.Services.AddScoped<IDataRepository<Review>, ReviewManager>();
 builder.Services.AddScoped<IDataRepository<SocialMediaAccount>, SocialMediaAccountManager>();
 builder.Services.AddScoped<IDataRepository<Subscription>, SubscriptionManager>();
-builder.Services.AddScoped<IDataRepository<User>, UserManager>();
+builder.Services.AddScoped<IDataRepositoryUser<User>, UserManager>();
 
 
 

@@ -448,13 +448,13 @@ namespace Gestion_RDV.Models.EntityFramework
                     .WithMany(u => u.Posts)
                     .HasForeignKey(e => e.UserId)
                     .HasConstraintName("FK_t_e_post_pst_t_e_user_usr_id")
-                    .OnDelete(DeleteBehavior.Cascade); 
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.ParentPost)
                     .WithMany(p => p.ChildPosts)
                     .HasForeignKey(e => e.ParentPostId)
                     .HasConstraintName("FK_t_e_post_pst_t_e_post_p_pst_id")
-                    .OnDelete(DeleteBehavior.Restrict); 
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<RendezVous>(entity =>
             {
@@ -661,29 +661,34 @@ namespace Gestion_RDV.Models.EntityFramework
                           .HasDefaultValue(false);
 
                     entity.Property(e => e.Avatar)
-                          .HasColumnName("usr_avatar");
+                          .HasColumnName("usr_avatar")
+                          .IsRequired(false);
 
                     entity.Property(e => e.SecretToken)
-                          .HasColumnName("usr_secret_token");
+                          .HasColumnName("usr_secret_token")
+                          .IsRequired(false);
 
                     entity.Property(e => e.Role)
                           .HasColumnName("usr_role")
                           .IsRequired();
 
                     entity.Property(e => e.Sexe)
-                          .HasColumnName("usr_sexe");
+                          .HasColumnName("usr_sexe")
+                          .IsRequired(false);
 
                     entity.Property(e => e.Telephone)
-                          .HasColumnName("usr_telephone");
+                          .HasColumnName("usr_telephone")
+                          .IsRequired(false);
 
                     entity.Property(e => e.AdresseId)
-                          .HasColumnName("adr_id");
+                          .HasColumnName("adr_id")
+                          .IsRequired(false);
 
                     entity.HasOne(e => e.Adresse)
                           .WithMany(a => a.Users)
                           .HasForeignKey(e => e.AdresseId)
                           .HasConstraintName("FK_User_Address")
-                          .OnDelete(DeleteBehavior.Cascade);
+                          .OnDelete(DeleteBehavior.SetNull);
                 });
 
 

@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class AvailabilityManager : IDataRepository<Availability>
+        public class AvailabilityManager : IDataRepositoyAvailability<Availability>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -45,6 +45,17 @@ namespace Gestion_RDV.Models.DataManager
                 _context.Availabilities.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+
+
+            public async Task<ActionResult<IEnumerable<Availability>>> GetByOfficeId(int id)
+            {
+                var availabilities = await _context.Availabilities.Where(a => a.OfficeId == id).ToListAsync();
+
+                if (availabilities == null) return new NotFoundResult();
+
+                return new ActionResult<IEnumerable<Availability>>(availabilities);
+            }
+
         }
     }
 

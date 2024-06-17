@@ -2,13 +2,14 @@
 using Gestion_RDV.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Channels;
 
 
 namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class UserManager : IDataRepository<User>
+        public class UserManager : IDataRepositoryUser<User>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -25,6 +26,12 @@ namespace Gestion_RDV.Models.DataManager
             public async Task<ActionResult<User>> GetByIdAsync(int id)
             {
                 var user = await _context.Users.FindAsync(id);
+                if (user == null) return new NotFoundResult();
+                return new ActionResult<User>(user);
+            }
+            public async Task<ActionResult<User>> GetByStringAsync(string email)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToUpper() == email.ToUpper());
                 if (user == null) return new NotFoundResult();
                 return new ActionResult<User>(user);
             }
