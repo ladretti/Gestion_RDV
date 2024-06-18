@@ -48,6 +48,7 @@
         public DateTime Date { get; set; } = DateTime.Now;
 
         [Column("ofc_telephone")]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")]
         public string Telephone { get; set; }
 
         //ForeignKey

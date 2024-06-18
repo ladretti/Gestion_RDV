@@ -2,6 +2,7 @@
 using Gestion_RDV.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
 
 namespace Gestion_RDV.Models.DataManager
 {
@@ -45,16 +46,6 @@ namespace Gestion_RDV.Models.DataManager
                 _context.Conversations.Remove(entity);
                 await _context.SaveChangesAsync();
             }
-
-            public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserIdAsync(int userId)
-            {
-                var conversations = await _context.Conversations
-                                              .Where(c => c.ConversationsUser != null && c.ConversationsUser.Any(cu => cu.UserId == userId))
-                                              .ToListAsync();
-
-                return new ActionResult<IEnumerable<Conversation>>(conversations);
-            }
-
         }
     }
 }
