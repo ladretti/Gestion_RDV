@@ -41,7 +41,7 @@ namespace Gestion_RDV.Models.EntityFramework
         {
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.ToTable("t_e_adress_adr");
+                entity.ToTable("t_e_address_adr");
 
                 entity.HasKey(e => e.AdresseId)
                       .HasName("PK_Address");
