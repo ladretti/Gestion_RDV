@@ -48,7 +48,7 @@ namespace Gestion_RDV.Migrations
                     b.HasKey("AdresseId")
                         .HasName("PK_Address");
 
-                    b.ToTable("t_e_adress_adr", (string)null);
+                    b.ToTable("t_e_address_adr", (string)null);
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Availability", b =>
