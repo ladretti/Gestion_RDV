@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gestion_RDV.Controllers
 {
@@ -15,10 +17,12 @@ namespace Gestion_RDV.Controllers
     public class ConversationsController : ControllerBase
     {
         private readonly IDataRepositoryConversation<Conversation> dataRepository;
+        private readonly IDataRepositoryConversationUser<ConversationUser> dataRepositoryConversationUser;
 
-        public ConversationsController(IDataRepositoryConversation<Conversation> dataRepo)
+        public ConversationsController(IDataRepositoryConversation<Conversation> dataRepo, IDataRepositoryConversationUser<ConversationUser> dataRepoConvUser)
         {
             dataRepository = dataRepo;
+            dataRepositoryConversationUser = dataRepoConvUser;
         }
 
         // GET: api/Conversations
@@ -35,6 +39,7 @@ namespace Gestion_RDV.Controllers
         }
 
         // GET: api/Conversations/5
+        [Authorize]
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -50,17 +55,21 @@ namespace Gestion_RDV.Controllers
         }
 
         // GET: api/Conversations/user/5
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
         [HttpGet("user/{userId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserId(int userId)
         {
-            var conversations = await dataRepository.GetConversationsByUserIdAsync(userId);
-            if (conversations == null)
+            var conversationsUser = await dataRepositoryConversationUser.GetConversationsByUserIdAsync(userId);
+            await dataRepository.GetAllAsync();
+
+            if (conversationsUser == null)
             {
                 return NotFound();
             }
-            return Ok(conversations);
+            return Ok(conversationsUser);
         }
 
 

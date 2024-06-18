@@ -4,6 +4,6 @@ namespace Gestion_RDV.Models.Repository
 {
     public interface IDataRepositoryConversation<TEntity> : IDataRepository<TEntity>
     {
-        Task<ActionResult<IEnumerable<TEntity>>> GetConversationsByUserIdAsync(int id);
+     
     }
 }

@@ -1,4 +1,5 @@
 using Gestion_RDV.Filters;
+using Gestion_RDV.Models.DataManager;
 using Gestion_RDV.Models.DataManager.API_Gymbrodyssey.Models.DataManager;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IDataRepository<Review>, ReviewManager>();
 builder.Services.AddScoped<IDataRepository<SocialMediaAccount>, SocialMediaAccountManager>();
 builder.Services.AddScoped<IDataRepository<Subscription>, SubscriptionManager>();
 builder.Services.AddScoped<IDataRepositoryUser<User>, UserManager>();
+builder.Services.AddScoped<IDataRepositoryConversationUser<ConversationUser>, ConversationUserManager>();
 builder.Services.AddScoped<UserAuthorizationFilter>(provider =>
 {
     var routeKey = "userId";
