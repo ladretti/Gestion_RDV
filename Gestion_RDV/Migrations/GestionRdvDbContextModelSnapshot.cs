@@ -610,8 +610,8 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("text")
                         .HasColumnName("usr_avatar");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date")
                         .HasColumnName("usr_birth_date");
 
                     b.Property<string>("Email")

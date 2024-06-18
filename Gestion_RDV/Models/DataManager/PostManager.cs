@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class PostManager : IDataRepository<Post>
+        public class PostManager : IDataRepositoryPost<Post>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -26,6 +26,11 @@ namespace Gestion_RDV.Models.DataManager
                 var post = await _context.Posts.FindAsync(id);
                 if (post == null) return new NotFoundResult();
                 return new ActionResult<Post>(post);
+            }
+
+            public async Task<ActionResult<IEnumerable<Post>>> GetByParentIdAsync(int id)
+            {
+                return new ActionResult<IEnumerable<Post>>(await _context.Posts.Where(a => a.ParentPostId == id).ToListAsync());
             }
 
             public async Task AddAsync(Post entity)

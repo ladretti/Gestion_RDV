@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Models.DTO;
+using AutoMapper;
 
 namespace Gestion_RDV.Controllers
 {
@@ -16,12 +18,16 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<Office> dataRepository;
         private readonly IDataRepositoryUser<User> dataRepositoryUser;
+        private readonly IMapper _mapper;
 
 
-        public OfficesController(IDataRepository<Office> dataRepo, IDataRepositoryUser<User> dataRepositoryUser)
+
+        public OfficesController(IDataRepository<Office> dataRepo, IDataRepositoryUser<User> dataRepositoryUser, IMapper mapper)
         {
             dataRepository = dataRepo;
             this.dataRepositoryUser = dataRepositoryUser;
+            _mapper = mapper;
+
         }
 
 
@@ -32,11 +38,12 @@ namespace Gestion_RDV.Controllers
             var officies = await dataRepository.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
 
+
             if (officies == null)
             {
                 return NotFound();
             }
-            return officies;
+            return Ok(_mapper.Map<IEnumerable<OfficeDTO>>(officies.Value));
         }
 
         [HttpGet("{id}")]
@@ -52,7 +59,7 @@ namespace Gestion_RDV.Controllers
                 return NotFound();
             }
 
-            return office;
+            return Ok(_mapper.Map<OfficeDetailDTO>(office.Value)); ;
         }
 
 

@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Text;
 using Gestion_RDV.Models.DTO;
 using Microsoft.CodeAnalysis.Scripting;
+using AutoMapper;
 
 namespace Gestion_RDV.Controllers
 {
@@ -22,19 +23,21 @@ namespace Gestion_RDV.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
         private readonly IDataRepositoryUser<User> dataRepository;
 
-        public LoginController(IConfiguration config, IDataRepositoryUser<User> dataRepo)
+        public LoginController(IConfiguration config, IDataRepositoryUser<User> dataRepo, IMapper mapper)
         {
             _config = config;
             dataRepository = dataRepo;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<User>> SignIn(String email, String password, DateTime birthDate, string firstName, string lastName , string role )
+        public async Task<ActionResult<User>> SignIn(String email, String password, DateOnly birthDate, string firstName, string lastName , string role )
         {
             if (!ModelState.IsValid)
             {
@@ -70,13 +73,14 @@ namespace Gestion_RDV.Controllers
             }
 
             var token = GenerateJwtToken(user);
+            UserLoginDTO userDto = _mapper.Map<UserLoginDTO>(user);
             if (user != null)
             {
-                var tokenString = GenerateJwtToken(user);
+                var tokenString = token;
                 response = Ok(new
                 {
                     token = tokenString,
-                    userDetails = user,
+                    userDetails = userDto,
                 });
             }
             return response;

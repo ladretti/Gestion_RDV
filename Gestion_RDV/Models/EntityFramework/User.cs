@@ -23,7 +23,7 @@
         public string Password { get; set; }
 
         [Column("usr_birth_date"), Required]
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
 
         [Column("usr_activated")]
         public bool Activated { get; set; } = false;

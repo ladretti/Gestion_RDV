@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Models.DTO;
+using AutoMapper;
 
 namespace Gestion_RDV.Controllers
 {
@@ -15,18 +17,20 @@ namespace Gestion_RDV.Controllers
     public class AvailabilitiesController : ControllerBase
     {
         private readonly IDataRepositoyAvailability<Availability> dataRepository;
+        private readonly IMapper _mapper;
         //private readonly IDataRepositoryUser<User> dataRepositoryUser;
 
 
-        public AvailabilitiesController(IDataRepositoyAvailability<Availability> dataRepo)
+        public AvailabilitiesController(IDataRepositoyAvailability<Availability> dataRepo, IMapper mapper)
         {
             dataRepository = dataRepo;
+            _mapper = mapper;
         }
 
         [HttpGet("{officeId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<Availability>>> GetAvailabilitiesByOfficeId(int officeId)
+        public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetAvailabilitiesByOfficeId(int officeId)
         {
             var availabilities = await dataRepository.GetByOfficeId(officeId);
 
@@ -35,7 +39,8 @@ namespace Gestion_RDV.Controllers
                 return NotFound();
             }
 
-            return availabilities;
+            return Ok(_mapper.Map<IEnumerable<AvailabilityDTO>>(availabilities.Value));
+
         }
 
     }
