@@ -47,7 +47,7 @@
 
         //Foreign Key
         [Column("adr_id")]
-        public int AdresseId { get; set; }
+        public int? AdresseId { get; set; }
 
         // Navigation property
         [InverseProperty("User")]

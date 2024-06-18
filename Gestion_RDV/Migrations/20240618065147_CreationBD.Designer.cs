@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     [DbContext(typeof(GestionRdvDbContext))]
-    [Migration("20240617123756_CreationBD")]
+    [Migration("20240618065147_CreationBD")]
     partial class CreationBD
     {
         /// <inheritdoc />
@@ -605,12 +605,11 @@ namespace Gestion_RDV.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("usr_activated");
 
-                    b.Property<int>("AdresseId")
+                    b.Property<int?>("AdresseId")
                         .HasColumnType("integer")
                         .HasColumnName("adr_id");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_avatar");
 
@@ -644,17 +643,14 @@ namespace Gestion_RDV.Migrations
                         .HasColumnName("usr_role");
 
                     b.Property<string>("SecretToken")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_secret_token");
 
                     b.Property<string>("Sexe")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_sexe");
 
                     b.Property<string>("Telephone")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_telephone");
 
@@ -938,8 +934,7 @@ namespace Gestion_RDV.Migrations
                     b.HasOne("Gestion_RDV.Models.EntityFramework.Address", "Adresse")
                         .WithMany("Users")
                         .HasForeignKey("AdresseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("FK_User_Address");
 
                     b.Navigation("Adresse");
