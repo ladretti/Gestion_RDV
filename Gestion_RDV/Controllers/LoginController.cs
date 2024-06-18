@@ -41,7 +41,6 @@ namespace Gestion_RDV.Controllers
                 return BadRequest(ModelState);
             }
             User user = new User() { Email = email, Password = password, BirthDate = birthDate, FirstName = firstName, LastName = lastName, Role = role};
-            await dataRepository.AddAsync(user);
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
             await dataRepository.AddAsync(user);
@@ -71,7 +70,6 @@ namespace Gestion_RDV.Controllers
             }
 
             var token = GenerateJwtToken(user);
-
             if (user != null)
             {
                 var tokenString = GenerateJwtToken(user);
@@ -84,25 +82,9 @@ namespace Gestion_RDV.Controllers
             return response;
         }
 
-
-        private User AuthenticateUser(String email, String password)
-        {
-            var user = dataRepository.GetByStringAsync(email).Result.Value;
-            if (user.Password != password)
-            {
-                return null;
-            }
-            else
-            {
-                return user;
-            }
-
-        }
-
-
         private string GenerateJwtToken(User user)
         {
-            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.Sub, user.Email), };
+            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.Sub, user.Email), new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString()) };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
