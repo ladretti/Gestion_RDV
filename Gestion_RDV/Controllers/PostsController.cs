@@ -12,13 +12,13 @@ namespace Gestion_RDV.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OfficesController : ControllerBase
+    public class PostsController : ControllerBase
     {
-        private readonly IDataRepository<Office> dataRepository;
+        private readonly IDataRepository<Post> dataRepository;
         private readonly IDataRepositoryUser<User> dataRepositoryUser;
 
 
-        public OfficesController(IDataRepository<Office> dataRepo, IDataRepositoryUser<User> dataRepositoryUser)
+        public PostsController(IDataRepository<Post> dataRepo, IDataRepositoryUser<User> dataRepositoryUser)
         {
             dataRepository = dataRepo;
             this.dataRepositoryUser = dataRepositoryUser;
@@ -27,22 +27,22 @@ namespace Gestion_RDV.Controllers
 
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<IEnumerable<Office>>> GetOfficies()
+        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
         {
-            var officies = await dataRepository.GetAllAsync();
+            var posts = await dataRepository.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
 
-            if (officies == null)
+            if (posts == null)
             {
                 return NotFound();
             }
-            return officies;
+            return posts;
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Office>> GetOfficeById(int id)
+        public async Task<ActionResult<Post>> GetPostById(int id)
         {
             var office = await dataRepository.GetByIdAsync(id);
             await dataRepositoryUser.GetByIdAsync(office.Value.UserId);
@@ -54,7 +54,5 @@ namespace Gestion_RDV.Controllers
 
             return office;
         }
-
-
     }
 }
