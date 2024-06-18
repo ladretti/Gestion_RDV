@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     [DbContext(typeof(GestionRdvDbContext))]
-    [Migration("20240618065147_CreationBD")]
+    [Migration("20240618132058_CreationBD")]
     partial class CreationBD
     {
         /// <inheritdoc />
@@ -51,7 +51,7 @@ namespace Gestion_RDV.Migrations
                     b.HasKey("AdresseId")
                         .HasName("PK_Address");
 
-                    b.ToTable("t_e_adress_adr", (string)null);
+                    b.ToTable("t_e_address_adr", (string)null);
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Availability", b =>

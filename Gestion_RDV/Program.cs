@@ -7,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
-builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>();
+builder.Services.AddScoped<IDataRepositoyAvailability<Availability>, AvailabilityManager>();
 builder.Services.AddScoped<IDataRepository<Comment>, CommentManager>();
 builder.Services.AddScoped<IDataRepositoryConversation<Conversation>, ConversationManager>();
 builder.Services.AddScoped<IDataRepository<Facture>, FactureManager>();
@@ -31,9 +32,10 @@ builder.Services.AddScoped<UserAuthorizationFilter>(provider =>
     return new UserAuthorizationFilter(routeKey);
 });
 
-
-
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -95,7 +97,13 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
+
 var app = builder.Build();
+
+app.UseCors(
+        options => options.WithOrigins("https://localhost:7153").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    );
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
