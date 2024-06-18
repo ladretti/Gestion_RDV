@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Models.DTO;
+using AutoMapper;
+using Microsoft.Extensions.Hosting;
 
 namespace Gestion_RDV.Controllers
 {
@@ -14,14 +17,16 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly IDataRepository<Post> dataRepository;
+        private readonly IDataRepositoryPost<Post> dataRepository;
         private readonly IDataRepositoryUser<User> dataRepositoryUser;
+        private readonly IMapper _mapper;
 
 
-        public PostsController(IDataRepository<Post> dataRepo, IDataRepositoryUser<User> dataRepositoryUser)
+        public PostsController(IDataRepositoryPost<Post> dataRepo, IDataRepositoryUser<User> dataRepositoryUser, IMapper mapper)
         {
             dataRepository = dataRepo;
             this.dataRepositoryUser = dataRepositoryUser;
+            _mapper = mapper;
         }
 
 
@@ -36,7 +41,7 @@ namespace Gestion_RDV.Controllers
             {
                 return NotFound();
             }
-            return posts;
+            return Ok(_mapper.Map<IEnumerable<PostDTO>>(posts.Value)); ;
         }
 
         [HttpGet("{id}")]
@@ -44,15 +49,16 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Post>> GetPostById(int id)
         {
-            var office = await dataRepository.GetByIdAsync(id);
-            await dataRepositoryUser.GetByIdAsync(office.Value.UserId);
+            var post = await dataRepository.GetByIdAsync(id);
+            await dataRepositoryUser.GetByIdAsync(post.Value.UserId);
+            await dataRepository.GetByParentIdAsync(id);
 
-            if (office == null)
+            if (post == null)
             {
                 return NotFound();
             }
 
-            return office;
+            return Ok(_mapper.Map<PostDetailDTO>(post.Value));
         }
     }
 }

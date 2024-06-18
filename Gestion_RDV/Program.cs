@@ -1,3 +1,4 @@
+using Gestion_RDV.AutoMapper;
 using Gestion_RDV.Filters;
 using Gestion_RDV.Models.DataManager;
 using Gestion_RDV.Models.DataManager.API_Gymbrodyssey.Models.DataManager;
@@ -12,6 +13,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
 builder.Services.AddScoped<IDataRepositoyAvailability<Availability>, AvailabilityManager>();
@@ -21,7 +23,7 @@ builder.Services.AddScoped<IDataRepository<Facture>, FactureManager>();
 builder.Services.AddScoped<IDataRepository<Message>, MessageManager>();
 builder.Services.AddScoped<IDataRepositoryNotification<Notification>, NotificationManager>();
 builder.Services.AddScoped<IDataRepository<Office>, OfficeManager>();
-builder.Services.AddScoped<IDataRepository<Post>, PostManager>();
+builder.Services.AddScoped<IDataRepositoryPost<Post>, PostManager>();
 builder.Services.AddScoped<IDataRepository<RendezVous>, RendezVousManager>();
 builder.Services.AddScoped<IDataRepository<Review>, ReviewManager>();
 builder.Services.AddScoped<IDataRepository<SocialMediaAccount>, SocialMediaAccountManager>();
