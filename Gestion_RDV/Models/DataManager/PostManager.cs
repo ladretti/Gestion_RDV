@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class PostManager : IDataRepositoryPost<Post>
+        public class PostManager : IDataRepository<Post>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -28,9 +28,13 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<Post>(post);
             }
 
-            public async Task<ActionResult<IEnumerable<Post>>> GetByParentIdAsync(int id)
+            public async Task<ActionResult<IEnumerable<Post>>> GetAllBySpecialIdAsync(int id)
             {
-                return new ActionResult<IEnumerable<Post>>(await _context.Posts.Where(a => a.ParentPostId == id).ToListAsync());
+                var posts = await _context.Posts.Where(a => a.ParentPostId == id).ToListAsync();
+
+                if (posts == null) return new NotFoundResult();
+
+                return new ActionResult<IEnumerable<Post>>(posts);
             }
 
             public async Task AddAsync(Post entity)
@@ -49,6 +53,21 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Posts.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<Post>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Post>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Post>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

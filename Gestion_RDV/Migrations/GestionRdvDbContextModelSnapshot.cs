@@ -517,6 +517,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("rvw_description");
 
+                    b.Property<int>("Note")
+                        .HasColumnType("integer")
+                        .HasColumnName("rvw_note");
+
                     b.Property<int>("RendezVousId")
                         .HasColumnType("integer")
                         .HasColumnName("rdv_id");

@@ -45,6 +45,26 @@ namespace Gestion_RDV.Models.DataManager
                 _context.Comments.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+
+            public Task<ActionResult<IEnumerable<Comment>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Comment>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Comment>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Comment>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

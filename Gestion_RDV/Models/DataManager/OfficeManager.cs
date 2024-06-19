@@ -46,6 +46,26 @@ namespace Gestion_RDV.Models.DataManager
                 _context.Officies.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+
+            public Task<ActionResult<IEnumerable<Office>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Office>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Office>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Office>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

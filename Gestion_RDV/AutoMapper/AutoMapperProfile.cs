@@ -18,8 +18,12 @@ namespace Gestion_RDV.AutoMapper
 
             //Office
             CreateMap<Office, OfficeDTO>();
-            CreateMap<Office, OfficeDetailDTO>();
+            CreateMap<Office, OfficeDetailDTO>()
+            .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.RendezVous.Average(r => (r.Review != null) ? r.Review.Note : 0)));
             CreateMap<User, OfficeUserDTO>();
+            CreateMap<Address, AddressDTO>();
+           
+            
 
             //Post
             CreateMap<Post, PostDTO>()

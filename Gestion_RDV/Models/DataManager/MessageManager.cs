@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class MessageManager : IDataRepositoryTJ<Message>
+        public class MessageManager : IDataRepository<Message>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -21,7 +21,7 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<IEnumerable<Message>>(await _context.Messages.ToListAsync());
             }
 
-            public async Task<ActionResult<Message>> GetByIdAsync(int UserId, int ConversationId)
+            public async Task<ActionResult<Message>> GetByIdsAsync(int UserId, int ConversationId)
             {
                 var message = await _context.Messages.FirstOrDefaultAsync(s => s.UserId == UserId && s.ConversationId == ConversationId);
                 if (message == null) return new NotFoundResult();
@@ -48,6 +48,21 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Messages.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<Message>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Message>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Message>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
             }
         }
     }

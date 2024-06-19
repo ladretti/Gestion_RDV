@@ -371,9 +371,6 @@ namespace Gestion_RDV.Models.EntityFramework
                 entity.Property(e => e.ImageDiplome)
                       .HasColumnName("ofc_image_diplome");
 
-                entity.Property(e => e.Rating)
-                      .HasColumnName("ofc_rating");
-
                 entity.Property(e => e.DomainePrincipal)
                       .HasColumnName("ofc_domaine_principal");
 
@@ -570,6 +567,9 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasForeignKey(l => l.ReviewId)
                       .HasConstraintName("FK_LikeReview_Review")
                       .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(e => e.Note)
+                      .HasColumnName("rvw_note")
+                      .IsRequired();
             });
             modelBuilder.Entity<SocialMediaAccount>(entity =>
             {

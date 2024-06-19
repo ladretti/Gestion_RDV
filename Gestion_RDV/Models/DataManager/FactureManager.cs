@@ -45,6 +45,26 @@ namespace Gestion_RDV.Models.DataManager
                 _context.Factures.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+
+            public Task<ActionResult<IEnumerable<Facture>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

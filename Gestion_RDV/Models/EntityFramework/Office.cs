@@ -17,9 +17,6 @@
         [Column("ofc_image_diplome")]
         public string ImageDiplome { get; set; }
 
-        [Column("ofc_rating")]
-        public double Rating { get; set; }
-
         [Column("ofc_domaine_principal")]
         public string DomainePrincipal { get; set; }
 

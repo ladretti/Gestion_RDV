@@ -13,7 +13,7 @@ namespace Gestion_RDV.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "t_e_adress_adr",
+                name: "t_e_address_adr",
                 columns: table => new
                 {
                     adr_id = table.Column<int>(type: "integer", nullable: false)
@@ -50,7 +50,7 @@ namespace Gestion_RDV.Migrations
                     usr_last_name = table.Column<string>(type: "text", nullable: false),
                     usr_email = table.Column<string>(type: "text", nullable: false),
                     usr_password = table.Column<string>(type: "text", nullable: false),
-                    usr_birth_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    usr_birth_date = table.Column<DateOnly>(type: "date", nullable: false),
                     usr_activated = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     usr_avatar = table.Column<string>(type: "text", nullable: true),
                     usr_secret_token = table.Column<string>(type: "text", nullable: true),
@@ -65,7 +65,7 @@ namespace Gestion_RDV.Migrations
                     table.ForeignKey(
                         name: "FK_User_Address",
                         column: x => x.adr_id,
-                        principalTable: "t_e_adress_adr",
+                        principalTable: "t_e_address_adr",
                         principalColumn: "adr_id",
                         onDelete: ReferentialAction.SetNull);
                 });
@@ -98,7 +98,7 @@ namespace Gestion_RDV.Migrations
                     table.ForeignKey(
                         name: "FK_Office_Address",
                         column: x => x.adr_id,
-                        principalTable: "t_e_adress_adr",
+                        principalTable: "t_e_address_adr",
                         principalColumn: "adr_id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -380,6 +380,7 @@ namespace Gestion_RDV.Migrations
                     rvw_description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     rvw_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     rvw_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    rvw_note = table.Column<int>(type: "integer", nullable: false),
                     rdv_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -606,7 +607,7 @@ namespace Gestion_RDV.Migrations
                 name: "t_e_user_usr");
 
             migrationBuilder.DropTable(
-                name: "t_e_adress_adr");
+                name: "t_e_address_adr");
         }
     }
 }
