@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Comment entity)
             {
-                _context.Comments.Add(entity);
+                await _context.Comments.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

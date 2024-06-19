@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Availability entity)
             {
-                _context.Availabilities.Add(entity);
+                await _context.Availabilities.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

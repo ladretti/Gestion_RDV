@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Office entity)
             {
-                _context.Officies.Add(entity);
+                await _context.Officies.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

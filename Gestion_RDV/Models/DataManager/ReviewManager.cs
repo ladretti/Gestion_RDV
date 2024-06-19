@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Review entity)
             {
-                _context.Reviews.Add(entity);
+                await _context.Reviews.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

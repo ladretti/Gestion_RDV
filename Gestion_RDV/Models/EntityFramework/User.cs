@@ -17,7 +17,7 @@
         public string LastName { get; set; }
 
         [Column("usr_email"), Required]
-        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "L'adresse email n'est pas valide.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "L'adresse email n'est pas valide.")] //marche pas
         public string Email { get; set; }
 
         [Column("usr_password"), Required]
@@ -42,7 +42,7 @@
         public string Sexe { get; set; }
 
         [Column("usr_telephone")]
-        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")] //marche pas
         public string Telephone { get; set; }
 
 

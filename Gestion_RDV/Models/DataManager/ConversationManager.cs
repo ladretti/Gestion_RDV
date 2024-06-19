@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Conversation entity)
             {
-                _context.Conversations.Add(entity);
+                await _context.Conversations.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

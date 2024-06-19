@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     [DbContext(typeof(GestionRdvDbContext))]
-    [Migration("20240619090350_CreationBD")]
-    partial class CreationBD
+    [Migration("20240619092319_CreationBD3")]
+    partial class CreationBD3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -612,7 +612,8 @@ namespace Gestion_RDV.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("usr_email");
+                        .HasColumnName("usr_email")
+                        .HasAnnotation("RegularExpression", "[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

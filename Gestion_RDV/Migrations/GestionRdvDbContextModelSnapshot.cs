@@ -609,7 +609,8 @@ namespace Gestion_RDV.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("usr_email");
+                        .HasColumnName("usr_email")
+                        .HasAnnotation("RegularExpression", "[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
