@@ -35,12 +35,6 @@
         [Column("ofc_video")]
         public string Video { get; set; }
 
-        [Column("ofc_nb_yes")]
-        public int Nbyes { get; set; }
-
-        [Column("ofc_nb_no")]
-        public int Nbno { get; set; }
-
         [Column("ofc_date")]
         public DateTime Date { get; set; } = DateTime.Now;
 

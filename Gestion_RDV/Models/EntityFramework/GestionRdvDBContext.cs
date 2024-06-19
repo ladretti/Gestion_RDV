@@ -389,12 +389,6 @@ namespace Gestion_RDV.Models.EntityFramework
                 entity.Property(e => e.Video)
                       .HasColumnName("ofc_video");
 
-                entity.Property(e => e.Nbyes)
-                      .HasColumnName("ofc_nb_yes");
-
-                entity.Property(e => e.Nbno)
-                      .HasColumnName("ofc_nb_no");
-
                 entity.Property(e => e.Date)
                       .HasColumnName("ofc_date")
                       .IsRequired();
