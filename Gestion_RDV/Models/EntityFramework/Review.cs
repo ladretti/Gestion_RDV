@@ -18,6 +18,9 @@ namespace Gestion_RDV.Models.EntityFramework
         [Column("rvw_type"), StringLength(50)]
         public string Type { get; set; }
 
+        [Column("rvw_note"), Range(0, 5, ErrorMessage = "La note doit être comprise entre 0 et 5.")]
+        public int Note { get; set; }
+
         //ForeignKey
         [Column("rdv_id")]
         public int RendezVousId { get; set; }
