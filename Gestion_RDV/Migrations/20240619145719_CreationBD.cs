@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     /// <inheritdoc />
-    public partial class CreationBD3 : Migration
+    public partial class CreationBD : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -235,12 +235,9 @@ namespace Gestion_RDV.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     rdv_start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     rdv_end_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    rdv_etat_id = table.Column<int>(type: "integer", nullable: false),
-                    rdv_type_rendezvous = table.Column<string>(type: "text", nullable: false),
                     rdv_description = table.Column<string>(type: "text", nullable: false),
                     rdv_prix = table.Column<double>(type: "double precision", nullable: false),
-                    rdv_id_event = table.Column<int>(type: "integer", nullable: false),
-                    rdv_fichier_joint = table.Column<string>(type: "text", nullable: false),
+                    rdv_fichier_joint = table.Column<string>(type: "text", nullable: true),
                     usr_id = table.Column<int>(type: "integer", nullable: false),
                     ofc_id = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -310,21 +307,21 @@ namespace Gestion_RDV.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "t_e_devis_dvs",
+                name: "t_e_facture_fct",
                 columns: table => new
                 {
-                    dvs_id = table.Column<int>(type: "integer", nullable: false)
+                    fct_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    dvs_professionelid = table.Column<int>(type: "integer", nullable: false),
-                    dvs_patientid = table.Column<int>(type: "integer", nullable: false),
-                    dvs_prix_avant_tva = table.Column<decimal>(type: "numeric", nullable: false),
-                    dvs_tva = table.Column<decimal>(type: "numeric", nullable: false),
-                    dvs_prix_final = table.Column<decimal>(type: "numeric", nullable: false),
+                    fct_professionelid = table.Column<int>(type: "integer", nullable: false),
+                    fct_patientid = table.Column<int>(type: "integer", nullable: false),
+                    fct_prix_avant_tva = table.Column<decimal>(type: "numeric", nullable: false),
+                    fct_tva = table.Column<decimal>(type: "numeric", nullable: false),
+                    fct_prix_final = table.Column<decimal>(type: "numeric", nullable: false),
                     rdv_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Facture", x => x.dvs_id);
+                    table.PrimaryKey("PK_Facture", x => x.fct_id);
                     table.ForeignKey(
                         name: "FK_Facture_RendezVous",
                         column: x => x.rdv_id,
@@ -459,8 +456,8 @@ namespace Gestion_RDV.Migrations
                 column: "usr_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_t_e_devis_dvs_rdv_id",
-                table: "t_e_devis_dvs",
+                name: "IX_t_e_facture_fct_rdv_id",
+                table: "t_e_facture_fct",
                 column: "rdv_id",
                 unique: true);
 
@@ -562,7 +559,7 @@ namespace Gestion_RDV.Migrations
                 name: "t_e_comment_cmt");
 
             migrationBuilder.DropTable(
-                name: "t_e_devis_dvs");
+                name: "t_e_facture_fct");
 
             migrationBuilder.DropTable(
                 name: "t_e_notification_ntf");

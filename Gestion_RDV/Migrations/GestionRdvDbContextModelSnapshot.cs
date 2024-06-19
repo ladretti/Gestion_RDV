@@ -160,25 +160,25 @@ namespace Gestion_RDV.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("dvs_id");
+                        .HasColumnName("fct_id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer")
-                        .HasColumnName("dvs_patientid");
+                        .HasColumnName("fct_patientid");
 
                     b.Property<decimal>("PrixAvantTva")
                         .HasColumnType("numeric")
-                        .HasColumnName("dvs_prix_avant_tva");
+                        .HasColumnName("fct_prix_avant_tva");
 
                     b.Property<decimal>("PrixFinal")
                         .HasColumnType("numeric")
-                        .HasColumnName("dvs_prix_final");
+                        .HasColumnName("fct_prix_final");
 
                     b.Property<int>("ProfessionelId")
                         .HasColumnType("integer")
-                        .HasColumnName("dvs_professionelid");
+                        .HasColumnName("fct_professionelid");
 
                     b.Property<int>("RendezVousId")
                         .HasColumnType("integer")
@@ -186,7 +186,7 @@ namespace Gestion_RDV.Migrations
 
                     b.Property<decimal>("Tva")
                         .HasColumnType("numeric")
-                        .HasColumnName("dvs_tva");
+                        .HasColumnName("fct_tva");
 
                     b.HasKey("Id")
                         .HasName("PK_Facture");
@@ -194,7 +194,7 @@ namespace Gestion_RDV.Migrations
                     b.HasIndex("RendezVousId")
                         .IsUnique();
 
-                    b.ToTable("t_e_devis_dvs", (string)null);
+                    b.ToTable("t_e_facture_fct", (string)null);
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.LikePost", b =>
@@ -442,18 +442,9 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("rdv_end_date");
 
-                    b.Property<int>("EtatId")
-                        .HasColumnType("integer")
-                        .HasColumnName("rdv_etat_id");
-
                     b.Property<string>("FichierJoint")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("rdv_fichier_joint");
-
-                    b.Property<int>("Idevent")
-                        .HasColumnType("integer")
-                        .HasColumnName("rdv_id_event");
 
                     b.Property<int>("OfficeId")
                         .HasColumnType("integer")
@@ -466,11 +457,6 @@ namespace Gestion_RDV.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("rdv_start_date");
-
-                    b.Property<string>("TypeRendezVous")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("rdv_type_rendezvous");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -609,8 +595,7 @@ namespace Gestion_RDV.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("usr_email")
-                        .HasAnnotation("RegularExpression", "[a-zA-Z0-9._%±]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+                        .HasColumnName("usr_email");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -964,13 +949,11 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.RendezVous", b =>
                 {
-                    b.Navigation("Facture")
-                        .IsRequired();
+                    b.Navigation("Facture");
 
                     b.Navigation("Notifications");
 
-                    b.Navigation("Review")
-                        .IsRequired();
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Review", b =>

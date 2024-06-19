@@ -37,16 +37,15 @@ namespace Gestion_RDV.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<User>> SignIn(String email, String password, DateOnly birthDate, string firstName, string lastName , string role )
+        public async Task<ActionResult<User>> SignIn(UserSignInDTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            User user = new User() { Email = email, Password = password, BirthDate = birthDate, FirstName = firstName, LastName = lastName, Role = role};
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
-            await dataRepository.AddAsync(user);
+            await dataRepository.AddAsync(_mapper.Map<User>(user));
 
             return null;
         }
@@ -56,16 +55,16 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public IActionResult Login(String email, String mdp)
+        public IActionResult Login(UserLoginParametersDTO infos)
         {
             IActionResult response = Unauthorized();
-            var user = dataRepository.GetByStringAsync(email).Result.Value;
+            var user = dataRepository.GetByStringAsync(infos.Email).Result.Value;
             if (user == null)
             {
                 return Unauthorized("Utilisateur non trouvé.");
             }
 
-            bool validPassword = BCrypt.Net.BCrypt.Verify(mdp, user.Password);
+            bool validPassword = BCrypt.Net.BCrypt.Verify(infos.Password, user.Password);
 
             if (!validPassword)
             {
