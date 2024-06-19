@@ -24,9 +24,9 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
-        private readonly IDataRepositoryUser<User> dataRepository;
+        private readonly IDataRepository<User> dataRepository;
 
-        public LoginController(IConfiguration config, IDataRepositoryUser<User> dataRepo, IMapper mapper)
+        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper)
         {
             _config = config;
             dataRepository = dataRepo;

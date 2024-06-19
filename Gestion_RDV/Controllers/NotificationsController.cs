@@ -18,14 +18,14 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class NotificationsController : ControllerBase
     {
-        private readonly IDataRepositoryNotification<Notification> dataRepository;
+        private readonly IDataRepository<Notification> dataRepository;
         private readonly IDataRepository<Office> dataRepositoryOffice;
         private readonly IDataRepository<RendezVous> dataRepositoryRDV;
-        private readonly IDataRepositoryUser<User> dataRepositoryUser;
+        private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
 
-        public NotificationsController(IDataRepositoryNotification<Notification> dataRepo, IDataRepository<Office> dataRepoOffice, IDataRepository<RendezVous> dataRepoRDV, IMapper mapper, IDataRepositoryUser<User> dataRepoUser)
+        public NotificationsController(IDataRepository<Notification> dataRepo, IDataRepository<Office> dataRepoOffice, IDataRepository<RendezVous> dataRepoRDV, IMapper mapper, IDataRepository<User> dataRepoUser)
         {
             dataRepository = dataRepo;
             dataRepositoryOffice = dataRepoOffice;
@@ -42,7 +42,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Notification>>> GetNotificationsById(int userId)
         {
-            var notifications = await dataRepository.GetByUserId(userId);
+            var notifications = await dataRepository.GetAllBySpecialIdAsync(userId);
             await dataRepositoryOffice.GetAllAsync();
             await dataRepositoryRDV.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
@@ -62,7 +62,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<int>> GetNotificationsNumberById(int userId)
         {
-            var notifications = await dataRepository.GetByUserId(userId);
+            var notifications = await dataRepository.GetAllBySpecialIdAsync(userId);
 
             if (notifications == null)
             {

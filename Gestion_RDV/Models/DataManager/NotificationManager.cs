@@ -8,7 +8,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class NotificationManager : IDataRepositoryNotification<Notification>
+        public class NotificationManager : IDataRepository<Notification>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -47,13 +47,28 @@ namespace Gestion_RDV.Models.DataManager
                 await _context.SaveChangesAsync();
             }
 
-            public async Task<ActionResult<IEnumerable<Notification>>> GetByUserId(int id)
+            public async Task<ActionResult<IEnumerable<Notification>>> GetAllBySpecialIdAsync(int id)
             {
                 var notifications = await _context.Notifications.Where(a => a.UserId == id).ToListAsync();
 
                 if (notifications == null) return new NotFoundResult();
 
                 return new ActionResult<IEnumerable<Notification>>(notifications);
+            }
+
+            public Task<ActionResult<Notification>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Notification>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Notification>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

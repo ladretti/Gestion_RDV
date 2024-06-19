@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Gestion_RDV.Models.DataManager
 {
-    public class ConversationUserManager : IDataRepositoryConversationUser<ConversationUser>
+    public class ConversationUserManager : IDataRepository<ConversationUser>
     {
         private readonly GestionRdvDbContext _context;
 
@@ -15,6 +15,14 @@ namespace Gestion_RDV.Models.DataManager
             _context = context;
         }
 
+        public async Task<ActionResult<IEnumerable<ConversationUser>>> GetAllBySpecialIdAsync(int userId)
+        {
+            var conversationUsers = await _context.ConversationsUser.Where(c => c.UserId == userId).ToListAsync();
+
+            if (conversationUsers == null) return new NotFoundResult();
+
+            return new ActionResult<IEnumerable<ConversationUser>>(conversationUsers);
+        }
         public async Task AddAsync(ConversationUser entity)
         {
             throw new NotImplementedException();
@@ -29,23 +37,26 @@ namespace Gestion_RDV.Models.DataManager
         {
             return new ActionResult<IEnumerable<ConversationUser>>(await _context.ConversationsUser.ToListAsync());
         }
-
-        public async Task<ActionResult<ConversationUser>> GetByIdAsync(int id)
+        public async Task UpdateAsync(ConversationUser entityToUpdate, ConversationUser entity)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ActionResult<IEnumerable<ConversationUser>>> GetConversationsByUserIdAsync(int userId)
+        public Task<ActionResult<ConversationUser>> GetByIdsAsync(int id1, int id2)
         {
-            var conversationUsers = await _context.ConversationsUser
-                                                  .Where(c => c.UserId == userId)
-                                                  .ToListAsync();
-
-            return new ActionResult<IEnumerable<ConversationUser>>(conversationUsers);
+            throw new NotImplementedException();
         }
 
+        public Task<ActionResult<ConversationUser>> GetBySpecialIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-        public async Task UpdateAsync(ConversationUser entityToUpdate, ConversationUser entity)
+        public Task<ActionResult<ConversationUser>> GetByStringAsync(string value)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<ActionResult<ConversationUser>> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }

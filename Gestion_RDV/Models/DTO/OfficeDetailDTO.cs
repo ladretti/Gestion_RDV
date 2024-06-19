@@ -9,8 +9,20 @@
         public string Metier { get; set; }
         public string Telephone { get; set; }
         public double PrixPCR { get; set; }
-        public string Video { get; set; }
         public DateTime Date { get; set; }
+        public string CV { get; set; }
+        public string Description { get; set; }
+        public string Video { get; set; }
         public OfficeUserDTO User { get; set; }
+        public AddressDTO Adresse { get; set; }
+        public OfficeRendezVousDTO RendezVous { get; set; }
+    }
+    public class OfficeRendezVousDTO
+    {
+        public OfficeReviewDTO Review { get; set; }
+    }
+    public class OfficeReviewDTO
+    {
+        public int Note { get; set; }
     }
 }

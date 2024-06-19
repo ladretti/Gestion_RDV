@@ -16,10 +16,10 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class ConversationsController : ControllerBase
     {
-        private readonly IDataRepositoryConversation<Conversation> dataRepository;
-        private readonly IDataRepositoryConversationUser<ConversationUser> dataRepositoryConversationUser;
+        private readonly IDataRepository<Conversation> dataRepository;
+        private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
 
-        public ConversationsController(IDataRepositoryConversation<Conversation> dataRepo, IDataRepositoryConversationUser<ConversationUser> dataRepoConvUser)
+        public ConversationsController(IDataRepository<Conversation> dataRepo, IDataRepository<ConversationUser> dataRepoConvUser)
         {
             dataRepository = dataRepo;
             dataRepositoryConversationUser = dataRepoConvUser;
@@ -62,7 +62,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserId(int userId)
         {
-            var conversationsUser = await dataRepositoryConversationUser.GetConversationsByUserIdAsync(userId);
+            var conversationsUser = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
             await dataRepository.GetAllAsync();
 
             if (conversationsUser == null)

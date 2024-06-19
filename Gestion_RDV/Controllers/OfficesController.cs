@@ -17,17 +17,22 @@ namespace Gestion_RDV.Controllers
     public class OfficesController : ControllerBase
     {
         private readonly IDataRepository<Office> dataRepository;
-        private readonly IDataRepositoryUser<User> dataRepositoryUser;
+        private readonly IDataRepository<User> dataRepositoryUser;
+        private readonly IDataRepository<Address> dataRepositoryAddress;
+        private readonly IDataRepository<RendezVous> dataRepositoryRendezVous;
+        private readonly IDataRepository<Review> dataRepositoryReview;
         private readonly IMapper _mapper;
 
 
 
-        public OfficesController(IDataRepository<Office> dataRepo, IDataRepositoryUser<User> dataRepositoryUser, IMapper mapper)
+        public OfficesController(IDataRepository<Office> dataRepo, IDataRepository<User> dataRepoUser, IMapper mapper, IDataRepository<Address> dataRepoAddress, IDataRepository<RendezVous> dataRepoRendezVous, IDataRepository<Review> dataRepoReview)
         {
             dataRepository = dataRepo;
-            this.dataRepositoryUser = dataRepositoryUser;
+            dataRepositoryUser = dataRepoUser;
             _mapper = mapper;
-
+            dataRepositoryAddress = dataRepoAddress;
+            dataRepositoryRendezVous = dataRepoRendezVous;
+            dataRepositoryReview = dataRepoReview;
         }
 
 
@@ -37,6 +42,7 @@ namespace Gestion_RDV.Controllers
         {
             var officies = await dataRepository.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
+            await dataRepositoryAddress.GetAllAsync();
 
 
             if (officies == null)
@@ -53,6 +59,9 @@ namespace Gestion_RDV.Controllers
         {
             var office = await dataRepository.GetByIdAsync(id);
             await dataRepositoryUser.GetByIdAsync(office.Value.UserId);
+            await dataRepositoryAddress.GetByIdAsync(office.Value.AdresseId);
+            await dataRepositoryRendezVous.GetAllAsync();
+            await dataRepositoryReview.GetAllAsync();
 
             if (office == null)
             {

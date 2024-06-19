@@ -46,6 +46,28 @@ namespace Gestion_RDV.Models.DataManager
                 _context.RendezVous.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+
+            public Task<ActionResult<IEnumerable<RendezVous>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<ActionResult<RendezVous>> GetBySpecialIdAsync(int id)
+            {
+                var rendezVous = await _context.RendezVous.FirstOrDefaultAsync(a => a.OfficeId == id);
+                if (rendezVous == null) return new NotFoundResult();
+                return new ActionResult<RendezVous>(rendezVous);
+            }
+
+            public Task<ActionResult<RendezVous>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<RendezVous>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

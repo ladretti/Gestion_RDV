@@ -20,6 +20,7 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<Office, OfficeDTO>();
             CreateMap<Office, OfficeDetailDTO>();
             CreateMap<User, OfficeUserDTO>();
+            CreateMap<Address, AddressDTO>();
 
             //Post
             CreateMap<Post, PostDTO>()

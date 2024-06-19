@@ -46,6 +46,28 @@ namespace Gestion_RDV.Models.DataManager
                 _context.Reviews.Remove(entity);
                 await _context.SaveChangesAsync();
             }
+
+            public Task<ActionResult<IEnumerable<Review>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<ActionResult<Review>> GetBySpecialIdAsync(int id)
+            {
+                var review = await _context.Reviews.FirstOrDefaultAsync(a => a.RendezVousId == id);
+                if (review == null) return new NotFoundResult();
+                return new ActionResult<Review>(review);
+            }
+
+            public Task<ActionResult<Review>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Review>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

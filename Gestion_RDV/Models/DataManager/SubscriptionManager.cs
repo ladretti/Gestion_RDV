@@ -8,7 +8,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class SubscriptionManager : IDataRepositoryTJ<Subscription>
+        public class SubscriptionManager : IDataRepository<Subscription>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -28,10 +28,6 @@ namespace Gestion_RDV.Models.DataManager
                 if (subscription == null) return new NotFoundResult();
                 return new ActionResult<Subscription>(subscription);
             }
-            public async Task<ActionResult<Subscription>> GetByIdAsync(int id)
-            {
-                return null;
-            }
             public async Task AddAsync(Subscription entity)
             {
                 _context.Subscriptions.Add(entity);
@@ -48,6 +44,31 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Subscriptions.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<Subscription>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Subscription>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Subscription>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Subscription>> GetByIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Subscription>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

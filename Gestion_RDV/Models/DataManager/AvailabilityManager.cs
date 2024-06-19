@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class AvailabilityManager : IDataRepositoyAvailability<Availability>
+        public class AvailabilityManager : IDataRepository<Availability>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -47,7 +47,7 @@ namespace Gestion_RDV.Models.DataManager
             }
 
 
-            public async Task<ActionResult<IEnumerable<Availability>>> GetByOfficeId(int id)
+            public async Task<ActionResult<IEnumerable<Availability>>> GetAllBySpecialIdAsync(int id)
             {
                 var availabilities = await _context.Availabilities.Where(a => a.OfficeId == id).ToListAsync();
 
@@ -56,6 +56,25 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<IEnumerable<Availability>>(availabilities);
             }
 
+            public Task<ActionResult<Availability>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<ActionResult<Availability>> IDataRepository<Availability>.GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Availability>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Availability>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

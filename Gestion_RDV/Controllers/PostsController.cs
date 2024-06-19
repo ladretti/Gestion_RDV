@@ -17,12 +17,12 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class PostsController : ControllerBase
     {
-        private readonly IDataRepositoryPost<Post> dataRepository;
-        private readonly IDataRepositoryUser<User> dataRepositoryUser;
+        private readonly IDataRepository<Post> dataRepository;
+        private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
 
-        public PostsController(IDataRepositoryPost<Post> dataRepo, IDataRepositoryUser<User> dataRepositoryUser, IMapper mapper)
+        public PostsController(IDataRepository<Post> dataRepo, IDataRepository<User> dataRepositoryUser, IMapper mapper)
         {
             dataRepository = dataRepo;
             this.dataRepositoryUser = dataRepositoryUser;
@@ -51,7 +51,7 @@ namespace Gestion_RDV.Controllers
         {
             var post = await dataRepository.GetByIdAsync(id);
             await dataRepositoryUser.GetByIdAsync(post.Value.UserId);
-            await dataRepository.GetByParentIdAsync(id);
+            await dataRepository.GetAllBySpecialIdAsync(id);
 
             if (post == null)
             {

@@ -8,7 +8,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class ConversationManager : IDataRepositoryConversation<Conversation>
+        public class ConversationManager : IDataRepository<Conversation>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -45,6 +45,26 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Conversations.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<Conversation>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Conversation>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Conversation>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Conversation>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

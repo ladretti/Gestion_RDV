@@ -16,12 +16,12 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class AvailabilitiesController : ControllerBase
     {
-        private readonly IDataRepositoyAvailability<Availability> dataRepository;
+        private readonly IDataRepository<Availability> dataRepository;
         private readonly IMapper _mapper;
         //private readonly IDataRepositoryUser<User> dataRepositoryUser;
 
 
-        public AvailabilitiesController(IDataRepositoyAvailability<Availability> dataRepo, IMapper mapper)
+        public AvailabilitiesController(IDataRepository<Availability> dataRepo, IMapper mapper)
         {
             dataRepository = dataRepo;
             _mapper = mapper;
@@ -32,7 +32,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetAvailabilitiesByOfficeId(int officeId)
         {
-            var availabilities = await dataRepository.GetByOfficeId(officeId);
+            var availabilities = await dataRepository.GetAllBySpecialIdAsync(officeId);
 
             if (availabilities == null)
             {
