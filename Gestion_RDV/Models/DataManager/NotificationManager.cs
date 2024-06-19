@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Notification entity)
             {
-                _context.Notifications.Add(entity);
+                await _context.Notifications.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

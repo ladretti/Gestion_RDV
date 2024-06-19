@@ -24,7 +24,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Subscription entity)
             {
-                _context.Subscriptions.Add(entity);
+                await _context.Subscriptions.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

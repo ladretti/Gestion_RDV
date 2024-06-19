@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Facture entity)
             {
-                _context.Factures.Add(entity);
+                await _context.Factures.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

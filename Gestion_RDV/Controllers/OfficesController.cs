@@ -75,6 +75,19 @@ namespace Gestion_RDV.Controllers
             return Ok(_mapper.Map<OfficeDetailDTO>(office.Value)); ;
         }
 
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<Post>> PostOffice(Office office)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            await dataRepository.AddAsync(office);
+
+            return CreatedAtAction("GetOfficeById", new { id = office.OfficeId }, office); // GetById : nom de l’action
+        }
     }
 }

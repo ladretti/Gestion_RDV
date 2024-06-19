@@ -70,5 +70,37 @@ namespace Gestion_RDV.Controllers
             }
             return notifications.Value.Count();
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<Notification>> GetNotificationById(int id)
+        {
+            var notification = await dataRepository.GetByIdAsync(id);
+            await dataRepositoryUser.GetByIdAsync(notification.Value.NotificationId);
+            await dataRepository.GetAllBySpecialIdAsync(id);
+
+            if (notification == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(notification);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<Notification>> PostOffice(Notification notification)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await dataRepository.AddAsync(notification);
+
+            return CreatedAtAction("GetNotificationById", new { id = notification.NotificationId }, notification); // GetById : nom de l’action
+        }
     }
 }

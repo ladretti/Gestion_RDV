@@ -16,13 +16,15 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class ConversationsController : ControllerBase
     {
-        private readonly IDataRepository<Conversation> dataRepository;
+        private readonly IDataRepository<Conversation> dataRepositoryConversation;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
+        private readonly IDataRepository<User> dataRepositoryUser;
 
-        public ConversationsController(IDataRepository<Conversation> dataRepo, IDataRepository<ConversationUser> dataRepoConvUser)
+        public ConversationsController(IDataRepository<Conversation> dataRepoConv, IDataRepository<ConversationUser> dataRepoConvUser, IDataRepository<User> dataRepoUser)
         {
-            dataRepository = dataRepo;
+            dataRepositoryConversation = dataRepoConv;
             dataRepositoryConversationUser = dataRepoConvUser;
+            dataRepositoryUser = dataRepoUser;
         }
 
         // GET: api/Conversations
@@ -30,7 +32,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversations()
         {
-            var conversations = await dataRepository.GetAllAsync();
+            var conversations = await dataRepositoryConversation.GetAllAsync();
             if (conversations == null)
             {
                 return NotFound();
@@ -45,7 +47,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Conversation>> GetConversationById(int id)
         {
-            var conversation = await dataRepository.GetByIdAsync(id);
+            var conversation = await dataRepositoryConversation.GetByIdAsync(id);
 
             if (conversation == null)
             {
@@ -63,7 +65,8 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserId(int userId)
         {
             var conversationsUser = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
-            await dataRepository.GetAllAsync();
+            await dataRepositoryConversation.GetAllAsync();
+            await dataRepositoryUser.GetAllAsync();
 
             if (conversationsUser == null)
             {
@@ -72,76 +75,19 @@ namespace Gestion_RDV.Controllers
             return Ok(conversationsUser);
         }
 
-
-        /*// PUT: api/Conversations/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutConversation(int id, Conversation conversation)
-        {
-            if (id != conversation.ConversationId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(conversation).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ConversationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Conversations
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Conversation>> PostConversation(Conversation conversation)
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<Conversation>> PostPost(Conversation conversation)
         {
-            if (_context.Conversations == null)
+            if (!ModelState.IsValid)
             {
-                return Problem("Entity set 'GestionRdvDbContext.Conversations'  is null.");
+                return BadRequest(ModelState);
             }
-            _context.Conversations.Add(conversation);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetConversation", new { id = conversation.ConversationId }, conversation);
+            await dataRepositoryConversation.AddAsync(conversation);
+
+            return CreatedAtAction("GetConversationById", new { id = conversation.ConversationId }, conversation); // GetById : nom de l’action
         }
-
-        // DELETE: api/Conversations/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteConversation(int id)
-        {
-            if (_context.Conversations == null)
-            {
-                return NotFound();
-            }
-            var conversation = await _context.Conversations.FindAsync(id);
-            if (conversation == null)
-            {
-                return NotFound();
-            }
-
-            _context.Conversations.Remove(conversation);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ConversationExists(int id)
-        {
-            return (_context.Conversations?.Any(e => e.ConversationId == id)).GetValueOrDefault();
-        }*/
     }
 }
