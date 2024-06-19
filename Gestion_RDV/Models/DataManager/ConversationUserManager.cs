@@ -62,14 +62,29 @@ namespace Gestion_RDV.Models.DataManager
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult<ConversationUser>> GetByIdsAsync(int? id1, int? id2)
+        public async Task<ActionResult<ConversationUser>> GetByIdsAsync(int? userId, int? conversationId)
         {
-            throw new NotImplementedException();
+            var conversationsUser = await _context.ConversationsUser.FirstOrDefaultAsync(s => s.UserId == userId && s.ConversationId == conversationId);
+            if (conversationsUser == null) return new NotFoundResult();
+            return new ActionResult<ConversationUser>(conversationsUser);
         }
 
-        public Task<ActionResult<IEnumerable<ConversationUser>>> GetAllByIdsAsync(int? id1, int? id2)
+        public async Task<ActionResult<IEnumerable<ConversationUser>>> GetAllByIdsAsync(int? conversationId, int? userId)
         {
-            throw new NotImplementedException();
+
+            if (conversationId == null && userId == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var conversationsUser = await _context.ConversationsUser.Where(c => (conversationId == null || c.ConversationId == conversationId) && (userId == null || c.UserId == userId)).ToListAsync();
+
+            if (conversationsUser == null)
+            {
+                return new NotFoundResult();
+            }
+
+            return new ActionResult<IEnumerable<ConversationUser>>(conversationsUser);
         }
     }
 }

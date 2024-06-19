@@ -9,6 +9,7 @@ using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 
 namespace Gestion_RDV.Controllers
 {
@@ -18,11 +19,13 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<Message> dataRepositoryMessage;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
+        private readonly IMapper _mapper;
 
-        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser)
+        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser, IMapper mapper)
         {
             dataRepositoryMessage = dataRepoMsg;
             dataRepositoryConversationUser = dataRepoConvser;
+            _mapper = mapper;
         }
 
         /*[Authorize]
@@ -41,15 +44,14 @@ namespace Gestion_RDV.Controllers
             return Ok(message);
         }
 
-        //[Authorize]
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
         [HttpGet("messages/{userId}/{conversationId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<Notification>>> GetMessagesByConversationId(int userId, int conversationId)
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(int conversationId/*, int userId*/)
         {
-            var messages = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(conversationId);
-            await dataRepositoryMessage.GetAllAsync();
-
+            var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);
 
             if (messages == null)
             {
@@ -57,6 +59,7 @@ namespace Gestion_RDV.Controllers
             }
 
             return Ok(messages);
+            //return Ok(_mapper.Map<IEnumerable<MessageDTO>>(messages.Value));
         }
 
         // POST: api/Messages
