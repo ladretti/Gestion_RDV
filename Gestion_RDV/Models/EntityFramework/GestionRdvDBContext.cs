@@ -466,20 +466,11 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("rdv_end_date")
                       .IsRequired();
 
-                entity.Property(e => e.EtatId)
-                      .HasColumnName("rdv_etat_id");
-
-                entity.Property(e => e.TypeRendezVous)
-                      .HasColumnName("rdv_type_rendezvous");
-
                 entity.Property(e => e.Description)
                       .HasColumnName("rdv_description");
 
                 entity.Property(e => e.Prix)
                       .HasColumnName("rdv_prix");
-
-                entity.Property(e => e.Idevent)
-                      .HasColumnName("rdv_id_event");
 
                 entity.Property(e => e.FichierJoint)
                       .HasColumnName("rdv_fichier_joint")
