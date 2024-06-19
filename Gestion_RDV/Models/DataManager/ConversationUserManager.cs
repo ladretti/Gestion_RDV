@@ -61,5 +61,15 @@ namespace Gestion_RDV.Models.DataManager
         {
             throw new NotImplementedException();
         }
+
+        public Task<ActionResult<ConversationUser>> GetByIdsAsync(int? id1, int? id2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ActionResult<IEnumerable<ConversationUser>>> GetAllByIdsAsync(int? id1, int? id2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
