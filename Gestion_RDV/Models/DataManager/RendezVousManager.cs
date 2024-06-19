@@ -47,9 +47,11 @@ namespace Gestion_RDV.Models.DataManager
                 await _context.SaveChangesAsync();
             }
 
-            public Task<ActionResult<IEnumerable<RendezVous>>> GetAllBySpecialIdAsync(int id)
+            public async Task<ActionResult<IEnumerable<RendezVous>>> GetAllBySpecialIdAsync(int id)
             {
-                throw new NotImplementedException();
+                var rendezVous = await _context.RendezVous.Where(a => a.OfficeId == id).ToListAsync();
+                if (rendezVous == null) return new NotFoundResult();
+                return new ActionResult<IEnumerable<RendezVous>>(rendezVous);
             }
 
             public async Task<ActionResult<RendezVous>> GetBySpecialIdAsync(int id)
@@ -65,6 +67,16 @@ namespace Gestion_RDV.Models.DataManager
             }
 
             public Task<ActionResult<RendezVous>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<RendezVous>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<RendezVous>>> GetAllByIdsAsync(int? id1, int? id2)
             {
                 throw new NotImplementedException();
             }

@@ -15,6 +15,7 @@
         public OfficeUserDTO User { get; set; }
         public AddressDTO Adresse { get; set; }
         public double Rating { get; set; }
+        public int NbSub { get; set; }
     }
 
 }

@@ -5,8 +5,10 @@
         public int OfficeId { get; set; }
         public string DomainePrincipal { get; set; }
         public string Metier { get; set; }
+        public string Description { get; set; }
         public OfficeUserDTO User { get; set; }
         public AddressDTO Adresse { get; set; }
+        public double Rating { get; set; }
     }
     public class OfficeUserDTO
     {

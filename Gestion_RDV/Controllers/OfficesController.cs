@@ -21,11 +21,12 @@ namespace Gestion_RDV.Controllers
         private readonly IDataRepository<Address> dataRepositoryAddress;
         private readonly IDataRepository<RendezVous> dataRepositoryRendezVous;
         private readonly IDataRepository<Review> dataRepositoryReview;
+        private readonly IDataRepository<Subscription> dataRepositorySub;
         private readonly IMapper _mapper;
 
 
 
-        public OfficesController(IDataRepository<Office> dataRepo, IDataRepository<User> dataRepoUser, IMapper mapper, IDataRepository<Address> dataRepoAddress, IDataRepository<RendezVous> dataRepoRendezVous, IDataRepository<Review> dataRepoReview)
+        public OfficesController(IDataRepository<Office> dataRepo, IDataRepository<User> dataRepoUser, IMapper mapper, IDataRepository<Address> dataRepoAddress, IDataRepository<RendezVous> dataRepoRendezVous, IDataRepository<Review> dataRepoReview, IDataRepository<Subscription> dataRepoSub)
         {
             dataRepository = dataRepo;
             dataRepositoryUser = dataRepoUser;
@@ -33,6 +34,7 @@ namespace Gestion_RDV.Controllers
             dataRepositoryAddress = dataRepoAddress;
             dataRepositoryRendezVous = dataRepoRendezVous;
             dataRepositoryReview = dataRepoReview;
+            dataRepositorySub = dataRepoSub;
         }
 
 
@@ -43,7 +45,8 @@ namespace Gestion_RDV.Controllers
             var officies = await dataRepository.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
             await dataRepositoryAddress.GetAllAsync();
-
+            await dataRepositoryRendezVous.GetAllAsync();
+            await dataRepositoryReview.GetAllAsync();
 
             if (officies == null)
             {
@@ -62,6 +65,7 @@ namespace Gestion_RDV.Controllers
             await dataRepositoryAddress.GetByIdAsync(office.Value.AdresseId);
             await dataRepositoryRendezVous.GetAllAsync();
             await dataRepositoryReview.GetAllAsync();
+            await dataRepositorySub.GetAllAsync();
 
             if (office == null)
             {

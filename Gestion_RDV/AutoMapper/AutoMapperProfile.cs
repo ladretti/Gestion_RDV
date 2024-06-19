@@ -17,13 +17,13 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<RendezVous, NotificationDetailsRendezVousDTO>();
 
             //Office
-            CreateMap<Office, OfficeDTO>();
+            CreateMap<Office, OfficeDTO>()
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.RendezVous.Average(r => (r.Review != null) ? r.Review.Note : 0)));
             CreateMap<Office, OfficeDetailDTO>()
-            .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.RendezVous.Average(r => (r.Review != null) ? r.Review.Note : 0)));
+            .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.RendezVous.Average(r => (r.Review != null) ? r.Review.Note : 0)))
+            .ForMember(dest => dest.NbSub, opt => opt.MapFrom(src => src.Subscriptions.Count));
             CreateMap<User, OfficeUserDTO>();
             CreateMap<Address, AddressDTO>();
-           
-            
 
             //Post
             CreateMap<Post, PostDTO>()
@@ -31,6 +31,9 @@ namespace Gestion_RDV.AutoMapper
                 .ForMember(dest => dest.TotalReplies, opt => opt.MapFrom(src => src.ChildPosts.Count));
             CreateMap<Post, PostDetailDTO>();
 
+            //Review
+            CreateMap<Review, ReviewDTO>();
+            CreateMap<RendezVous, ReviewRendezVousDTO>();
 
 
 

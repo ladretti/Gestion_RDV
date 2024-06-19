@@ -22,12 +22,6 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<IEnumerable<Subscription>>(await _context.Subscriptions.ToListAsync());
             }
 
-            public async Task<ActionResult<Subscription>> GetByIdAsync(int userId, int officeId)
-            {
-                var subscription = await _context.Subscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.OfficeId == officeId);
-                if (subscription == null) return new NotFoundResult();
-                return new ActionResult<Subscription>(subscription);
-            }
             public async Task AddAsync(Subscription entity)
             {
                 _context.Subscriptions.Add(entity);
@@ -66,10 +60,31 @@ namespace Gestion_RDV.Models.DataManager
                 throw new NotImplementedException();
             }
 
-            public Task<ActionResult<Subscription>> GetByIdsAsync(int id1, int id2)
+            public async Task<ActionResult<Subscription>> GetByIdsAsync(int? userId, int? officeId)
             {
-                throw new NotImplementedException();
+                var subscription = await _context.Subscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.OfficeId == officeId);
+                if (subscription == null) return new NotFoundResult();
+                return new ActionResult<Subscription>(subscription);
             }
+
+            public async Task<ActionResult<IEnumerable<Subscription>>> GetAllByIdsAsync(int? officeId, int? userId)
+            {
+
+                if (officeId == null && userId == null)
+                {
+                    return new BadRequestResult();
+                }
+
+                var subscription = await _context.Subscriptions.Where(s => (officeId == null || s.OfficeId == officeId) && (userId == null || s.UserId == userId)).ToListAsync();
+
+                if (subscription == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return new ActionResult<IEnumerable<Subscription>>(subscription);
+            }
+
         }
     }
 

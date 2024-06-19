@@ -183,33 +183,33 @@ namespace Gestion_RDV.Models.EntityFramework
             });
             modelBuilder.Entity<Facture>(entity =>
             {
-                entity.ToTable("t_e_devis_dvs");
+                entity.ToTable("t_e_facture_fct");
 
                 entity.HasKey(e => e.Id)
                       .HasName("PK_Facture");
 
                 entity.Property(e => e.Id)
-                      .HasColumnName("dvs_id")
+                      .HasColumnName("fct_id")
                       .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.ProfessionelId)
-                      .HasColumnName("dvs_professionelid")
+                      .HasColumnName("fct_professionelid")
                       .IsRequired();
 
                 entity.Property(e => e.PatientId)
-                      .HasColumnName("dvs_patientid")
+                      .HasColumnName("fct_patientid")
                       .IsRequired();
 
                 entity.Property(e => e.PrixAvantTva)
-                      .HasColumnName("dvs_prix_avant_tva")
+                      .HasColumnName("fct_prix_avant_tva")
                       .IsRequired();
 
                 entity.Property(e => e.Tva)
-                      .HasColumnName("dvs_tva")
+                      .HasColumnName("fct_tva")
                       .IsRequired();
 
                 entity.Property(e => e.PrixFinal)
-                      .HasColumnName("dvs_prix_final")
+                      .HasColumnName("fct_prix_final")
                       .IsRequired();
 
                 entity.Property(e => e.RendezVousId)
@@ -482,7 +482,8 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("rdv_id_event");
 
                 entity.Property(e => e.FichierJoint)
-                      .HasColumnName("rdv_fichier_joint");
+                      .HasColumnName("rdv_fichier_joint")
+                      .IsRequired(false);
 
                 entity.Property(e => e.UserId)
                       .HasColumnName("usr_id")
