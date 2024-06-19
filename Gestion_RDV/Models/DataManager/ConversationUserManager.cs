@@ -25,7 +25,8 @@ namespace Gestion_RDV.Models.DataManager
         }
         public async Task AddAsync(ConversationUser entity)
         {
-            throw new NotImplementedException();
+            await _context.ConversationsUser.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(ConversationUser entity)

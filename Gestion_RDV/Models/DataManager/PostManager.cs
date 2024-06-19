@@ -39,7 +39,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Post entity)
             {
-                _context.Posts.Add(entity);
+                await _context.Posts.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

@@ -38,7 +38,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(User entity)
             {
-                _context.Users.Add(entity);
+                await _context.Users.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 

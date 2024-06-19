@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(SocialMediaAccount entity)
             {
-                _context.SocialMediaAccounts.Add(entity);
+                await _context.SocialMediaAccounts.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
