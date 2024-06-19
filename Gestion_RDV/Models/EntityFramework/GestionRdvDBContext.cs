@@ -576,14 +576,14 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("sma_url")
                       .HasMaxLength(255);
 
-                entity.Property(e => e.UserId)
-                      .HasColumnName("usr_id")
+                entity.Property(e => e.OfficeId)
+                      .HasColumnName("ofc_id")
                       .IsRequired();
 
-                entity.HasOne(e => e.User)
+                entity.HasOne(e => e.Office)
                       .WithMany(u => u.Socials)
-                      .HasForeignKey(e => e.UserId)
-                      .HasConstraintName("FK_SocialMediaAccount_User")
+                      .HasForeignKey(e => e.OfficeId)
+                      .HasConstraintName("FK_SocialMediaAccount_Office")
                       .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<Subscription>(entity =>

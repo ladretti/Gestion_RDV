@@ -25,19 +25,6 @@ namespace Gestion_RDV.Controllers
             }
 
 
-            [HttpGet]
-            [ProducesResponseType(200)]
-            public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-            {
-                var users = await dataRepository.GetAllAsync();
-
-                if (users == null)
-                {
-                    return NotFound();
-                }
-                return users;
-            }
-
             [HttpGet("{id}")]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]

@@ -523,6 +523,10 @@ namespace Gestion_RDV.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SocialMediaAccountId"));
 
+                    b.Property<int>("OfficeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ofc_id");
+
                     b.Property<string>("Platform")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -535,14 +539,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("sma_url");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("usr_id");
-
                     b.HasKey("SocialMediaAccountId")
                         .HasName("PK_SocialMediaAccount");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OfficeId");
 
                     b.ToTable("t_e_socialmediaaccount_sma", (string)null);
                 });
@@ -873,14 +873,14 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.SocialMediaAccount", b =>
                 {
-                    b.HasOne("Gestion_RDV.Models.EntityFramework.User", "User")
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.Office", "Office")
                         .WithMany("Socials")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OfficeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_SocialMediaAccount_User");
+                        .HasConstraintName("FK_SocialMediaAccount_Office");
 
-                    b.Navigation("User");
+                    b.Navigation("Office");
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Subscription", b =>
@@ -937,6 +937,8 @@ namespace Gestion_RDV.Migrations
 
                     b.Navigation("RendezVous");
 
+                    b.Navigation("Socials");
+
                     b.Navigation("Subscriptions");
                 });
 
@@ -983,8 +985,6 @@ namespace Gestion_RDV.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("RendezVous");
-
-                    b.Navigation("Socials");
 
                     b.Navigation("Subscriptions");
                 });
