@@ -350,21 +350,9 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ofc_metier");
 
-                    b.Property<int>("Nbno")
-                        .HasColumnType("integer")
-                        .HasColumnName("ofc_nb_no");
-
-                    b.Property<int>("Nbyes")
-                        .HasColumnType("integer")
-                        .HasColumnName("ofc_nb_yes");
-
                     b.Property<double>("PrixPCR")
                         .HasColumnType("double precision")
                         .HasColumnName("ofc_prix_pcr");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision")
-                        .HasColumnName("ofc_rating");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
