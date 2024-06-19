@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Gestion_RDV.Migrations
 {
     [DbContext(typeof(GestionRdvDbContext))]
-    [Migration("20240618153447_CreationBD")]
+    [Migration("20240619065653_CreationBD")]
     partial class CreationBD
     {
         /// <inheritdoc />
@@ -519,6 +519,10 @@ namespace Gestion_RDV.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
                         .HasColumnName("rvw_description");
+
+                    b.Property<int>("Note")
+                        .HasColumnType("integer")
+                        .HasColumnName("rvw_note");
 
                     b.Property<int>("RendezVousId")
                         .HasColumnType("integer")
