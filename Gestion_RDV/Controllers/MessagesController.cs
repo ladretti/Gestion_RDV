@@ -27,7 +27,7 @@ namespace Gestion_RDV.Controllers
 
         /*[Authorize]
         [UserAuthorize("userId")]*/
-        [HttpGet("{userId}/{conversationId}")]
+        [HttpGet("message/{userId}/{conversationId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Conversation>> GetMessageByIds(int userId, int conversationId)
@@ -42,10 +42,10 @@ namespace Gestion_RDV.Controllers
         }
 
         //[Authorize]
-        [HttpGet("{conversation/conversationId}")]
+        [HttpGet("messages/{userId}/{conversationId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<Notification>>> GetMessagesByConversationId(int conversationId)
+        public async Task<ActionResult<IEnumerable<Notification>>> GetMessagesByConversationId(int userId, int conversationId)
         {
             var messages = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(conversationId);
             await dataRepositoryMessage.GetAllAsync();

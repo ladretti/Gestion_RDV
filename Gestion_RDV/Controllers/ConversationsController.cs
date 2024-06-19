@@ -16,14 +16,15 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class ConversationsController : ControllerBase
     {
-        private readonly IDataRepository<Conversation> dataRepository;
+        private readonly IDataRepository<Conversation> dataRepositoryConversation;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
         private readonly IDataRepository<User> dataRepositoryUser;
 
-        public ConversationsController(IDataRepository<Conversation> dataRepo, IDataRepository<ConversationUser> dataRepoConvUser)
+        public ConversationsController(IDataRepository<Conversation> dataRepoConv, IDataRepository<ConversationUser> dataRepoConvUser, IDataRepository<User> dataRepoUser)
         {
-            dataRepository = dataRepo;
+            dataRepositoryConversation = dataRepoConv;
             dataRepositoryConversationUser = dataRepoConvUser;
+            dataRepositoryUser = dataRepoUser;
         }
 
         // GET: api/Conversations
@@ -31,7 +32,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversations()
         {
-            var conversations = await dataRepository.GetAllAsync();
+            var conversations = await dataRepositoryConversation.GetAllAsync();
             if (conversations == null)
             {
                 return NotFound();
@@ -46,7 +47,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<Conversation>> GetConversationById(int id)
         {
-            var conversation = await dataRepository.GetByIdAsync(id);
+            var conversation = await dataRepositoryConversation.GetByIdAsync(id);
 
             if (conversation == null)
             {
@@ -64,7 +65,7 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserId(int userId)
         {
             var conversationsUser = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
-            await dataRepository.GetAllAsync();
+            await dataRepositoryConversation.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
 
             if (conversationsUser == null)
@@ -84,7 +85,7 @@ namespace Gestion_RDV.Controllers
                 return BadRequest(ModelState);
             }
 
-            await dataRepository.AddAsync(conversation);
+            await dataRepositoryConversation.AddAsync(conversation);
 
             return CreatedAtAction("GetConversationById", new { id = conversation.ConversationId }, conversation); // GetById : nom de l’action
         }
