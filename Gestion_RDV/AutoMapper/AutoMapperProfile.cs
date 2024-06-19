@@ -35,6 +35,7 @@ namespace Gestion_RDV.AutoMapper
             //Review
             CreateMap<Review, ReviewDTO>();
             CreateMap<RendezVous, ReviewRendezVousDTO>();
+            CreateMap<Comment, CommentDTO>();
 
 
             //Conversation
@@ -42,11 +43,18 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<User, ConversationDTO>();
 
             //RendezVous
+            CreateMap<RendezVousPostDTO, RendezVous>();
             CreateMap<RendezVous, RendezVousDTO>();
             CreateMap<UserSignInDTO, User>();
 
             //User
             CreateMap<User, UserDetailDTO>();
+
+            //Availability
+            CreateMap<AvailabilityPostDTO, Availability>();
+
+            //Subscription
+            CreateMap<SubscriptionPostDTO, Subscription>();
         }
     }
 }

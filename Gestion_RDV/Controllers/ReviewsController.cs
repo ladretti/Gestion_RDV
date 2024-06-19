@@ -19,14 +19,16 @@ namespace Gestion_RDV.Controllers
         private readonly IDataRepository<Review> dataRepository;
         private readonly IDataRepository<RendezVous> dataRepositoryRdv;
         private readonly IDataRepository<User> dataRepositoryUser;
+        private readonly IDataRepository<Comment> dataRepositoryComment;
         private readonly IMapper _mapper;
 
-        public ReviewsController(IDataRepository<Review> dataRepo, IMapper mapper, IDataRepository<RendezVous> dataRepoRdv, IDataRepository<User> dataRepoUser)
+        public ReviewsController(IDataRepository<Review> dataRepo, IMapper mapper, IDataRepository<RendezVous> dataRepoRdv, IDataRepository<User> dataRepoUser, IDataRepository<Comment> dataRepoComment)
         {
             dataRepository = dataRepo;
             _mapper = mapper;
             dataRepositoryRdv = dataRepoRdv;
             dataRepositoryUser = dataRepoUser;
+            dataRepositoryComment = dataRepoComment;
         }
 
         [HttpGet("{officeId}")]
@@ -36,6 +38,7 @@ namespace Gestion_RDV.Controllers
         {
             var reviews = await dataRepository.GetAllAsync();
             await dataRepositoryRdv.GetAllBySpecialIdAsync(officeId);
+            await dataRepositoryComment.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
             reviews = reviews.Value.Where(review => review.RendezVous != null && review.RendezVous.OfficeId == officeId).ToList();
 

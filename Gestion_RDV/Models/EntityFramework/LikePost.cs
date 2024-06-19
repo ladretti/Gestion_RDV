@@ -14,9 +14,9 @@ namespace Gestion_RDV.Models.EntityFramework
 
         // Navigation property
         [InverseProperty("LikesPosts"), ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
         [InverseProperty("LikesPosts"), ForeignKey("PostId")]
-        public Post Post { get; set; }
+        public Post? Post { get; set; }
 
     }
 }

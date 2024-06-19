@@ -66,9 +66,11 @@ namespace Gestion_RDV.Models.DataManager
                 throw new NotImplementedException();
             }
 
-            public Task<ActionResult<Comment>> GetByIdsAsync(int? id1, int? id2)
+            public async Task<ActionResult<Comment>> GetByIdsAsync(int? userId, int? reviewId)
             {
-                throw new NotImplementedException();
+                var comment = await _context.Comments.FirstOrDefaultAsync(s => s.UserId == userId && s.ReviewId == reviewId);
+                if (comment == null) return new NotFoundResult();
+                return new ActionResult<Comment>(comment);
             }
 
             public Task<ActionResult<IEnumerable<Comment>>> GetAllByIdsAsync(int? id1, int? id2)

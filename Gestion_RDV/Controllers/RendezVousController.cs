@@ -9,6 +9,7 @@ using Gestion_RDV.Models.EntityFramework;
 using AutoMapper;
 using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Models.DTO;
+using System.Runtime.Intrinsics.Arm;
 
 namespace Gestion_RDV.Controllers
 {
@@ -46,16 +47,17 @@ namespace Gestion_RDV.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RendezVousDTO>> PostRendezVous(RendezVous rendezVous)
+        public async Task<ActionResult<RendezVousDTO>> PostRendezVous(RendezVousPostDTO rendezVous)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await dataRepository.AddAsync(rendezVous);
+            await dataRepository.AddAsync(_mapper.Map<RendezVous>(rendezVous));
 
             return CreatedAtAction(nameof(GetRendezVousById), new { userId = rendezVous.UserId, officeId = rendezVous.OfficeId }, rendezVous);
+
         }
 
     }
