@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Gestion_RDV.Models.DTO;
+using AutoMapper;
 
 namespace Gestion_RDV.Controllers
 {
@@ -18,17 +20,20 @@ namespace Gestion_RDV.Controllers
         public class UsersController : ControllerBase
         {
             private readonly IDataRepository<User> dataRepository;
+            private readonly IMapper _mapper;
 
-            public UsersController(IDataRepository<User> dataRepo)
+
+            public UsersController(IDataRepository<User> dataRepo, IMapper mapper)
             {
                 dataRepository = dataRepo;
+                _mapper = mapper; 
             }
 
 
             [HttpGet("{id}")]
             [ProducesResponseType(200)]
             [ProducesResponseType(404)]
-            public async Task<ActionResult<User>> GetUserById(int id)
+            public async Task<ActionResult<UserDetailDTO>> GetUserById(int id)
             {
                 var user = await dataRepository.GetByIdAsync(id);
 
@@ -37,7 +42,7 @@ namespace Gestion_RDV.Controllers
                     return NotFound();
                 }
 
-                return user;
+                return Ok(_mapper.Map<UserDetailDTO>(user.Value)); ;
             }
         }
     }
