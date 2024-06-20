@@ -53,7 +53,7 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<Post>> GetPostById(int id)
         {
             var post = await dataRepository.GetByIdAsync(id);
-            await dataRepositoryUser.GetByIdAsync(post.Value.UserId);
+            await dataRepositoryUser.GetAllAsync();
             await dataRepository.GetAllBySpecialIdAsync(id);
             await dataRepositoryLikePost.GetAllAsync();
 
