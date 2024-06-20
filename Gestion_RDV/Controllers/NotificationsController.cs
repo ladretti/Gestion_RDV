@@ -35,7 +35,7 @@ namespace Gestion_RDV.Controllers
         }
 
 
-        [HttpGet("{userId}")]
+        [HttpGet("GetByUserId/{userId}")]
         /*[Authorize]
         [UserAuthorize("userId")]*/
         [ProducesResponseType(200)]
@@ -71,7 +71,7 @@ namespace Gestion_RDV.Controllers
             return notifications.Value.Count();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Notification>> GetNotificationById(int id)

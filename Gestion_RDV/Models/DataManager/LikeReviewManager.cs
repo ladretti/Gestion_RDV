@@ -30,12 +30,13 @@ namespace Gestion_RDV.Models.DataManager
 
         public async Task DeleteAsync(LikeReview entity)
         {
-            throw new NotImplementedException();
+            _context.LikesReview.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ActionResult<IEnumerable<LikeReview>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return new ActionResult<IEnumerable<LikeReview>>(await _context.LikesReview.ToListAsync());
         }
         public async Task UpdateAsync(LikeReview entityToUpdate, LikeReview entity)
         {
