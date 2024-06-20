@@ -45,8 +45,8 @@ namespace Gestion_RDV.Controllers
             return Ok(message);
         }
 
-        [Authorize]
-        [UserAuthorize("userId")]
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
         [HttpGet("messages/{conversationId}/{userId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
