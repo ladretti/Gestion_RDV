@@ -63,21 +63,42 @@ namespace Gestion_RDV.Controllers
         // GET: api/Conversations/user/5
         /*[Authorize]
         [UserAuthorize("userId")]*/
+        /* [HttpGet("user/{userId}")]
+         [ProducesResponseType(200)]
+         [ProducesResponseType(404)]
+         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserId(int userId)
+         {
+             var conversationsUser = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
+             await dataRepositoryConversation.GetAllAsync();
+             await dataRepositoryConversationUser.GetAllAsync();
+             await dataRepositoryUser.GetAllAsync();
+
+             if (conversationsUser == null)
+             {
+                 return NotFound();
+             }
+             return Ok(conversationsUser);
+             //return Ok(_mapper.Map<IEnumerable<ConversationDTO>>(conversationsUser.Value));
+         }*/
+
+        // GET: api/Conversations/user/5
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
         [HttpGet("user/{userId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<Conversation>>> GetConversationsByUserId(int userId)
         {
-            var conversationsUser = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
-            await dataRepositoryConversation.GetAllAsync();
+            var conv = await dataRepositoryConversation.GetAllAsync();
+            var conversationsUser = await dataRepositoryConversationUser.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
 
-            if (conversationsUser == null)
+            if (conv == null)
             {
                 return NotFound();
             }
-            return Ok(conversationsUser);
-            //return Ok(_mapper.Map<IEnumerable<ConversationDTO>>(conversationsUser.Value));
+            var filteredConversations = conv.Value.Where(c => c.ConversationsUser != null && c.ConversationsUser.Any(cu => cu.UserId == userId)).ToList();
+            return Ok(filteredConversations);
         }
 
         [HttpPost]
