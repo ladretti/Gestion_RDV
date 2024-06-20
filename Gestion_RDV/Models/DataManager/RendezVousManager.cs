@@ -66,16 +66,12 @@ namespace Gestion_RDV.Models.DataManager
                 throw new NotImplementedException();
             }
 
-            public async Task<ActionResult<RendezVous>> GetByIdsAsync(int userId, int officeId)
+
+            public async Task<ActionResult<RendezVous>> GetByIdsAsync(int? userId, int? officeId)
             {
                 var rendezVous = await _context.RendezVous.FirstOrDefaultAsync(s => s.UserId == userId && s.OfficeId == officeId);
                 if (rendezVous == null) return new NotFoundResult();
                 return new ActionResult<RendezVous>(rendezVous);
-            }
-
-            public Task<ActionResult<RendezVous>> GetByIdsAsync(int? id1, int? id2)
-            {
-                throw new NotImplementedException();
             }
 
             public Task<ActionResult<IEnumerable<RendezVous>>> GetAllByIdsAsync(int? id1, int? id2)

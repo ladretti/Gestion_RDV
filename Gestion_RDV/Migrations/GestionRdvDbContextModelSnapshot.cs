@@ -157,24 +157,20 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Facture", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("FactureId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("fct_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FactureId"));
 
-                    b.Property<int>("PatientId")
-                        .HasColumnType("integer")
-                        .HasColumnName("fct_patientid");
+                    b.Property<string>("Informations")
+                        .HasColumnType("text")
+                        .HasColumnName("fct_infos");
 
                     b.Property<decimal>("PrixAvantTva")
                         .HasColumnType("numeric")
                         .HasColumnName("fct_prix_avant_tva");
-
-                    b.Property<int>("ProfessionelId")
-                        .HasColumnType("integer")
-                        .HasColumnName("fct_professionelid");
 
                     b.Property<int>("RendezVousId")
                         .HasColumnType("integer")
@@ -184,7 +180,7 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("fct_tva");
 
-                    b.HasKey("Id")
+                    b.HasKey("FactureId")
                         .HasName("PK_Facture");
 
                     b.HasIndex("RendezVousId")

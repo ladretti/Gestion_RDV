@@ -70,6 +70,11 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<LikePost, LikePostDTO>();
             CreateMap<LikeReviewDTO, LikeReview>();
             CreateMap<LikeReview, LikeReviewDTO>();
+
+            //Facture
+
+            CreateMap<FacturePostDTO, Facture>();
+            CreateMap<Facture, FactureDTO>();
         }
     }
 }

@@ -91,7 +91,7 @@ namespace Gestion_RDV.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Notification>> PostOffice(Notification notification)
+        public async Task<ActionResult<Notification>> PostNotification(Notification notification)
         {
             if (!ModelState.IsValid)
             {

@@ -185,24 +185,20 @@ namespace Gestion_RDV.Models.EntityFramework
             {
                 entity.ToTable("t_e_facture_fct");
 
-                entity.HasKey(e => e.Id)
+                entity.HasKey(e => e.FactureId)
                       .HasName("PK_Facture");
 
-                entity.Property(e => e.Id)
+                entity.Property(e => e.FactureId)
                       .HasColumnName("fct_id")
                       .ValueGeneratedOnAdd();
-
-                entity.Property(e => e.ProfessionelId)
-                      .HasColumnName("fct_professionelid")
-                      .IsRequired();
-
-                entity.Property(e => e.PatientId)
-                      .HasColumnName("fct_patientid")
-                      .IsRequired();
 
                 entity.Property(e => e.PrixAvantTva)
                       .HasColumnName("fct_prix_avant_tva")
                       .IsRequired();
+
+                entity.Property(e => e.Informations)
+                      .HasColumnName("fct_infos")
+                      .IsRequired(false);
 
                 entity.Property(e => e.Tva)
                       .HasColumnName("fct_tva")

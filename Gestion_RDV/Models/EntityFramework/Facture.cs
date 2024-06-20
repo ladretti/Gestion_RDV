@@ -10,27 +10,22 @@
     public class Facture
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("fct_id")]
-        public int Id { get; set; }
-
-        [ForeignKey("Profile"), Column("fct_professionelid")]
-        public int ProfessionelId { get; set; }
-
-
-        [ForeignKey("Profile"), Column("fct_patientid")]
-        public int PatientId { get; set; }
+        public int FactureId { get; set; }
 
         [Column("fct_prix_avant_tva")]
         public decimal PrixAvantTva { get; set; }
 
         [Column("fct_tva")]
         public decimal Tva { get; set; }
+         [Column("fct_infos")]
+        public string Informations { get; set; }
 
         //ForeinKey
         [Column("rdv_id")]
         public int RendezVousId { get; set; }
         //Inverse Property
         [InverseProperty("Facture"), ForeignKey("RendezVousId")]
-        public RendezVous RendezVous { get; set; }
+        public RendezVous? RendezVous { get; set; }
 
     }
 
