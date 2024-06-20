@@ -57,16 +57,13 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Login(UserLoginParametersDTO infos)
         {
-            bool validPassword = false;
             IActionResult response = Unauthorized();
             var user = dataRepository.GetByStringAsync(infos.Email).Result.Value;
             if (user == null)
             {
                 return Unauthorized("Utilisateur non trouvé.");
             }
-
-            if (BCrypt.Net.BCrypt.HashPassword(infos.Password) == user.Password)
-                validPassword = true;
+            bool validPassword = BCrypt.Net.BCrypt.Verify(infos.Password, user.Password);
 
             if (!validPassword)
             {

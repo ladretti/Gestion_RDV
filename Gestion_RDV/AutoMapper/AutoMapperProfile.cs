@@ -31,6 +31,7 @@ namespace Gestion_RDV.AutoMapper
                 .ForMember(dest => dest.ChildPosts, opt => opt.MapFrom(src => src.ChildPosts.Take(2)))
                 .ForMember(dest => dest.TotalReplies, opt => opt.MapFrom(src => src.ChildPosts.Count));
             CreateMap<Post, PostDetailDTO>();
+            CreateMap<PostPostDTO, Post>();
 
             //Review
             CreateMap<Review, ReviewDTO>();
@@ -58,6 +59,7 @@ namespace Gestion_RDV.AutoMapper
 
             //Subscription
             CreateMap<SubscriptionPostDTO, Subscription>();
+            CreateMap<Subscription, SubscriptionPostDTO>();
         }
     }
 }

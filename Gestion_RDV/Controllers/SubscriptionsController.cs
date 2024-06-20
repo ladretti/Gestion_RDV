@@ -47,7 +47,7 @@ namespace Gestion_RDV.Controllers
         {
             var like = await dataRepository.GetByIdsAsync(userId, officeId);
 
-            if (like == null)
+            if (like.Value == null)
             {
                 return NotFound();
             }
