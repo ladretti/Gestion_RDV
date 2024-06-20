@@ -64,16 +64,17 @@ namespace Gestion_RDV.Controllers
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Post>> PostPost(Post post)
+        public async Task<ActionResult<PostDTO>> PostPost(PostPostDTO post)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            Post post1 = _mapper.Map<Post>(post);
+            await dataRepository.AddAsync(post1);
 
-            await dataRepository.AddAsync(post);
 
-            return CreatedAtAction("GetPostById", new { id = post.PostId }, post); // GetById : nom de l’action
+            return CreatedAtAction(nameof(GetPostById), new { id = post1.PostId }, _mapper.Map<PostDTO>(post1));
         }
     }
 }
