@@ -27,9 +27,9 @@ namespace Gestion_RDV.Models.DataManager
                 if (message == null) return new NotFoundResult();
                 return new ActionResult<Message>(message);
             }
-            public async Task<ActionResult<Message>> GetByIdAsync(int id)
+            public Task<ActionResult<Message>> GetByIdAsync(int id)
             {
-                return null;
+                throw new NotImplementedException();
             }
 
             public async Task AddAsync(Message entity)
@@ -50,9 +50,16 @@ namespace Gestion_RDV.Models.DataManager
                 await _context.SaveChangesAsync();
             }
 
-            public Task<ActionResult<IEnumerable<Message>>> GetAllBySpecialIdAsync(int id)
+            public async Task<ActionResult<IEnumerable<Message>>> GetAllBySpecialIdAsync(int conversationId)
             {
-                throw new NotImplementedException();
+                var messages = await _context.Messages.Where(c => c.ConversationId == conversationId).ToListAsync();
+
+                if (messages == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return new ActionResult<IEnumerable<Message>>(messages);
             }
 
             public Task<ActionResult<Message>> GetBySpecialIdAsync(int id)
@@ -70,7 +77,7 @@ namespace Gestion_RDV.Models.DataManager
                 throw new NotImplementedException();
             }
 
-            public Task<ActionResult<IEnumerable<Message>>> GetAllByIdsAsync(int? id1, int? id2)
+            public Task<ActionResult<IEnumerable<Message>>> GetAllByIdsAsync(int? conversationId, int? userId)
             {
                 throw new NotImplementedException();
             }

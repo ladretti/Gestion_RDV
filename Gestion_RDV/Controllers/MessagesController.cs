@@ -9,6 +9,8 @@ using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using Gestion_RDV.Filters;
 
 namespace Gestion_RDV.Controllers
 {
@@ -18,11 +20,13 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<Message> dataRepositoryMessage;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
+        private readonly IMapper _mapper;
 
-        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser)
+        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser, IMapper mapper)
         {
             dataRepositoryMessage = dataRepoMsg;
             dataRepositoryConversationUser = dataRepoConvser;
+            _mapper = mapper;
         }
 
         /*[Authorize]
@@ -41,22 +45,25 @@ namespace Gestion_RDV.Controllers
             return Ok(message);
         }
 
-        //[Authorize]
-        [HttpGet("messages/{userId}/{conversationId}")]
+        [Authorize]
+        [UserAuthorize("userId")]
+        [HttpGet("messages/{conversationId}/{userId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<Notification>>> GetMessagesByConversationId(int userId, int conversationId)
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(int conversationId, int userId)
         {
-            var messages = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(conversationId);
-            await dataRepositoryMessage.GetAllAsync();
+            var userIsInConversation  = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
+            var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);
 
+            if (!userIsInConversation.Value){
+                return Forbid(); // Renvoie un statut HTTP 403 Forbidden
+            }
 
-            if (messages == null)
-            {
+            if (messages == null){
                 return NotFound();
             }
 
-            return Ok(messages);
+            return Ok(_mapper.Map<IEnumerable<MessageDTO>>(messages.Value));
         }
 
         // POST: api/Messages
