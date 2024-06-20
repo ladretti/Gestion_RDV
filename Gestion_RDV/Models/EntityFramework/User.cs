@@ -76,8 +76,6 @@
         [InverseProperty("User")]
         public virtual ICollection<ConversationUser>? ConversationsUser { get; }
         [InverseProperty("User")]
-        public virtual ICollection<SocialMediaAccount>? Socials { get; }
-        [InverseProperty("User")]
         public virtual ICollection<Post>? Posts { get; }
 
 

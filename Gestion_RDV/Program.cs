@@ -30,6 +30,8 @@ builder.Services.AddScoped<IDataRepository<SocialMediaAccount>, SocialMediaAccou
 builder.Services.AddScoped<IDataRepository<Subscription>, SubscriptionManager>();
 builder.Services.AddScoped<IDataRepository<User>, UserManager>();
 builder.Services.AddScoped<IDataRepository<ConversationUser>, ConversationUserManager>();
+builder.Services.AddScoped<IDataRepository<LikePost>, LikePostManager>();
+builder.Services.AddScoped<IDataRepository<LikeReview>, LikeReviewManager>();
 builder.Services.AddScoped<UserAuthorizationFilter>(provider =>
 {
     var routeKey = "userId";

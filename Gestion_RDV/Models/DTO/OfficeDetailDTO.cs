@@ -1,4 +1,7 @@
-﻿namespace Gestion_RDV.Models.DTO
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Gestion_RDV.Models.DTO
 {
     public class OfficeDetailDTO
     {
@@ -16,6 +19,13 @@
         public AddressDTO Adresse { get; set; }
         public double Rating { get; set; }
         public int NbSub { get; set; }
+        public IEnumerable<SocialDTO> Socials { get; set; }
+    }
+    public class SocialDTO
+    {
+        public int SocialMediaAccountId { get; set; }
+        public string Platform { get; set; }
+        public string Url { get; set; }
     }
 
 }

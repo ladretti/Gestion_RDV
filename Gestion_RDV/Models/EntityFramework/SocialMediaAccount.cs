@@ -16,11 +16,11 @@ namespace Gestion_RDV.Models.EntityFramework
         public string Url { get; set; }
 
         // Foreign key
-        [Column("usr_id")]
-        public int UserId { get; set; }
+        [Column("ofc_id")]
+        public int OfficeId { get; set; }
 
         //Inverse Property
-        [ForeignKey("UserId"), InverseProperty("Socials")]
-        public User User { get; set; }
+        [ForeignKey("OfficeId"), InverseProperty("Socials")]
+        public Office Office { get; set; }
     }
 }
