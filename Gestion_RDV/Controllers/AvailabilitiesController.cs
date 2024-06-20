@@ -27,7 +27,7 @@ namespace Gestion_RDV.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{officeId}")]
+        [HttpGet("GetByOfficeId/{officeId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetAvailabilitiesByOfficeId(int officeId)
@@ -59,7 +59,7 @@ namespace Gestion_RDV.Controllers
             return NoContent();
         }
 
-        [HttpGet("{availabilityId}")]
+        [HttpGet("GetByAvailabilityId/{availabilityId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<AvailabilityDTO>> GetAvailabilityById(int availabilityId)
