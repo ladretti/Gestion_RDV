@@ -85,6 +85,10 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<IEnumerable<Subscription>>(subscription);
             }
 
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

@@ -18,6 +18,10 @@ namespace Gestion_RDV.Models.DataManager
                 _context = context;
             }
 
+            public UserManager()
+            {
+            }
+
             public async Task<ActionResult<IEnumerable<User>>> GetAllAsync()
             {
                 return new ActionResult<IEnumerable<User>>(await _context.Users.ToListAsync());
@@ -75,6 +79,11 @@ namespace Gestion_RDV.Models.DataManager
             }
 
             public Task<ActionResult<IEnumerable<User>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
             {
                 throw new NotImplementedException();
             }
