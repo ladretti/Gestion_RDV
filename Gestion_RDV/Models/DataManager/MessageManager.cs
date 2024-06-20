@@ -16,6 +16,10 @@ namespace Gestion_RDV.Models.DataManager
                 _context = context;
             }
 
+            public MessageManager()
+            {
+            }
+
             public async Task<ActionResult<IEnumerable<Message>>> GetAllAsync()
             {
                 return new ActionResult<IEnumerable<Message>>(await _context.Messages.ToListAsync());
@@ -78,6 +82,11 @@ namespace Gestion_RDV.Models.DataManager
             }
 
             public Task<ActionResult<IEnumerable<Message>>> GetAllByIdsAsync(int? conversationId, int? userId)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
             {
                 throw new NotImplementedException();
             }

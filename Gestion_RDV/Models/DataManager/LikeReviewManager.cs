@@ -14,6 +14,10 @@ namespace Gestion_RDV.Models.DataManager
             _context = context;
         }
 
+        public LikeReviewManager()
+        {
+        }
+
         public async Task<ActionResult<IEnumerable<LikeReview>>> GetAllBySpecialIdAsync(int userId)
         {
             throw new NotImplementedException();
@@ -65,6 +69,11 @@ namespace Gestion_RDV.Models.DataManager
         }
 
         public Task<ActionResult<IEnumerable<LikeReview>>> GetAllByIdsAsync(int? id1, int? id2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
         {
             throw new NotImplementedException();
         }
