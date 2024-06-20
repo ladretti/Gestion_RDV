@@ -39,7 +39,7 @@ namespace Gestion_RDV.Controllers
             var posts = await dataRepository.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
             await dataRepositoryLikePost.GetAllAsync();
-            var filteredPosts = posts.Value.Where(post => !post.ParentPostId.HasValue).ToList();
+            var filteredPosts = posts.Value.Where(post => !post.ParentPostId.HasValue).OrderByDescending(post => post.Date).ToList();
             if (filteredPosts == null)
             {
                 return NotFound();
