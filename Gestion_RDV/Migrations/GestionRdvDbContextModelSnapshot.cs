@@ -172,10 +172,6 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("fct_prix_avant_tva");
 
-                    b.Property<decimal>("PrixFinal")
-                        .HasColumnType("numeric")
-                        .HasColumnName("fct_prix_final");
-
                     b.Property<int>("ProfessionelId")
                         .HasColumnType("integer")
                         .HasColumnName("fct_professionelid");
@@ -224,6 +220,10 @@ namespace Gestion_RDV.Migrations
                     b.Property<int>("ReviewId")
                         .HasColumnType("integer")
                         .HasColumnName("rvw_id");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("lke_liked");
 
                     b.HasKey("UserId", "ReviewId")
                         .HasName("PK_LikeReview");

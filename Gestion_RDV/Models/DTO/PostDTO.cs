@@ -12,6 +12,7 @@ namespace Gestion_RDV.Models.DTO
         public OfficeUserDTO User { get; set; }
         public int TotalReplies { get; set; }
         public ICollection<PostDTO> ChildPosts { get; set; }
+        public int NbLike { get; set; }
     }
     public class PostDetailDTO
     {
@@ -21,6 +22,7 @@ namespace Gestion_RDV.Models.DTO
         public string Type { get; set; }
         public OfficeUserDTO User { get; set; }
         public ICollection<PostDTO> ChildPosts { get; set; }
+        public int NbLike { get; set; }
     }
     public class PostPostDTO
     {

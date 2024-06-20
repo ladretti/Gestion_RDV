@@ -29,12 +29,16 @@ namespace Gestion_RDV.AutoMapper
             //Post
             CreateMap<Post, PostDTO>()
                 .ForMember(dest => dest.ChildPosts, opt => opt.MapFrom(src => src.ChildPosts.Take(2)))
-                .ForMember(dest => dest.TotalReplies, opt => opt.MapFrom(src => src.ChildPosts.Count));
-            CreateMap<Post, PostDetailDTO>();
+                .ForMember(dest => dest.TotalReplies, opt => opt.MapFrom(src => src.ChildPosts.Count))
+                .ForMember(dest => dest.NbLike, opt => opt.MapFrom(src => src.LikesPosts.Count()));
+            CreateMap<Post, PostDetailDTO>()
+                .ForMember(dest => dest.NbLike, opt => opt.MapFrom(src => src.LikesPosts.Count()));
             CreateMap<PostPostDTO, Post>();
 
             //Review
-            CreateMap<Review, ReviewDTO>();
+            CreateMap<Review, ReviewDTO>()
+                .ForMember(dest => dest.NbLike, opt => opt.MapFrom(src => src.LikesReview.Count(l => l.IsLiked)))
+                .ForMember(dest => dest.NbDislike, opt => opt.MapFrom(src => src.LikesReview.Count(l => !l.IsLiked)));
             CreateMap<RendezVous, ReviewRendezVousDTO>();
             CreateMap<Comment, CommentDTO>();
 
@@ -60,6 +64,12 @@ namespace Gestion_RDV.AutoMapper
             //Subscription
             CreateMap<SubscriptionPostDTO, Subscription>();
             CreateMap<Subscription, SubscriptionPostDTO>();
+
+            //Like
+            CreateMap<LikePostDTO, LikePost>();
+            CreateMap<LikePost, LikePostDTO>();
+            CreateMap<LikeReviewDTO, LikeReview>();
+            CreateMap<LikeReview, LikeReviewDTO>();
         }
     }
 }

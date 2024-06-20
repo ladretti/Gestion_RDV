@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using AutoMapper;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Models.DTO;
 
 namespace Gestion_RDV.Controllers
 {
@@ -33,26 +34,42 @@ namespace Gestion_RDV.Controllers
         {
             var like = await dataRepository.GetByIdsAsync(userId, postId);
 
-            if (like == null)
+            if (like.Value == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<LikeReview>(like.Value));
+            return Ok(_mapper.Map<LikeReviewDTO>(like.Value));
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<LikeReview>> ReviewLikeReview(LikeReview likeReview)
+        public async Task<ActionResult<LikeReview>> ReviewLikeReview(LikeReviewDTO likeReview)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await dataRepository.AddAsync(likeReview);
+            await dataRepository.AddAsync(_mapper.Map<LikeReview>(likeReview));
 
             return CreatedAtAction(nameof(GetLikeReviewById), new { userId = likeReview.UserId, postId = likeReview.ReviewId }, likeReview);
+        }
+
+        [HttpDelete("{userId}/{postId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteLikeReview(int userId, int postId)
+        {
+            var like = await dataRepository.GetByIdsAsync(userId, postId);
+            if (like == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.DeleteAsync(like.Value);
+
+            return NoContent();
         }
     }
 }

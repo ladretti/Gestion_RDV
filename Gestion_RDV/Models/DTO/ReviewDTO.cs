@@ -9,6 +9,8 @@
         public int Note { get; set; }
         public ReviewRendezVousDTO RendezVous { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }
+        public int NbLike { get; set; }
+        public int NbDislike { get; set; }
     }
     public class ReviewRendezVousDTO
     {
