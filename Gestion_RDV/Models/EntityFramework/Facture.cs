@@ -25,9 +25,6 @@
         [Column("fct_tva")]
         public decimal Tva { get; set; }
 
-        [Column("fct_prix_final")]
-        public decimal PrixFinal { get; set; }
-
         //ForeinKey
         [Column("rdv_id")]
         public int RendezVousId { get; set; }

@@ -19,14 +19,16 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<Post> dataRepository;
         private readonly IDataRepository<User> dataRepositoryUser;
+        private readonly IDataRepository<LikePost> dataRepositoryLikePost;
         private readonly IMapper _mapper;
 
 
-        public PostsController(IDataRepository<Post> dataRepo, IDataRepository<User> dataRepositoryUser, IMapper mapper)
+        public PostsController(IDataRepository<Post> dataRepo, IDataRepository<User> dataRepositoryUser, IMapper mapper, IDataRepository<LikePost> dataRepoLikePost)
         {
             dataRepository = dataRepo;
             this.dataRepositoryUser = dataRepositoryUser;
             _mapper = mapper;
+            dataRepositoryLikePost = dataRepoLikePost;
         }
 
 
@@ -36,12 +38,13 @@ namespace Gestion_RDV.Controllers
         {
             var posts = await dataRepository.GetAllAsync();
             await dataRepositoryUser.GetAllAsync();
-
-            if (posts == null)
+            await dataRepositoryLikePost.GetAllAsync();
+            var filteredPosts = posts.Value.Where(post => !post.ParentPostId.HasValue).ToList();
+            if (filteredPosts == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<IEnumerable<PostDTO>>(posts.Value)); ;
+            return Ok(_mapper.Map<IEnumerable<PostDTO>>(filteredPosts));
         }
 
         [HttpGet("{id}")]
@@ -52,6 +55,7 @@ namespace Gestion_RDV.Controllers
             var post = await dataRepository.GetByIdAsync(id);
             await dataRepositoryUser.GetByIdAsync(post.Value.UserId);
             await dataRepository.GetAllBySpecialIdAsync(id);
+            await dataRepositoryLikePost.GetAllAsync();
 
             if (post == null)
             {

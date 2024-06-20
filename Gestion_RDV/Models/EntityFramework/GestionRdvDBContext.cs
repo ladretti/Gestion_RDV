@@ -208,10 +208,6 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("fct_tva")
                       .IsRequired();
 
-                entity.Property(e => e.PrixFinal)
-                      .HasColumnName("fct_prix_final")
-                      .IsRequired();
-
                 entity.Property(e => e.RendezVousId)
                       .HasColumnName("rdv_id")
                       .IsRequired();
@@ -253,6 +249,8 @@ namespace Gestion_RDV.Models.EntityFramework
 
                 entity.HasKey(e => new { e.UserId, e.ReviewId })
                       .HasName("PK_LikeReview");
+                entity.Property(e => e.IsLiked)
+                .IsRequired();
 
                 entity.Property(e => e.UserId)
                       .HasColumnName("usr_id");

@@ -26,12 +26,13 @@ namespace Gestion_RDV.Models.DataManager
 
         public async Task DeleteAsync(LikePost entity)
         {
-            throw new NotImplementedException();
+            _context.LikesPost.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ActionResult<IEnumerable<LikePost>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return new ActionResult<IEnumerable<LikePost>>(await _context.LikesPost.ToListAsync());
         }
         public async Task UpdateAsync(LikePost entityToUpdate, LikePost entity)
         {
