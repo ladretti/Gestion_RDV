@@ -22,11 +22,12 @@ namespace Gestion_RDV.Controllers
         private readonly IDataRepository<RendezVous> dataRepositoryRendezVous;
         private readonly IDataRepository<Review> dataRepositoryReview;
         private readonly IDataRepository<Subscription> dataRepositorySub;
+        private readonly IDataRepository<SocialMediaAccount> dataRepositorySocial;
         private readonly IMapper _mapper;
 
 
 
-        public OfficesController(IDataRepository<Office> dataRepo, IDataRepository<User> dataRepoUser, IMapper mapper, IDataRepository<Address> dataRepoAddress, IDataRepository<RendezVous> dataRepoRendezVous, IDataRepository<Review> dataRepoReview, IDataRepository<Subscription> dataRepoSub)
+        public OfficesController(IDataRepository<Office> dataRepo, IDataRepository<User> dataRepoUser, IMapper mapper, IDataRepository<Address> dataRepoAddress, IDataRepository<RendezVous> dataRepoRendezVous, IDataRepository<Review> dataRepoReview, IDataRepository<Subscription> dataRepoSub, IDataRepository<SocialMediaAccount> dataRepoSocial)
         {
             dataRepository = dataRepo;
             dataRepositoryUser = dataRepoUser;
@@ -35,6 +36,7 @@ namespace Gestion_RDV.Controllers
             dataRepositoryRendezVous = dataRepoRendezVous;
             dataRepositoryReview = dataRepoReview;
             dataRepositorySub = dataRepoSub;
+            dataRepositorySocial = dataRepoSocial;
         }
 
 
@@ -66,6 +68,8 @@ namespace Gestion_RDV.Controllers
             await dataRepositoryRendezVous.GetAllAsync();
             await dataRepositoryReview.GetAllAsync();
             await dataRepositorySub.GetAllAsync();
+            await dataRepositorySocial.GetAllAsync();
+
 
             if (office == null)
             {
@@ -87,7 +91,7 @@ namespace Gestion_RDV.Controllers
 
             await dataRepository.AddAsync(office);
 
-            return CreatedAtAction("GetOfficeById", new { id = office.OfficeId }, office); // GetById : nom de l’action
+            return CreatedAtAction("GetOfficeById", new { id = office.OfficeId }, office);
         }
     }
 }

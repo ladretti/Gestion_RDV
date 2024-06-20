@@ -38,7 +38,36 @@ namespace Gestion_RDV.Controllers
             }
 
             return true;
+        }
 
+        [HttpGet("GetSubscriptionById/{officeId}/{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<SubscriptionPostDTO>> GetSubscriptionById(int officeId, int userId)
+        {
+            var like = await dataRepository.GetByIdsAsync(userId, officeId);
+
+            if (like == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<SubscriptionPostDTO>(like.Value));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<SubscriptionPostDTO>> ReviewSubscription(SubscriptionPostDTO subscription)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Subscription sub = _mapper.Map<Subscription>(subscription);
+            await dataRepository.AddAsync(sub);
+
+            return CreatedAtAction(nameof(GetSubscriptionById), new { officeId = subscription.OfficeId, userId = subscription.UserId }, _mapper.Map<SubscriptionPostDTO>(subscription));
         }
     }
 }

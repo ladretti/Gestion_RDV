@@ -67,6 +67,8 @@
 
         [InverseProperty("Office")]
         public virtual ICollection<Subscription>? Subscriptions { get; }
+        [InverseProperty("Office")]
+        public virtual ICollection<SocialMediaAccount>? Socials { get; }
 
     }
 }
