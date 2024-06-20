@@ -50,7 +50,7 @@ namespace Gestion_RDV.Controllers
         [HttpGet("messages/{conversationId}/{userId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(int conversationId, int userId)
+        public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessages(int conversationId, int userId)
         {
             var userIsInConversation  = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
             var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);

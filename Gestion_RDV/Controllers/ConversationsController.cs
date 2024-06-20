@@ -9,6 +9,8 @@ using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Filters;
 using Microsoft.AspNetCore.Authorization;
+using Gestion_RDV.Models.DTO;
+using AutoMapper;
 
 namespace Gestion_RDV.Controllers
 {
@@ -19,12 +21,14 @@ namespace Gestion_RDV.Controllers
         private readonly IDataRepository<Conversation> dataRepositoryConversation;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
         private readonly IDataRepository<User> dataRepositoryUser;
+        private readonly IMapper _mapper;
 
-        public ConversationsController(IDataRepository<Conversation> dataRepoConv, IDataRepository<ConversationUser> dataRepoConvUser, IDataRepository<User> dataRepoUser)
+        public ConversationsController(IDataRepository<Conversation> dataRepoConv, IDataRepository<ConversationUser> dataRepoConvUser, IDataRepository<User> dataRepoUser, IMapper mapper)
         {
             dataRepositoryConversation = dataRepoConv;
             dataRepositoryConversationUser = dataRepoConvUser;
             dataRepositoryUser = dataRepoUser;
+            _mapper = mapper;
         }
 
         // GET: api/Conversations
@@ -73,6 +77,7 @@ namespace Gestion_RDV.Controllers
                 return NotFound();
             }
             return Ok(conversationsUser);
+            //return Ok(_mapper.Map<IEnumerable<ConversationDTO>>(conversationsUser.Value));
         }
 
         [HttpPost]
