@@ -15,6 +15,7 @@ namespace Gestion_RDV.Models.Repository
         Task<ActionResult<TEntity>> GetByStringAsync(string value);
         Task<ActionResult<TEntity>> GetByIdsAsync(int? id1, int? id2);
         Task<ActionResult<IEnumerable<TEntity>>> GetAllByIdsAsync(int? id1, int? id2);
+        Task<ActionResult<bool>> ExistsByIds(int id1, int id2);
 
     }
 }

@@ -10,6 +10,7 @@ using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
+using Gestion_RDV.Filters;
 
 namespace Gestion_RDV.Controllers
 {
@@ -44,22 +45,25 @@ namespace Gestion_RDV.Controllers
             return Ok(message);
         }
 
-        /*[Authorize]
-        [UserAuthorize("userId")]*/
-        [HttpGet("messages/{userId}/{conversationId}")]
+        [Authorize]
+        [UserAuthorize("userId")]
+        [HttpGet("messages/{conversationId}/{userId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(int conversationId/*, int userId*/)
+        public async Task<ActionResult<IEnumerable<Message>>> GetMessages(int conversationId, int userId)
         {
+            var userIsInConversation  = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
             var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);
 
-            if (messages == null)
-            {
+            if (!userIsInConversation.Value){
+                return Forbid(); // Renvoie un statut HTTP 403 Forbidden
+            }
+
+            if (messages == null){
                 return NotFound();
             }
 
-            return Ok(messages);
-            //return Ok(_mapper.Map<IEnumerable<MessageDTO>>(messages.Value));
+            return Ok(_mapper.Map<IEnumerable<MessageDTO>>(messages.Value));
         }
 
         // POST: api/Messages

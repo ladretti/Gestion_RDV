@@ -39,6 +39,10 @@ namespace Gestion_RDV.AutoMapper
             //Conversation
             CreateMap<Conversation, ConversationUserDTO>();
             CreateMap<User, ConversationDTO>();
+
+            //Message
+            CreateMap<Message, MessageDTO>();
+
         }
     }
 }

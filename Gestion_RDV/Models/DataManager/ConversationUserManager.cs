@@ -43,9 +43,15 @@ namespace Gestion_RDV.Models.DataManager
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult<ConversationUser>> GetByIdsAsync(int id1, int id2)
+        public Task<ActionResult<ConversationUser>> GetByIdsAsync(int conversationId, int userId)
         {
             throw new NotImplementedException();
+        }
+
+        //check if user is in conversation
+        public async Task<ActionResult<bool>> ExistsByIds(int conversationId, int userId)
+        {
+            return await _context.ConversationsUser.AnyAsync(c => c.UserId == userId && c.ConversationId == conversationId);
         }
 
         public Task<ActionResult<ConversationUser>> GetBySpecialIdAsync(int id)
