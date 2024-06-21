@@ -19,12 +19,12 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class MessagesController : ControllerBase
     {
-        private readonly IDataRepository<Message> dataRepositoryMessage;
+        private readonly IDataRepositoryMessage<Message> dataRepositoryMessage;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
         private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
-        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser, IDataRepository<User> dataRepoUser, IMapper mapper)
+        public MessagesController(IDataRepositoryMessage<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser, IDataRepository<User> dataRepoUser, IMapper mapper)
         {
             dataRepositoryMessage = dataRepoMsg;
             dataRepositoryConversationUser = dataRepoConvser;
@@ -56,12 +56,13 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessages(int conversationId, int userId)
         {
             var userIsInConversation  = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
-            var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);
-            await dataRepositoryUser.GetAllAsync();
 
             if (!userIsInConversation.Value){
                 return Forbid(); // Renvoie un statut HTTP 403 Forbidden
             }
+
+            var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);
+            await dataRepositoryUser.GetAllAsync();
 
             if (messages == null){
                 return NotFound();
@@ -70,8 +71,54 @@ namespace Gestion_RDV.Controllers
             return Ok(_mapper.Map<IEnumerable<MessageDTO>>(messages.Value));
         }
 
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
+        [HttpGet("newMessages/{conversationId}/{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<MessageDTO>>> GetNewMessages(int conversationId, int userId, [FromQuery] DateTime since)
+        {
+            var userIsInConversation = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
+            if (!userIsInConversation.Value)
+            {
+                return Forbid(); // Renvoie un statut HTTP 403 Forbidden
+            }
+
+            var newMessages = await dataRepositoryMessage.GetNewMessagesAsync(conversationId, since);
+            await dataRepositoryUser.GetAllAsync();
+
+            if (newMessages == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<MessageDTO>>(newMessages.Value));
+        }
+
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
+        [HttpGet("messagesPaged/{conversationId}/{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessagesPaged(int conversationId, int userId, [FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
+        {
+            var userIsInConversation = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
+            if (!userIsInConversation.Value)
+            {
+                return Forbid(); // Renvoie un statut HTTP 403 Forbidden
+            }
+
+            var messages = await dataRepositoryMessage.GetMessagesPagedAsync(conversationId, pageIndex, pageSize);
+
+            if (messages == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<IEnumerable<MessageDTO>>(messages.Value));
+        }
+
         // POST: api/Messages
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[Authorize]
         [HttpPost]
         [ProducesResponseType(200)]
