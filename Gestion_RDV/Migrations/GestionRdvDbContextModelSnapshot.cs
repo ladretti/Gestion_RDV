@@ -68,6 +68,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("ofc_id");
 
+                    b.Property<bool>("Reserve")
+                        .HasColumnType("boolean")
+                        .HasColumnName("avb_reserve");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("avb_start_date");
@@ -337,7 +341,6 @@ namespace Gestion_RDV.Migrations
                         .HasColumnName("ofc_domaine_principal");
 
                     b.Property<string>("ImageDiplome")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ofc_image_diplome");
 
@@ -821,7 +824,7 @@ namespace Gestion_RDV.Migrations
                     b.HasOne("Gestion_RDV.Models.EntityFramework.Post", "ParentPost")
                         .WithMany("ChildPosts")
                         .HasForeignKey("ParentPostId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_t_e_post_pst_t_e_post_p_pst_id");
 

@@ -53,7 +53,51 @@ namespace Gestion_RDV.Controllers
             }
 
             return Ok(_mapper.Map<IEnumerable<ReviewDTO>>(reviews.Value));
+        }
+        [HttpGet("review/{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<ReviewDTO>> GetReviewById(int id)
+        {
+            var reviews = await dataRepository.GetByIdAsync(id);
 
+            if (reviews == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<ReviewDTO>(reviews.Value));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<Review>> PostReview(Review review)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await dataRepository.AddAsync(review);
+
+            return CreatedAtAction(nameof(GetReviewById), new { id = review.ReviewId }, review); 
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteReview(int id)
+        {
+            var review = await dataRepository.GetByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.DeleteAsync(review.Value);
+
+            return NoContent();
         }
     }
 }

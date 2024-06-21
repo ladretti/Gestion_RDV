@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.EntityFramework
         public virtual ICollection<Comment>? Comments { get; }
 
         [ForeignKey("RendezVousId"), InverseProperty("Review")]
-        public RendezVous RendezVous { get; set; }
+        public RendezVous? RendezVous { get; set; }
 
         [InverseProperty("Review")]
         public virtual ICollection<LikeReview>? LikesReview { get; }

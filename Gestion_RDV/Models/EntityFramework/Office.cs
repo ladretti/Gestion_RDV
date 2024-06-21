@@ -15,7 +15,7 @@
         public string Diplome { get; set; }
 
         [Column("ofc_image_diplome")]
-        public string ImageDiplome { get; set; }
+        public string? ImageDiplome { get; set; }
 
         [Column("ofc_domaine_principal")]
         public string DomainePrincipal { get; set; }

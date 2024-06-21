@@ -15,6 +15,9 @@ namespace Gestion_RDV.Models.EntityFramework
         [Column("avb_end_date")]
         public DateTime EndDate { get; set; }
 
+        [Column("avb_reserve")]
+        public bool Reserve { get; set; }
+
         //Foreign Key
         [Column("ofc_id")]
         public int OfficeId { get; set; }
