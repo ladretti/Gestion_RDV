@@ -40,6 +40,19 @@ namespace Gestion_RDV.Controllers
             }
             return Ok(_mapper.Map<LikePostDTO>(like.Value));
         }
+        [HttpGet("exists/{userId}/{postId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<bool>> ExistsByIds(int userId, int postId)
+        {
+            var like = await dataRepository.GetByIdsAsync(userId, postId);
+
+            if (like.Value == null)
+            {
+                return false;
+            }
+            return true;
+        }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]

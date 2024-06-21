@@ -40,7 +40,8 @@ namespace Gestion_RDV.Models.DataManager
         }
         public async Task UpdateAsync(LikeReview entityToUpdate, LikeReview entity)
         {
-            throw new NotImplementedException();
+            _context.Entry(entityToUpdate).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
         }
 
         public Task<ActionResult<LikeReview>> GetByIdsAsync(int id1, int id2)
