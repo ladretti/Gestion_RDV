@@ -11,6 +11,7 @@ using Gestion_RDV.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using Gestion_RDV.Filters;
+using System.Diagnostics;
 
 namespace Gestion_RDV.Controllers
 {
@@ -74,17 +75,36 @@ namespace Gestion_RDV.Controllers
         //[Authorize]
         [HttpPost]
         [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<Message>> PostMessage(Message message)
+        [ProducesResponseType(400)]
+        [ProducesResponseType(403)]
+        public async Task<ActionResult<MessagePostDTO>> PostMessage(MessagePostDTO message)
         {
+            // Vérifier si l'utilisateur fait partie de la conversation
+            var userIsInConversation = await dataRepositoryConversationUser.ExistsByIds(message.ConversationId, message.UserId);
+            if (!userIsInConversation.Value)
+            {
+                return Forbid(); // Renvoie un statut HTTP 403 Forbidden si l'utilisateur n'est pas autorisé
+            }
+
+            // Validation du modèle
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await dataRepositoryMessage.AddAsync(message);
+            try
+            {
+                var messageEntity = _mapper.Map<Message>(message);
+                await dataRepositoryMessage.AddAsync(messageEntity);
 
-            return CreatedAtAction("GetMessageByIds", new { userId = message.UserId, conversationId = message.ConversationId }, message); // GetById : nom de l’action
+                return CreatedAtAction(nameof(GetMessageByIds), new { conversationId = message.ConversationId, userId = message.UserId }, _mapper.Map<MessagePostDTO>(message));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return BadRequest("Erreur lors de l'ajout du message");
+            }
+
         }
     }
 }
