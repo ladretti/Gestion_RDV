@@ -15,6 +15,7 @@ using System.Text;
 using Gestion_RDV.Models.DTO;
 using Microsoft.CodeAnalysis.Scripting;
 using AutoMapper;
+using Npgsql;
 
 namespace Gestion_RDV.Controllers
 {
@@ -43,11 +44,27 @@ namespace Gestion_RDV.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
-            await dataRepository.AddAsync(_mapper.Map<User>(user));
-
-            return Ok();
+            try
+            {
+                await dataRepository.AddAsync(_mapper.Map<User>(user));
+                return StatusCode(StatusCodes.Status201Created); // Return HTTP 201 Created on success
+            }
+            catch (DbUpdateException ex)
+            {
+                if (IsUniqueConstraintViolationException(ex))
+                {
+                    ModelState.AddModelError("Email", "L'email est déjà utilisé");
+                    return BadRequest(ModelState);
+                }
+                else
+                {
+                    // Log or handle other exceptions
+                    return BadRequest("Impossible de créer l'utilisateur");
+                }
+            }
         }
 
         [AllowAnonymous]
@@ -101,6 +118,22 @@ namespace Gestion_RDV.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        private bool IsUniqueConstraintViolationException(DbUpdateException ex)
+        {
+            var innerException = ex.InnerException;
+            while (innerException != null)
+            {
+                if (innerException is PostgresException postgresException)
+                {
+                    if (postgresException.SqlState == "23505") // Unique violation error code for PostgreSQL
+                    {
+                        return true;
+                    }
+                }
+                innerException = innerException.InnerException;
+            }
+            return false;
         }
     }
 }
