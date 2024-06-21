@@ -30,7 +30,7 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult<bool>> IsSubscribe(int officeId, int userId)
         {
-            var subscriptions = await dataRepository.GetByIdsAsync(officeId, userId);
+            var subscriptions = await dataRepository.GetByIdsAsync(userId, officeId);
 
             if (subscriptions.Value == null)
             {
