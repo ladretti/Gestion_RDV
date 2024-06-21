@@ -71,5 +71,28 @@ namespace Gestion_RDV.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{userId}/{reviewId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PutLikeReview(int userId, int reviewId,  LikeReviewDTO LikeReview)
+        {
+            if (userId != LikeReview.UserId || reviewId != LikeReview.ReviewId)
+            {
+                return BadRequest();
+            }
+
+            var userToUpdate = await dataRepository.GetByIdsAsync(userId, reviewId);
+            if (userToUpdate == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await dataRepository.UpdateAsync(userToUpdate.Value, _mapper.Map<LikeReview>(LikeReview));
+                return NoContent();
+            }
+        }
     }
 }
