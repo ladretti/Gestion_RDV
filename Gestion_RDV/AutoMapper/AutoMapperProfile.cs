@@ -49,6 +49,7 @@ namespace Gestion_RDV.AutoMapper
              
             //Message
             CreateMap<Message, MessageDTO>();
+            CreateMap<User, Message_UserDTO>();
 
             //RendezVous
             CreateMap<RendezVousPostDTO, RendezVous>();

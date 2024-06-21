@@ -20,12 +20,14 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<Message> dataRepositoryMessage;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
+        private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
-        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser, IMapper mapper)
+        public MessagesController(IDataRepository<Message> dataRepoMsg, IDataRepository<ConversationUser> dataRepoConvser, IDataRepository<User> dataRepoUser, IMapper mapper)
         {
             dataRepositoryMessage = dataRepoMsg;
             dataRepositoryConversationUser = dataRepoConvser;
+            dataRepositoryUser = dataRepoUser;
             _mapper = mapper;
         }
 
@@ -54,6 +56,7 @@ namespace Gestion_RDV.Controllers
         {
             var userIsInConversation  = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
             var messages = await dataRepositoryMessage.GetAllBySpecialIdAsync(conversationId);
+            await dataRepositoryUser.GetAllAsync();
 
             if (!userIsInConversation.Value){
                 return Forbid(); // Renvoie un statut HTTP 403 Forbidden
