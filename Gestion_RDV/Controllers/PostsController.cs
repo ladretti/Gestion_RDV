@@ -80,5 +80,21 @@ namespace Gestion_RDV.Controllers
 
             return CreatedAtAction(nameof(GetPostById), new { id = post1.PostId }, _mapper.Map<PostDTO>(post1));
         }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+            var post = await dataRepository.GetByIdAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.DeleteAsync(post.Value);
+
+            return NoContent();
+        }
     }
 }

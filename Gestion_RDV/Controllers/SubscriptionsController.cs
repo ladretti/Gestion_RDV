@@ -32,7 +32,7 @@ namespace Gestion_RDV.Controllers
         {
             var subscriptions = await dataRepository.GetByIdsAsync(officeId, userId);
 
-            if (subscriptions.Result == null)
+            if (subscriptions.Value == null)
             {
                 return false;
             }
@@ -68,6 +68,22 @@ namespace Gestion_RDV.Controllers
             await dataRepository.AddAsync(sub);
 
             return CreatedAtAction(nameof(GetSubscriptionById), new { officeId = subscription.OfficeId, userId = subscription.UserId }, _mapper.Map<SubscriptionPostDTO>(subscription));
+        }
+
+        [HttpDelete("{userId}/{officeId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteSubscription(int userId, int officeId)
+        {
+            var subscription = await dataRepository.GetByIdsAsync(userId, officeId);
+            if (subscription == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.DeleteAsync(subscription.Value);
+
+            return NoContent();
         }
     }
 }

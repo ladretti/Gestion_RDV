@@ -77,8 +77,6 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<Notification>> GetNotificationById(int id)
         {
             var notification = await dataRepository.GetByIdAsync(id);
-            await dataRepositoryUser.GetByIdAsync(notification.Value.NotificationId);
-            await dataRepository.GetAllBySpecialIdAsync(id);
 
             if (notification == null)
             {
@@ -100,7 +98,7 @@ namespace Gestion_RDV.Controllers
 
             await dataRepository.AddAsync(notification);
 
-            return CreatedAtAction("GetNotificationById", new { id = notification.NotificationId }, notification); // GetById : nom de l’action
+            return CreatedAtAction(nameof(GetNotificationById), new { id = notification.NotificationId }, notification);
         }
     }
 }

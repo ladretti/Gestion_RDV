@@ -93,5 +93,28 @@ namespace Gestion_RDV.Controllers
 
             return CreatedAtAction("GetOfficeById", new { id = office.OfficeId }, office);
         }
+
+        [HttpPut("officeId")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PutOffice(int officeId, OfficePutDTO office)
+        {
+            if (officeId != office.OfficeId)
+            {
+                return BadRequest();
+            }
+
+            var officeToUpdate = await dataRepository.GetByIdAsync(officeId);
+            if (officeToUpdate == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await dataRepository.UpdateAsync(officeToUpdate.Value, _mapper.Map<Office>(office));
+                return NoContent();
+            }
+        }
     }
 }

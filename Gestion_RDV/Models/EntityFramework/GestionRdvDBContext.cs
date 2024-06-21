@@ -91,6 +91,10 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("avb_end_date")
                       .IsRequired();
 
+                entity.Property(e => e.Reserve)
+                      .HasColumnName("avb_reserve")
+                      .IsRequired();
+
                 entity.Property(e => e.OfficeId)
                       .HasColumnName("ofc_id")
                       .IsRequired();
@@ -363,7 +367,8 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("ofc_diplome");
 
                 entity.Property(e => e.ImageDiplome)
-                      .HasColumnName("ofc_image_diplome");
+                      .HasColumnName("ofc_image_diplome")
+                      .IsRequired(false);
 
                 entity.Property(e => e.DomainePrincipal)
                       .HasColumnName("ofc_domaine_principal");
@@ -439,7 +444,7 @@ namespace Gestion_RDV.Models.EntityFramework
                     .WithMany(p => p.ChildPosts)
                     .HasForeignKey(e => e.ParentPostId)
                     .HasConstraintName("FK_t_e_post_pst_t_e_post_p_pst_id")
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<RendezVous>(entity =>
             {

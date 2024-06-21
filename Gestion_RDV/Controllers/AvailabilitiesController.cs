@@ -87,5 +87,25 @@ namespace Gestion_RDV.Controllers
 
             return CreatedAtAction(nameof(GetAvailabilityById), new { availabilityId = availability1.AvailabilityId }, _mapper.Map<AvailabilityDTO>(availability1));
         }
+
+        [HttpPut("{availabilityId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PutAvailability(int availabilityId, bool reserve)
+        {
+
+            var availabilityToUpdate = await dataRepository.GetByIdAsync(availabilityId);
+            availabilityToUpdate.Value.Reserve = reserve;
+            if (availabilityToUpdate == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                await dataRepository.UpdateAsync(availabilityToUpdate.Value, availabilityToUpdate.Value);
+                return NoContent();
+            }
+        }
     }
 }

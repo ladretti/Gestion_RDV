@@ -17,6 +17,7 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<RendezVous, NotificationDetailsRendezVousDTO>();
 
             //Office
+
             CreateMap<Office, OfficeDTO>()
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.RendezVous.Average(r => (r.Review != null) ? r.Review.Note : 0)));
             CreateMap<Office, OfficeDetailDTO>()
@@ -25,6 +26,8 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<User, OfficeUserDTO>();
             CreateMap<Address, AddressDTO>();
             CreateMap<SocialMediaAccount, SocialDTO>();
+            CreateMap<OfficePostDTO, Office>();
+            CreateMap<OfficePutDTO, Office>();
 
             //Post
             CreateMap<Post, PostDTO>()
@@ -46,7 +49,7 @@ namespace Gestion_RDV.AutoMapper
             //Conversation
             CreateMap<Conversation, Conversation_UserDTO>();
             CreateMap<User, Conversation_UserDTO>();
-             
+
             //Message
             CreateMap<Message, MessageDTO>();
             CreateMap<User, Message_UserDTO>();
@@ -61,6 +64,7 @@ namespace Gestion_RDV.AutoMapper
 
             //Availability
             CreateMap<AvailabilityPostDTO, Availability>();
+            CreateMap<AvailabilityDTO, Availability>();
 
             //Subscription
             CreateMap<SubscriptionPostDTO, Subscription>();
