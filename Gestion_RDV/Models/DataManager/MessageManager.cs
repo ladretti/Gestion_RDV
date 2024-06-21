@@ -7,7 +7,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class MessageManager : IDataRepository<Message>
+        public class MessageManager : IDataRepositoryMessage<Message>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -54,18 +54,6 @@ namespace Gestion_RDV.Models.DataManager
                 await _context.SaveChangesAsync();
             }
 
-            public async Task<ActionResult<IEnumerable<Message>>> GetAllBySpecialIdAsync(int conversationId)
-            {
-                var messages = await _context.Messages.Where(c => c.ConversationId == conversationId).ToListAsync();
-
-                if (messages == null)
-                {
-                    return new NotFoundResult();
-                }
-
-                return new ActionResult<IEnumerable<Message>>(messages);
-            }
-
             public Task<ActionResult<Message>> GetBySpecialIdAsync(int id)
             {
                 throw new NotImplementedException();
@@ -90,7 +78,46 @@ namespace Gestion_RDV.Models.DataManager
             {
                 throw new NotImplementedException();
             }
+            public async Task<ActionResult<IEnumerable<Message>>> GetAllBySpecialIdAsync(int conversationId)
+            {
+                var messages = await _context.Messages.Where(m => m.ConversationId == conversationId).ToListAsync();
+
+                if (messages == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return new ActionResult<IEnumerable<Message>>(messages);
+            }
+
+            public async Task<ActionResult<IEnumerable<Message>>> GetNewMessagesAsync(int conversationId, DateTime since)
+            {
+                var messages = await _context.Messages
+                                            .Where(m => m.ConversationId == conversationId && m.Created > since)
+                                            .ToListAsync();
+
+                if (messages == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return new ActionResult<IEnumerable<Message>>(messages);
+            }
+            public async Task<ActionResult<IEnumerable<Message>>> GetMessagesPagedAsync(int conversationId, int pageIndex, int pageSize)
+            {
+                var messages = await _context.Messages
+                                    .Where(m => m.ConversationId == conversationId)
+                                    .OrderByDescending(m => m.Created)
+                                    .Skip(pageIndex * pageSize)
+                                    .Take(pageSize)
+                                    .ToListAsync();
+                if (messages == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return new ActionResult<IEnumerable<Message>>(messages);
+            }
         }
     }
-
 }

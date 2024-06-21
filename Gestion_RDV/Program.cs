@@ -23,7 +23,7 @@ builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>()
 builder.Services.AddScoped<IDataRepository<Comment>, CommentManager>();
 builder.Services.AddScoped<IDataRepositoryConversation<Conversation>, ConversationManager>();
 builder.Services.AddScoped<IDataRepository<Facture>, FactureManager>();
-builder.Services.AddScoped<IDataRepository<Message>, MessageManager>();
+builder.Services.AddScoped<IDataRepositoryMessage<Message>, MessageManager>();
 builder.Services.AddScoped<IDataRepository<Notification>, NotificationManager>();
 builder.Services.AddScoped<IDataRepository<Office>, OfficeManager>();
 builder.Services.AddScoped<IDataRepository<Post>, PostManager>();
