@@ -47,7 +47,7 @@ namespace Gestion_RDV.Controllers
 
             await dataRepository.AddAsync(_mapper.Map<User>(user));
 
-            return null;
+            return Ok();
         }
 
         [AllowAnonymous]
