@@ -627,6 +627,8 @@ namespace Gestion_RDV.Models.EntityFramework
                     entity.Property(e => e.Email)
                           .HasColumnName("usr_email")
                           .IsRequired();
+                    entity.HasIndex(e => e.Email)
+                          .IsUnique();
 
                     entity.Property(e => e.Password)
                           .HasColumnName("usr_password")

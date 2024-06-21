@@ -630,6 +630,9 @@ namespace Gestion_RDV.Migrations
 
                     b.HasIndex("AdresseId");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("t_e_user_usr", (string)null);
                 });
 
