@@ -15,4 +15,11 @@ namespace Gestion_RDV.Models.DTO
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
     }
+    public class MessagePostDTO
+    {
+        public DateTime Created { get; set; }
+        public string? Text { get; set; }
+        public int UserId { get; set; }
+        public int ConversationId { get; set; }
+    }
 }

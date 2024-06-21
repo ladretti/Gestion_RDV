@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Gestion_RDV.Models.DTO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gestion_RDV.Models.Repository
@@ -16,6 +17,5 @@ namespace Gestion_RDV.Models.Repository
         Task<ActionResult<TEntity>> GetByIdsAsync(int? id1, int? id2);
         Task<ActionResult<IEnumerable<TEntity>>> GetAllByIdsAsync(int? id1, int? id2);
         Task<ActionResult<bool>> ExistsByIds(int id1, int id2);
-
     }
 }
