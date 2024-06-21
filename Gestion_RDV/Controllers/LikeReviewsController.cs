@@ -94,5 +94,19 @@ namespace Gestion_RDV.Controllers
                 return NoContent();
             }
         }
+
+        [HttpGet("IsLiked/{userId}/{postId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<bool>> GetStatusById(int userId, int postId)
+        {
+            var like = await dataRepository.GetByIdsAsync(userId, postId);
+
+            if (like.Value == null)
+            {
+                return null;
+            }
+            return like.Value.IsLiked;
+        }
     }
 }
