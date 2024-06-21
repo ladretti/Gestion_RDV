@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Facture entity)
             {
-                _context.Factures.Add(entity);
+                await _context.Factures.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -44,6 +44,41 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Factures.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<Facture>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Facture>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<Facture>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

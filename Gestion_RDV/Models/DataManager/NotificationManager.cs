@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Notification entity)
             {
-                _context.Notifications.Add(entity);
+                await _context.Notifications.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -45,6 +45,45 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Notifications.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public async Task<ActionResult<IEnumerable<Notification>>> GetAllBySpecialIdAsync(int id)
+            {
+                var notifications = await _context.Notifications.Where(a => a.UserId == id).ToListAsync();
+
+                if (notifications == null) return new NotFoundResult();
+
+                return new ActionResult<IEnumerable<Notification>>(notifications);
+            }
+
+            public Task<ActionResult<Notification>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Notification>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Notification>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Notification>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<Notification>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

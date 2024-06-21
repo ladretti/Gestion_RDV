@@ -17,13 +17,14 @@
         public string LastName { get; set; }
 
         [Column("usr_email"), Required]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "L'adresse email n'est pas valide.")] //marche pas
         public string Email { get; set; }
 
         [Column("usr_password"), Required]
         public string Password { get; set; }
 
         [Column("usr_birth_date"), Required]
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
 
         [Column("usr_activated")]
         public bool Activated { get; set; } = false;
@@ -41,13 +42,14 @@
         public string Sexe { get; set; }
 
         [Column("usr_telephone")]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")] //marche pas
         public string Telephone { get; set; }
 
 
 
         //Foreign Key
         [Column("adr_id")]
-        public int AdresseId { get; set; }
+        public int? AdresseId { get; set; }
 
         // Navigation property
         [InverseProperty("User")]
@@ -73,8 +75,6 @@
         public virtual ICollection<Message>? Messages { get; }
         [InverseProperty("User")]
         public virtual ICollection<ConversationUser>? ConversationsUser { get; }
-        [InverseProperty("User")]
-        public virtual ICollection<SocialMediaAccount>? Socials { get; }
         [InverseProperty("User")]
         public virtual ICollection<Post>? Posts { get; }
 

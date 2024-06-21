@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Address entity)
             {
-                _context.Addresses.Add(entity);
+                await _context.Addresses.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -44,6 +44,41 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Addresses.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<Address>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Address>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Address>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Address>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Address>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<Address>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

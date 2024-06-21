@@ -13,8 +13,8 @@ namespace Gestion_RDV.Models.EntityFramework
 
         // Navigation property
         [InverseProperty("Subscriptions"), ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
         [InverseProperty("Subscriptions"), ForeignKey("OfficeId")]
-        public Office Office { get; set; }
+        public Office? Office { get; set; }
     }
 }

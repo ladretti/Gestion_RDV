@@ -41,7 +41,7 @@ namespace Gestion_RDV.Models.EntityFramework
         {
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.ToTable("t_e_adress_adr");
+                entity.ToTable("t_e_address_adr");
 
                 entity.HasKey(e => e.AdresseId)
                       .HasName("PK_Address");
@@ -89,6 +89,10 @@ namespace Gestion_RDV.Models.EntityFramework
 
                 entity.Property(e => e.EndDate)
                       .HasColumnName("avb_end_date")
+                      .IsRequired();
+
+                entity.Property(e => e.Reserve)
+                      .HasColumnName("avb_reserve")
                       .IsRequired();
 
                 entity.Property(e => e.OfficeId)
@@ -183,33 +187,25 @@ namespace Gestion_RDV.Models.EntityFramework
             });
             modelBuilder.Entity<Facture>(entity =>
             {
-                entity.ToTable("t_e_devis_dvs");
+                entity.ToTable("t_e_facture_fct");
 
-                entity.HasKey(e => e.Id)
+                entity.HasKey(e => e.FactureId)
                       .HasName("PK_Facture");
 
-                entity.Property(e => e.Id)
-                      .HasColumnName("dvs_id")
+                entity.Property(e => e.FactureId)
+                      .HasColumnName("fct_id")
                       .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.ProfessionelId)
-                      .HasColumnName("dvs_professionelid")
-                      .IsRequired();
-
-                entity.Property(e => e.PatientId)
-                      .HasColumnName("dvs_patientid")
-                      .IsRequired();
-
                 entity.Property(e => e.PrixAvantTva)
-                      .HasColumnName("dvs_prix_avant_tva")
+                      .HasColumnName("fct_prix_avant_tva")
                       .IsRequired();
+
+                entity.Property(e => e.Informations)
+                      .HasColumnName("fct_infos")
+                      .IsRequired(false);
 
                 entity.Property(e => e.Tva)
-                      .HasColumnName("dvs_tva")
-                      .IsRequired();
-
-                entity.Property(e => e.PrixFinal)
-                      .HasColumnName("dvs_prix_final")
+                      .HasColumnName("fct_tva")
                       .IsRequired();
 
                 entity.Property(e => e.RendezVousId)
@@ -253,6 +249,8 @@ namespace Gestion_RDV.Models.EntityFramework
 
                 entity.HasKey(e => new { e.UserId, e.ReviewId })
                       .HasName("PK_LikeReview");
+                entity.Property(e => e.IsLiked)
+                .IsRequired();
 
                 entity.Property(e => e.UserId)
                       .HasColumnName("usr_id");
@@ -369,10 +367,8 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("ofc_diplome");
 
                 entity.Property(e => e.ImageDiplome)
-                      .HasColumnName("ofc_image_diplome");
-
-                entity.Property(e => e.Rating)
-                      .HasColumnName("ofc_rating");
+                      .HasColumnName("ofc_image_diplome")
+                      .IsRequired(false);
 
                 entity.Property(e => e.DomainePrincipal)
                       .HasColumnName("ofc_domaine_principal");
@@ -391,12 +387,6 @@ namespace Gestion_RDV.Models.EntityFramework
 
                 entity.Property(e => e.Video)
                       .HasColumnName("ofc_video");
-
-                entity.Property(e => e.Nbyes)
-                      .HasColumnName("ofc_nb_yes");
-
-                entity.Property(e => e.Nbno)
-                      .HasColumnName("ofc_nb_no");
 
                 entity.Property(e => e.Date)
                       .HasColumnName("ofc_date")
@@ -448,13 +438,13 @@ namespace Gestion_RDV.Models.EntityFramework
                     .WithMany(u => u.Posts)
                     .HasForeignKey(e => e.UserId)
                     .HasConstraintName("FK_t_e_post_pst_t_e_user_usr_id")
-                    .OnDelete(DeleteBehavior.Cascade); 
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.ParentPost)
                     .WithMany(p => p.ChildPosts)
                     .HasForeignKey(e => e.ParentPostId)
                     .HasConstraintName("FK_t_e_post_pst_t_e_post_p_pst_id")
-                    .OnDelete(DeleteBehavior.Restrict); 
+                    .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<RendezVous>(entity =>
             {
@@ -475,23 +465,15 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("rdv_end_date")
                       .IsRequired();
 
-                entity.Property(e => e.EtatId)
-                      .HasColumnName("rdv_etat_id");
-
-                entity.Property(e => e.TypeRendezVous)
-                      .HasColumnName("rdv_type_rendezvous");
-
                 entity.Property(e => e.Description)
                       .HasColumnName("rdv_description");
 
                 entity.Property(e => e.Prix)
                       .HasColumnName("rdv_prix");
 
-                entity.Property(e => e.Idevent)
-                      .HasColumnName("rdv_id_event");
-
                 entity.Property(e => e.FichierJoint)
-                      .HasColumnName("rdv_fichier_joint");
+                      .HasColumnName("rdv_fichier_joint")
+                      .IsRequired(false);
 
                 entity.Property(e => e.UserId)
                       .HasColumnName("usr_id")
@@ -570,6 +552,9 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasForeignKey(l => l.ReviewId)
                       .HasConstraintName("FK_LikeReview_Review")
                       .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(e => e.Note)
+                      .HasColumnName("rvw_note")
+                      .IsRequired();
             });
             modelBuilder.Entity<SocialMediaAccount>(entity =>
             {
@@ -590,14 +575,14 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("sma_url")
                       .HasMaxLength(255);
 
-                entity.Property(e => e.UserId)
-                      .HasColumnName("usr_id")
+                entity.Property(e => e.OfficeId)
+                      .HasColumnName("ofc_id")
                       .IsRequired();
 
-                entity.HasOne(e => e.User)
+                entity.HasOne(e => e.Office)
                       .WithMany(u => u.Socials)
-                      .HasForeignKey(e => e.UserId)
-                      .HasConstraintName("FK_SocialMediaAccount_User")
+                      .HasForeignKey(e => e.OfficeId)
+                      .HasConstraintName("FK_SocialMediaAccount_Office")
                       .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<Subscription>(entity =>
@@ -647,6 +632,8 @@ namespace Gestion_RDV.Models.EntityFramework
                     entity.Property(e => e.Email)
                           .HasColumnName("usr_email")
                           .IsRequired();
+                    entity.HasIndex(e => e.Email)
+                          .IsUnique();
 
                     entity.Property(e => e.Password)
                           .HasColumnName("usr_password")
@@ -661,29 +648,34 @@ namespace Gestion_RDV.Models.EntityFramework
                           .HasDefaultValue(false);
 
                     entity.Property(e => e.Avatar)
-                          .HasColumnName("usr_avatar");
+                          .HasColumnName("usr_avatar")
+                          .IsRequired(false);
 
                     entity.Property(e => e.SecretToken)
-                          .HasColumnName("usr_secret_token");
+                          .HasColumnName("usr_secret_token")
+                          .IsRequired(false);
 
                     entity.Property(e => e.Role)
                           .HasColumnName("usr_role")
                           .IsRequired();
 
                     entity.Property(e => e.Sexe)
-                          .HasColumnName("usr_sexe");
+                          .HasColumnName("usr_sexe")
+                          .IsRequired(false);
 
                     entity.Property(e => e.Telephone)
-                          .HasColumnName("usr_telephone");
+                          .HasColumnName("usr_telephone")
+                          .IsRequired(false);
 
                     entity.Property(e => e.AdresseId)
-                          .HasColumnName("adr_id");
+                          .HasColumnName("adr_id")
+                          .IsRequired(false);
 
                     entity.HasOne(e => e.Adresse)
                           .WithMany(a => a.Users)
                           .HasForeignKey(e => e.AdresseId)
                           .HasConstraintName("FK_User_Address")
-                          .OnDelete(DeleteBehavior.Cascade);
+                          .OnDelete(DeleteBehavior.SetNull);
                 });
 
 

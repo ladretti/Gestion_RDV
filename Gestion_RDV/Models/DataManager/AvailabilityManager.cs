@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Availability entity)
             {
-                _context.Availabilities.Add(entity);
+                await _context.Availabilities.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -44,6 +44,51 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Availabilities.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+
+            public async Task<ActionResult<IEnumerable<Availability>>> GetAllBySpecialIdAsync(int id)
+            {
+                var availabilities = await _context.Availabilities.Where(a => a.OfficeId == id).ToListAsync();
+
+                if (availabilities == null) return new NotFoundResult();
+
+                return new ActionResult<IEnumerable<Availability>>(availabilities);
+            }
+
+            public Task<ActionResult<Availability>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<ActionResult<Availability>> IDataRepository<Availability>.GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Availability>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Availability>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Availability>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<Availability>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

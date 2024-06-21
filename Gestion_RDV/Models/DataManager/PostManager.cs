@@ -28,9 +28,18 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<Post>(post);
             }
 
+            public async Task<ActionResult<IEnumerable<Post>>> GetAllBySpecialIdAsync(int id)
+            {
+                var posts = await _context.Posts.Where(a => a.ParentPostId == id).ToListAsync();
+
+                if (posts == null) return new NotFoundResult();
+
+                return new ActionResult<IEnumerable<Post>>(posts);
+            }
+
             public async Task AddAsync(Post entity)
             {
-                _context.Posts.Add(entity);
+                await _context.Posts.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -44,6 +53,36 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Posts.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<Post>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Post>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Post>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Post>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<Post>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

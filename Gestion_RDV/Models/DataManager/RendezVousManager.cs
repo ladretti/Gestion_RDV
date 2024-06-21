@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(RendezVous entity)
             {
-                _context.RendezVous.Add(entity);
+                await _context.RendezVous.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -45,6 +45,43 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.RendezVous.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public async Task<ActionResult<IEnumerable<RendezVous>>> GetAllBySpecialIdAsync(int id)
+            {
+                var rendezVous = await _context.RendezVous.Where(a => a.OfficeId == id).ToListAsync();
+                if (rendezVous == null) return new NotFoundResult();
+                return new ActionResult<IEnumerable<RendezVous>>(rendezVous);
+            }
+
+            public async Task<ActionResult<RendezVous>> GetBySpecialIdAsync(int id)
+            {
+                var rendezVous = await _context.RendezVous.FirstOrDefaultAsync(a => a.OfficeId == id);
+                if (rendezVous == null) return new NotFoundResult();
+                return new ActionResult<RendezVous>(rendezVous);
+            }
+
+            public Task<ActionResult<RendezVous>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+
+            public async Task<ActionResult<RendezVous>> GetByIdsAsync(int? userId, int? officeId)
+            {
+                var rendezVous = await _context.RendezVous.FirstOrDefaultAsync(s => s.UserId == userId && s.OfficeId == officeId);
+                if (rendezVous == null) return new NotFoundResult();
+                return new ActionResult<RendezVous>(rendezVous);
+            }
+
+            public Task<ActionResult<IEnumerable<RendezVous>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

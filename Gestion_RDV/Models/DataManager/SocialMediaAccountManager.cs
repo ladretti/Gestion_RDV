@@ -31,7 +31,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(SocialMediaAccount entity)
             {
-                _context.SocialMediaAccounts.Add(entity);
+                await _context.SocialMediaAccounts.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -45,6 +45,41 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.SocialMediaAccounts.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<SocialMediaAccount>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<SocialMediaAccount>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<SocialMediaAccount>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<SocialMediaAccount>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<SocialMediaAccount>> GetByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<IEnumerable<SocialMediaAccount>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

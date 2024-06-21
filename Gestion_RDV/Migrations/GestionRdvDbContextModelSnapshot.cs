@@ -48,7 +48,7 @@ namespace Gestion_RDV.Migrations
                     b.HasKey("AdresseId")
                         .HasName("PK_Address");
 
-                    b.ToTable("t_e_adress_adr", (string)null);
+                    b.ToTable("t_e_address_adr", (string)null);
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Availability", b =>
@@ -67,6 +67,10 @@ namespace Gestion_RDV.Migrations
                     b.Property<int>("OfficeId")
                         .HasColumnType("integer")
                         .HasColumnName("ofc_id");
+
+                    b.Property<bool>("Reserve")
+                        .HasColumnType("boolean")
+                        .HasColumnName("avb_reserve");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
@@ -157,28 +161,20 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Facture", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("FactureId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("dvs_id");
+                        .HasColumnName("fct_id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FactureId"));
 
-                    b.Property<int>("PatientId")
-                        .HasColumnType("integer")
-                        .HasColumnName("dvs_patientid");
+                    b.Property<string>("Informations")
+                        .HasColumnType("text")
+                        .HasColumnName("fct_infos");
 
                     b.Property<decimal>("PrixAvantTva")
                         .HasColumnType("numeric")
-                        .HasColumnName("dvs_prix_avant_tva");
-
-                    b.Property<decimal>("PrixFinal")
-                        .HasColumnType("numeric")
-                        .HasColumnName("dvs_prix_final");
-
-                    b.Property<int>("ProfessionelId")
-                        .HasColumnType("integer")
-                        .HasColumnName("dvs_professionelid");
+                        .HasColumnName("fct_prix_avant_tva");
 
                     b.Property<int>("RendezVousId")
                         .HasColumnType("integer")
@@ -186,15 +182,15 @@ namespace Gestion_RDV.Migrations
 
                     b.Property<decimal>("Tva")
                         .HasColumnType("numeric")
-                        .HasColumnName("dvs_tva");
+                        .HasColumnName("fct_tva");
 
-                    b.HasKey("Id")
+                    b.HasKey("FactureId")
                         .HasName("PK_Facture");
 
                     b.HasIndex("RendezVousId")
                         .IsUnique();
 
-                    b.ToTable("t_e_devis_dvs", (string)null);
+                    b.ToTable("t_e_facture_fct", (string)null);
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.LikePost", b =>
@@ -224,6 +220,10 @@ namespace Gestion_RDV.Migrations
                     b.Property<int>("ReviewId")
                         .HasColumnType("integer")
                         .HasColumnName("rvw_id");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("lke_liked");
 
                     b.HasKey("UserId", "ReviewId")
                         .HasName("PK_LikeReview");
@@ -341,7 +341,6 @@ namespace Gestion_RDV.Migrations
                         .HasColumnName("ofc_domaine_principal");
 
                     b.Property<string>("ImageDiplome")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("ofc_image_diplome");
 
@@ -350,21 +349,9 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("text")
                         .HasColumnName("ofc_metier");
 
-                    b.Property<int>("Nbno")
-                        .HasColumnType("integer")
-                        .HasColumnName("ofc_nb_no");
-
-                    b.Property<int>("Nbyes")
-                        .HasColumnType("integer")
-                        .HasColumnName("ofc_nb_yes");
-
                     b.Property<double>("PrixPCR")
                         .HasColumnType("double precision")
                         .HasColumnName("ofc_prix_pcr");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision")
-                        .HasColumnName("ofc_rating");
 
                     b.Property<string>("Telephone")
                         .IsRequired()
@@ -454,18 +441,9 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("rdv_end_date");
 
-                    b.Property<int>("EtatId")
-                        .HasColumnType("integer")
-                        .HasColumnName("rdv_etat_id");
-
                     b.Property<string>("FichierJoint")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("rdv_fichier_joint");
-
-                    b.Property<int>("Idevent")
-                        .HasColumnType("integer")
-                        .HasColumnName("rdv_id_event");
 
                     b.Property<int>("OfficeId")
                         .HasColumnType("integer")
@@ -478,11 +456,6 @@ namespace Gestion_RDV.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("rdv_start_date");
-
-                    b.Property<string>("TypeRendezVous")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("rdv_type_rendezvous");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
@@ -517,6 +490,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("rvw_description");
 
+                    b.Property<int>("Note")
+                        .HasColumnType("integer")
+                        .HasColumnName("rvw_note");
+
                     b.Property<int>("RendezVousId")
                         .HasColumnType("integer")
                         .HasColumnName("rdv_id");
@@ -545,6 +522,10 @@ namespace Gestion_RDV.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SocialMediaAccountId"));
 
+                    b.Property<int>("OfficeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ofc_id");
+
                     b.Property<string>("Platform")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -557,14 +538,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("sma_url");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer")
-                        .HasColumnName("usr_id");
-
                     b.HasKey("SocialMediaAccountId")
                         .HasName("PK_SocialMediaAccount");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OfficeId");
 
                     b.ToTable("t_e_socialmediaaccount_sma", (string)null);
                 });
@@ -602,17 +579,16 @@ namespace Gestion_RDV.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("usr_activated");
 
-                    b.Property<int>("AdresseId")
+                    b.Property<int?>("AdresseId")
                         .HasColumnType("integer")
                         .HasColumnName("adr_id");
 
                     b.Property<string>("Avatar")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_avatar");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<DateOnly>("BirthDate")
+                        .HasColumnType("date")
                         .HasColumnName("usr_birth_date");
 
                     b.Property<string>("Email")
@@ -641,17 +617,14 @@ namespace Gestion_RDV.Migrations
                         .HasColumnName("usr_role");
 
                     b.Property<string>("SecretToken")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_secret_token");
 
                     b.Property<string>("Sexe")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_sexe");
 
                     b.Property<string>("Telephone")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_telephone");
 
@@ -659,6 +632,9 @@ namespace Gestion_RDV.Migrations
                         .HasName("PK_User");
 
                     b.HasIndex("AdresseId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("t_e_user_usr", (string)null);
                 });
@@ -848,7 +824,7 @@ namespace Gestion_RDV.Migrations
                     b.HasOne("Gestion_RDV.Models.EntityFramework.Post", "ParentPost")
                         .WithMany("ChildPosts")
                         .HasForeignKey("ParentPostId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_t_e_post_pst_t_e_post_p_pst_id");
 
@@ -899,14 +875,14 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.SocialMediaAccount", b =>
                 {
-                    b.HasOne("Gestion_RDV.Models.EntityFramework.User", "User")
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.Office", "Office")
                         .WithMany("Socials")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OfficeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_SocialMediaAccount_User");
+                        .HasConstraintName("FK_SocialMediaAccount_Office");
 
-                    b.Navigation("User");
+                    b.Navigation("Office");
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Subscription", b =>
@@ -935,8 +911,7 @@ namespace Gestion_RDV.Migrations
                     b.HasOne("Gestion_RDV.Models.EntityFramework.Address", "Adresse")
                         .WithMany("Users")
                         .HasForeignKey("AdresseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("FK_User_Address");
 
                     b.Navigation("Adresse");
@@ -964,6 +939,8 @@ namespace Gestion_RDV.Migrations
 
                     b.Navigation("RendezVous");
 
+                    b.Navigation("Socials");
+
                     b.Navigation("Subscriptions");
                 });
 
@@ -976,13 +953,11 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.RendezVous", b =>
                 {
-                    b.Navigation("Facture")
-                        .IsRequired();
+                    b.Navigation("Facture");
 
                     b.Navigation("Notifications");
 
-                    b.Navigation("Review")
-                        .IsRequired();
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Review", b =>
@@ -1012,8 +987,6 @@ namespace Gestion_RDV.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("RendezVous");
-
-                    b.Navigation("Socials");
 
                     b.Navigation("Subscriptions");
                 });

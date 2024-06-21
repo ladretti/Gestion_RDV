@@ -11,12 +11,14 @@ namespace Gestion_RDV.Models.EntityFramework
         public int UserId { get; set; }
         [Column("rvw_id")]
         public int ReviewId { get; set; }
+        [Column("lke_liked")]
+        public bool IsLiked { get; set; }
 
         // Navigation property
         [InverseProperty("LikesReview"), ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
         [InverseProperty("LikesReview"), ForeignKey("ReviewId")]
-        public Review Review { get; set; }
+        public Review? Review { get; set; }
 
     }
 }

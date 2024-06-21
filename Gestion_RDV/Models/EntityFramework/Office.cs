@@ -15,10 +15,7 @@
         public string Diplome { get; set; }
 
         [Column("ofc_image_diplome")]
-        public string ImageDiplome { get; set; }
-
-        [Column("ofc_rating")]
-        public double Rating { get; set; }
+        public string? ImageDiplome { get; set; }
 
         [Column("ofc_domaine_principal")]
         public string DomainePrincipal { get; set; }
@@ -38,16 +35,11 @@
         [Column("ofc_video")]
         public string Video { get; set; }
 
-        [Column("ofc_nb_yes")]
-        public int Nbyes { get; set; }
-
-        [Column("ofc_nb_no")]
-        public int Nbno { get; set; }
-
         [Column("ofc_date")]
         public DateTime Date { get; set; } = DateTime.Now;
 
         [Column("ofc_telephone")]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")] // marche pas
         public string Telephone { get; set; }
 
         //ForeignKey
@@ -75,6 +67,8 @@
 
         [InverseProperty("Office")]
         public virtual ICollection<Subscription>? Subscriptions { get; }
+        [InverseProperty("Office")]
+        public virtual ICollection<SocialMediaAccount>? Socials { get; }
 
     }
 }

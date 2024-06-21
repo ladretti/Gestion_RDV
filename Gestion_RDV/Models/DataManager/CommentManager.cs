@@ -30,7 +30,7 @@ namespace Gestion_RDV.Models.DataManager
 
             public async Task AddAsync(Comment entity)
             {
-                _context.Comments.Add(entity);
+                await _context.Comments.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
 
@@ -44,6 +44,43 @@ namespace Gestion_RDV.Models.DataManager
             {
                 _context.Comments.Remove(entity);
                 await _context.SaveChangesAsync();
+            }
+
+            public Task<ActionResult<IEnumerable<Comment>>> GetAllBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Comment>> GetBySpecialIdAsync(int id)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Comment>> GetByStringAsync(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<Comment>> GetByIdsAsync(int id1, int id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public async Task<ActionResult<Comment>> GetByIdsAsync(int? userId, int? reviewId)
+            {
+                var comment = await _context.Comments.FirstOrDefaultAsync(s => s.UserId == userId && s.ReviewId == reviewId);
+                if (comment == null) return new NotFoundResult();
+                return new ActionResult<Comment>(comment);
+            }
+
+            public Task<ActionResult<IEnumerable<Comment>>> GetAllByIdsAsync(int? id1, int? id2)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
+            {
+                throw new NotImplementedException();
             }
         }
     }

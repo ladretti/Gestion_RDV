@@ -17,23 +17,14 @@
         [Column("rdv_end_date")]
         public DateTime EndDate { get; set; }
 
-        [ForeignKey("Etat"), Column("rdv_etat_id")]
-        public int EtatId { get; set; }
-
-        [Column("rdv_type_rendezvous")]
-        public string TypeRendezVous { get; set; }
-
         [Column("rdv_description")]
         public string Description { get; set; }
 
         [Column("rdv_prix")]
         public double Prix { get; set; }
 
-        [Column("rdv_id_event")]
-        public int Idevent { get; set; }
-
         [Column("rdv_fichier_joint")]
-        public string FichierJoint { get; set; }
+        public string? FichierJoint { get; set; }
 
         //ForeignKey
         [Column("usr_id")]
@@ -43,19 +34,19 @@
 
         // Navigation property
         [ForeignKey("UserId"), InverseProperty("RendezVous")]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [ForeignKey("OfficeId"), InverseProperty("RendezVous")]
-        public Office Office { get; set; }
+        public Office? Office { get; set; }
 
         [InverseProperty("RendezVous")]
-        public Review Review { get; set; }
+        public Review? Review { get; set; }
 
         [InverseProperty("RendezVous")]
         public virtual ICollection<Notification>? Notifications { get; }
 
         [InverseProperty("RendezVous")]
-        public Facture Facture { get; set; }
+        public Facture? Facture { get; set; }
 
     }
 
