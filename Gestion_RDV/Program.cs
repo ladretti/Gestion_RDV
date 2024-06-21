@@ -21,7 +21,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
 builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>();
 builder.Services.AddScoped<IDataRepository<Comment>, CommentManager>();
-builder.Services.AddScoped<IDataRepository<Conversation>, ConversationManager>();
+builder.Services.AddScoped<IDataRepositoryConversation<Conversation>, ConversationManager>();
 builder.Services.AddScoped<IDataRepository<Facture>, FactureManager>();
 builder.Services.AddScoped<IDataRepository<Message>, MessageManager>();
 builder.Services.AddScoped<IDataRepository<Notification>, NotificationManager>();

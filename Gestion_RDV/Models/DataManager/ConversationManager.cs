@@ -1,4 +1,5 @@
-﻿using Gestion_RDV.Models.EntityFramework;
+﻿using Gestion_RDV.Models.DTO;
+using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class ConversationManager : IDataRepository<Conversation>
+        public class ConversationManager : IDataRepositoryConversation<Conversation>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -75,6 +76,32 @@ namespace Gestion_RDV.Models.DataManager
             public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)
             {
                 throw new NotImplementedException();
+            }
+            public async Task<ActionResult<IEnumerable<ConversationDTO>>> GetConversationsWithUsersByUserIdAsync(int userId)
+            {
+                var query = from conv in _context.Conversations
+                            join convuser in _context.ConversationsUser on conv.ConversationId equals convuser.ConversationId
+                            where convuser.UserId == userId
+                            select conv;
+
+                var conversations = await query
+                    .Include(c => c.ConversationsUser)
+                    .ThenInclude(cu => cu.User)
+                    .ToListAsync();
+
+                var result = conversations.Select(c => new ConversationDTO
+                {
+                    ConversationId = c.ConversationId,
+                    ConversationName = c.Name,
+                    Users = c.ConversationsUser.Select(cu => new Conversation_UserDTO
+                    {
+                        UserId = cu.User.UserId,
+                        FirstName = cu.User.FirstName,
+                        LastName = cu.User.LastName
+                    }).ToList()
+                }).ToList();
+
+                return result;
             }
         }
     }
