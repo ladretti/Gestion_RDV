@@ -159,6 +159,49 @@ namespace Gestion_RDV.Migrations
                     b.ToTable("t_j_conversationuser_cvu", (string)null);
                 });
 
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Diagnosis", b =>
+                {
+                    b.Property<int>("DiagnosisId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("dia_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DiagnosisId"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text")
+                        .HasColumnName("dia_code");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("dia_description");
+
+                    b.Property<DateTime>("DiagnosisDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("dia_diagnosis_date");
+
+                    b.Property<string>("DiagnosisDetails")
+                        .HasColumnType("text")
+                        .HasColumnName("dia_diagnosis_details");
+
+                    b.Property<int>("RendezVousId")
+                        .HasColumnType("integer")
+                        .HasColumnName("rdv_id");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("usr_id");
+
+                    b.HasKey("DiagnosisId")
+                        .HasName("PK_DiagnosisId");
+
+                    b.HasIndex("RendezVousId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("t_e_diagnosis_dia", (string)null);
+                });
+
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Facture", b =>
                 {
                     b.Property<int>("FactureId")
@@ -231,6 +274,64 @@ namespace Gestion_RDV.Migrations
                     b.HasIndex("ReviewId");
 
                     b.ToTable("t_j_like_review_lke", (string)null);
+                });
+
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.MedicalInfo", b =>
+                {
+                    b.Property<int>("MedicalInfoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("mif_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MedicalInfoId"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("mif_category");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("mif_description");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("usr_id");
+
+                    b.HasKey("MedicalInfoId")
+                        .HasName("PK_InfoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("t_e_medicalinfo_mif", null, t =>
+                        {
+                            t.HasCheckConstraint("CHK_MedicalInfo_Category", "\"mif_category\" IN ('General', 'Chirurgical', 'Allergies', 'Autre')");
+                        });
+                });
+
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Medication", b =>
+                {
+                    b.Property<int>("MedicationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("med_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MedicationId"));
+
+                    b.Property<string>("Dosage")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("med_dosage");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("med_name");
+
+                    b.HasKey("MedicationId")
+                        .HasName("PK_Medication");
+
+                    b.ToTable("t_e_medication_med", (string)null);
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Message", b =>
@@ -423,6 +524,37 @@ namespace Gestion_RDV.Migrations
                     b.ToTable("t_e_post_pst", (string)null);
                 });
 
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Prescription", b =>
+                {
+                    b.Property<int>("PrescriptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("pre_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PrescriptionId"));
+
+                    b.Property<int>("DiagnosisId")
+                        .HasColumnType("integer")
+                        .HasColumnName("dia_id");
+
+                    b.Property<int>("MedicationId")
+                        .HasColumnType("integer")
+                        .HasColumnName("med_id");
+
+                    b.Property<DateTime>("PrescriptionDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("pre_date");
+
+                    b.HasKey("PrescriptionId")
+                        .HasName("PK_Prescription");
+
+                    b.HasIndex("DiagnosisId");
+
+                    b.HasIndex("MedicationId");
+
+                    b.ToTable("t_e_prescription_pre", (string)null);
+                });
+
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.RendezVous", b =>
                 {
                     b.Property<int>("RendezVousId")
@@ -591,6 +723,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("date")
                         .HasColumnName("usr_birth_date");
 
+                    b.Property<string>("BloodType")
+                        .HasColumnType("text")
+                        .HasColumnName("mif_blood_type");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text")
@@ -600,6 +736,10 @@ namespace Gestion_RDV.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("usr_first_name");
+
+                    b.Property<int?>("Height")
+                        .HasColumnType("integer")
+                        .HasColumnName("mif_height");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -628,6 +768,10 @@ namespace Gestion_RDV.Migrations
                         .HasColumnType("text")
                         .HasColumnName("usr_telephone");
 
+                    b.Property<int?>("Weigh")
+                        .HasColumnType("integer")
+                        .HasColumnName("mif_weight");
+
                     b.HasKey("UserId")
                         .HasName("PK_User");
 
@@ -636,7 +780,10 @@ namespace Gestion_RDV.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("t_e_user_usr", (string)null);
+                    b.ToTable("t_e_user_usr", null, t =>
+                        {
+                            t.HasCheckConstraint("CHK_User_Role", "\"usr_role\" IN ('User', 'Practitioner', 'Admin')");
+                        });
                 });
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Availability", b =>
@@ -693,6 +840,27 @@ namespace Gestion_RDV.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Diagnosis", b =>
+                {
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.RendezVous", "RendezVous")
+                        .WithMany("Diagnoses")
+                        .HasForeignKey("RendezVousId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Diagnosis_RendezVous");
+
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.User", "User")
+                        .WithMany("Diagnoses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Diagnosis_User");
+
+                    b.Navigation("RendezVous");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Facture", b =>
                 {
                     b.HasOne("Gestion_RDV.Models.EntityFramework.RendezVous", "RendezVous")
@@ -743,6 +911,18 @@ namespace Gestion_RDV.Migrations
                         .HasConstraintName("FK_LikeReview_User");
 
                     b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.MedicalInfo", b =>
+                {
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.User", "User")
+                        .WithMany("MedicalInfos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Diagnosis_User");
 
                     b.Navigation("User");
                 });
@@ -840,6 +1020,27 @@ namespace Gestion_RDV.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Prescription", b =>
+                {
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.Diagnosis", "Diagnosis")
+                        .WithMany("Prescriptions")
+                        .HasForeignKey("DiagnosisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Prescription_Diagnosis");
+
+                    b.HasOne("Gestion_RDV.Models.EntityFramework.Medication", "Medication")
+                        .WithMany("Prescriptions")
+                        .HasForeignKey("MedicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Prescription_Medication");
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("Medication");
+                });
+
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.RendezVous", b =>
                 {
                     b.HasOne("Gestion_RDV.Models.EntityFramework.Office", "Office")
@@ -931,6 +1132,16 @@ namespace Gestion_RDV.Migrations
                     b.Navigation("Messages");
                 });
 
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Diagnosis", b =>
+                {
+                    b.Navigation("Prescriptions");
+                });
+
+            modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Medication", b =>
+                {
+                    b.Navigation("Prescriptions");
+                });
+
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.Office", b =>
                 {
                     b.Navigation("Availabilities");
@@ -953,6 +1164,8 @@ namespace Gestion_RDV.Migrations
 
             modelBuilder.Entity("Gestion_RDV.Models.EntityFramework.RendezVous", b =>
                 {
+                    b.Navigation("Diagnoses");
+
                     b.Navigation("Facture");
 
                     b.Navigation("Notifications");
@@ -973,9 +1186,13 @@ namespace Gestion_RDV.Migrations
 
                     b.Navigation("ConversationsUser");
 
+                    b.Navigation("Diagnoses");
+
                     b.Navigation("LikesPosts");
 
                     b.Navigation("LikesReview");
+
+                    b.Navigation("MedicalInfos");
 
                     b.Navigation("Messages");
 

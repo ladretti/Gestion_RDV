@@ -16,6 +16,7 @@ using Gestion_RDV.Models.DTO;
 using Microsoft.CodeAnalysis.Scripting;
 using AutoMapper;
 using Npgsql;
+using System.Data;
 
 namespace Gestion_RDV.Controllers
 {
@@ -50,7 +51,7 @@ namespace Gestion_RDV.Controllers
             try
             {
                 await dataRepository.AddAsync(_mapper.Map<User>(user));
-                return StatusCode(StatusCodes.Status201Created); // Return HTTP 201 Created on success
+                return StatusCode(StatusCodes.Status201Created);
             }
             catch (DbUpdateException ex)
             {
@@ -103,7 +104,10 @@ namespace Gestion_RDV.Controllers
 
         private string GenerateJwtToken(User user)
         {
-            var claims = new List<Claim> { new Claim(JwtRegisteredClaimNames.Sub, user.Email), new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString()) };
+            var claims = new List<Claim> { 
+                new Claim(JwtRegisteredClaimNames.Email, user.Email), 
+                new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString())
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

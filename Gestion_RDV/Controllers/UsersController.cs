@@ -20,13 +20,21 @@ namespace Gestion_RDV.Controllers
         public class UsersController : ControllerBase
         {
             private readonly IDataRepository<User> dataRepository;
+            private readonly IDataRepository<MedicalInfo> dataRepositoryMedicalInfo;
+            private readonly IDataRepository<Diagnosis> dataRepositoryDiagnosis;
+            private readonly IDataRepository<Prescription> dataRepositoryPrescription;
+            private readonly IDataRepository<Medication> dataRepositoryMedication;
             private readonly IMapper _mapper;
 
 
-            public UsersController(IDataRepository<User> dataRepo, IMapper mapper)
+            public UsersController(IDataRepository<User> dataRepo, IMapper mapper, IDataRepository<MedicalInfo> dataRepoMedicalInfo, IDataRepository<Diagnosis> dataRepoyDiagnosis, IDataRepository<Prescription> dataRepoPrescription, IDataRepository<Medication> dataRepoyMedication)
             {
                 dataRepository = dataRepo;
-                _mapper = mapper; 
+                _mapper = mapper;
+                dataRepositoryMedicalInfo = dataRepoMedicalInfo;
+                dataRepositoryDiagnosis = dataRepoyDiagnosis;
+                dataRepositoryPrescription = dataRepoPrescription;
+                dataRepositoryMedication = dataRepoyMedication;
             }
 
 
@@ -43,6 +51,24 @@ namespace Gestion_RDV.Controllers
                 }
 
                 return Ok(_mapper.Map<UserDetailDTO>(user.Value)); ;
+            }
+            [HttpGet("medicalInfo/{id}")]
+            [ProducesResponseType(200)]
+            [ProducesResponseType(404)]
+            public async Task<ActionResult<UserMedicalDetailDTO>> GetMedicalUserInoById(int id)
+            {
+                var user = await dataRepository.GetByIdAsync(id);
+                await dataRepositoryMedicalInfo.GetAllBySpecialIdAsync(id);
+                await dataRepositoryDiagnosis.GetAllAsync();
+                await dataRepositoryPrescription.GetAllAsync();
+                await dataRepositoryMedication.GetAllAsync();
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(_mapper.Map<UserMedicalDetailDTO>(user.Value)); ;
             }
         }
     }

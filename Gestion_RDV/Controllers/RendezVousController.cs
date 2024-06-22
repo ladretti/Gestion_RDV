@@ -18,12 +18,14 @@ namespace Gestion_RDV.Controllers
     public class RendezVousController : ControllerBase
     {
         private readonly IDataRepository<RendezVous> dataRepository;
+        private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
-        public RendezVousController(IDataRepository<RendezVous> dataRepo, IMapper mapper)
+        public RendezVousController(IDataRepository<RendezVous> dataRepo, IMapper mapper, IDataRepository<User> dataRepoUser)
         {
             dataRepository = dataRepo;
             _mapper = mapper;
+            dataRepositoryUser = dataRepoUser;
         }
 
         /*[Authorize]
@@ -40,6 +42,21 @@ namespace Gestion_RDV.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<RendezVousDTO>(rdv.Value));
+        }
+
+        [HttpGet("{officeId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<RendezVousSpecialDTO>>> GetRendezVousByOfficeId(int officeId)
+        {
+            var rdv = await dataRepository.GetAllBySpecialIdAsync(officeId);
+            await dataRepositoryUser.GetAllAsync();
+
+            if (rdv == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<RendezVousSpecialDTO>>(rdv.Value));
         }
 
         [HttpPost]

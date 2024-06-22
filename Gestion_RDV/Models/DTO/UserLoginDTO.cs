@@ -1,4 +1,8 @@
-﻿namespace Gestion_RDV.Models.DTO
+﻿using Gestion_RDV.Models.EntityFramework;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+
+namespace Gestion_RDV.Models.DTO
 {
     public class UserLoginDTO
     {
@@ -7,5 +11,7 @@
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Avatar { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public UserRole Role { get; set; }
     }
 }
