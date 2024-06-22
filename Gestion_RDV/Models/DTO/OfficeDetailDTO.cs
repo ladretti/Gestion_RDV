@@ -21,12 +21,6 @@ namespace Gestion_RDV.Models.DTO
         public int NbSub { get; set; }
         public IEnumerable<SocialDTO> Socials { get; set; }
     }
-    public class SocialDTO
-    {
-        public int SocialMediaAccountId { get; set; }
-        public string Platform { get; set; }
-        public string Url { get; set; }
-    }
     public class OfficePostDTO
     {
         public string Diplome { get; set; }

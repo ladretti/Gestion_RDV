@@ -43,7 +43,7 @@ namespace Gestion_RDV.AutoMapper
                 .ForMember(dest => dest.NbLike, opt => opt.MapFrom(src => src.LikesReview.Count(l => l.IsLiked)))
                 .ForMember(dest => dest.NbDislike, opt => opt.MapFrom(src => src.LikesReview.Count(l => !l.IsLiked)));
             CreateMap<RendezVous, ReviewRendezVousDTO>();
-            CreateMap<Comment, CommentDTO>();
+            CreateMap<Comment, CommentReviewDTO>();
 
 
             //Conversation
@@ -81,6 +81,18 @@ namespace Gestion_RDV.AutoMapper
 
             CreateMap<FacturePostDTO, Facture>();
             CreateMap<Facture, FactureDTO>();
+
+            //Social
+            CreateMap<SocialPostDTO, SocialMediaAccount>();
+
+            //Address
+            CreateMap<AddressPostDTO, Address>();
+            CreateMap<AddressDTO, Address>();
+
+            //Comment
+            CreateMap<Comment, CommentDTO>();
+            CreateMap<CommentPostDTO, Comment>();
+
         }
     }
 }

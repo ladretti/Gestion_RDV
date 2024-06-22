@@ -20,12 +20,12 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<Notification> dataRepository;
         private readonly IDataRepository<Office> dataRepositoryOffice;
-        private readonly IDataRepository<RendezVous> dataRepositoryRDV;
+        private readonly IDataRepository<Notification> dataRepositoryRDV;
         private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
 
-        public NotificationsController(IDataRepository<Notification> dataRepo, IDataRepository<Office> dataRepoOffice, IDataRepository<RendezVous> dataRepoRDV, IMapper mapper, IDataRepository<User> dataRepoUser)
+        public NotificationsController(IDataRepository<Notification> dataRepo, IDataRepository<Office> dataRepoOffice, IDataRepository<Notification> dataRepoRDV, IMapper mapper, IDataRepository<User> dataRepoUser)
         {
             dataRepository = dataRepo;
             dataRepositoryOffice = dataRepoOffice;
@@ -99,6 +99,22 @@ namespace Gestion_RDV.Controllers
             await dataRepository.AddAsync(notification);
 
             return CreatedAtAction(nameof(GetNotificationById), new { id = notification.NotificationId }, notification);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteNotification(int id)
+        {
+            var notification = await dataRepository.GetByIdAsync(id);
+            if (notification.Value == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.DeleteAsync(notification.Value);
+
+            return NoContent();
         }
     }
 }

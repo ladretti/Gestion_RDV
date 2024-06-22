@@ -7,4 +7,10 @@
         public string Ville { get; set; }
         public int CodePostal { get; set; }
     }
+    public class AddressPostDTO
+    {
+        public string Adresse { get; set; }
+        public string Ville { get; set; }
+        public int CodePostal { get; set; }
+    }
 }
