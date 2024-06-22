@@ -59,9 +59,12 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<RendezVousPostDTO, RendezVous>();
             CreateMap<RendezVous, RendezVousDTO>();
             CreateMap<UserSignInDTO, User>();
+            CreateMap<RendezVous, RendezVousSpecialDTO>();
+
 
             //User
             CreateMap<User, UserDetailDTO>();
+            CreateMap<User, UserMedicalDetailDTO>();
 
             //Availability
             CreateMap<AvailabilityPostDTO, Availability>();
@@ -92,6 +95,17 @@ namespace Gestion_RDV.AutoMapper
             //Comment
             CreateMap<Comment, CommentDTO>();
             CreateMap<CommentPostDTO, Comment>();
+
+            //MedicalInfo
+            CreateMap<MedicalInfo, MedicalInfoDTO>();
+
+
+
+            CreateMap<Medication, MedicationDTO>();
+            CreateMap<Prescription, PrescriptionDTO>();
+            CreateMap<Diagnosis, DiagnosisDTO>();
+
+
 
         }
     }

@@ -48,6 +48,9 @@
         [InverseProperty("RendezVous")]
         public Facture? Facture { get; set; }
 
+        [InverseProperty("RendezVous")]
+        public ICollection<Diagnosis>? Diagnoses { get; set; }
+
     }
 
 }

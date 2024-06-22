@@ -35,6 +35,10 @@ builder.Services.AddScoped<IDataRepository<User>, UserManager>();
 builder.Services.AddScoped<IDataRepository<ConversationUser>, ConversationUserManager>();
 builder.Services.AddScoped<IDataRepository<LikePost>, LikePostManager>();
 builder.Services.AddScoped<IDataRepository<LikeReview>, LikeReviewManager>();
+builder.Services.AddScoped<IDataRepository<Diagnosis>, DiagnosisManager>();
+builder.Services.AddScoped<IDataRepository<MedicalInfo>, MedicalInfoManager>();
+builder.Services.AddScoped<IDataRepository<Prescription>,PrescriptionManager>();
+builder.Services.AddScoped<IDataRepository<Medication>, MedicationManager>();
 builder.Services.AddScoped<UserAuthorizationFilter>(provider =>
 {
     var routeKey = "userId";

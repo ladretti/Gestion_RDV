@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Text.Json.Serialization;
 
     [Table("t_e_user_usr")]
     public class User
@@ -34,9 +35,18 @@
 
         [Column("usr_secret_token")]
         public string SecretToken { get; set; }
+
         [Column("usr_role"), Required]
-        public string Role { get; set; }
-     
+        public UserRole Role { get; set; }
+
+        [Column("mif_weight")]
+        public int? Weigh { get; set; }
+
+        [Column("mif_height")]
+        public int? Height { get; set; }
+
+        [Column("mif_blood_type")]
+        public string? BloodType { get; set; }
 
         [Column("usr_sexe")]
         public string Sexe { get; set; }
@@ -78,7 +88,19 @@
         [InverseProperty("User")]
         public virtual ICollection<Post>? Posts { get; }
 
+        [InverseProperty("User")]
+        public ICollection<MedicalInfo>? MedicalInfos { get; set; }
+         [InverseProperty("User")]
+        public ICollection<Diagnosis>? Diagnoses { get; set; }
 
     }
-
+    public enum UserRole
+    {
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        User,
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        Practitioner,
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        Admin
+    }
 }
