@@ -103,6 +103,8 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<IEnumerable<MessageDTO>>> GetMessagesPaged(int conversationId, int userId, [FromQuery] int pageIndex = 0, [FromQuery] int pageSize = 10)
         {
             var userIsInConversation = await dataRepositoryConversationUser.ExistsByIds(conversationId, userId);
+            await dataRepositoryUser.GetAllAsync();
+
             if (!userIsInConversation.Value)
             {
                 return Forbid(); // Renvoie un statut HTTP 403 Forbidden
