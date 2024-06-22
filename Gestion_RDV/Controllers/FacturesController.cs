@@ -125,5 +125,21 @@ namespace Gestion_RDV.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteFacture(int id)
+        {
+            var facture = await dataRepository.GetByIdAsync(id);
+            if (facture.Value == null)
+            {
+                return NotFound();
+            }
+
+            await dataRepository.DeleteAsync(facture.Value);
+
+            return NoContent();
+        }
+
     }
 }

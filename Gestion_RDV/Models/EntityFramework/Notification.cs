@@ -28,13 +28,13 @@
 
         // Navigation property
         [ForeignKey("UserId"), InverseProperty("Notifications")]
-        public User User { get; set; } 
+        public User? User { get; set; } 
 
         [ForeignKey("RendezVousId"), InverseProperty("Notifications")]
-        public RendezVous RendezVous { get; set; }
+        public RendezVous? RendezVous { get; set; }
 
         [ForeignKey("OfficeId"), InverseProperty("Notifications")]
-        public Office Office { get; set; }
+        public Office? Office { get; set; }
 
 
     }

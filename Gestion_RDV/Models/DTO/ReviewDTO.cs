@@ -8,18 +8,12 @@
         public string Type { get; set; }
         public int Note { get; set; }
         public ReviewRendezVousDTO RendezVous { get; set; }
-        public IEnumerable<CommentDTO> Comments { get; set; }
+        public IEnumerable<CommentReviewDTO> Comments { get; set; }
         public int NbLike { get; set; }
         public int NbDislike { get; set; }
     }
     public class ReviewRendezVousDTO
     {
-        public OfficeUserDTO User { get; set; }
-    }
-    public class CommentDTO
-    {
-        public string Text { get; set; }
-        public DateTime Date { get; set; }
         public OfficeUserDTO User { get; set; }
     }
 }

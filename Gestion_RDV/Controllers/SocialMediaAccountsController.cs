@@ -7,68 +7,66 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
 using AutoMapper;
-using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Models.DTO;
-using System.Runtime.Intrinsics.Arm;
+using Gestion_RDV.Models.Repository;
 
 namespace Gestion_RDV.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RendezVousController : ControllerBase
+    public class SocialMediaAccountsController : ControllerBase
     {
-        private readonly IDataRepository<RendezVous> dataRepository;
+        private readonly IDataRepository<SocialMediaAccount> dataRepository;
         private readonly IMapper _mapper;
 
-        public RendezVousController(IDataRepository<RendezVous> dataRepo, IMapper mapper)
+        public SocialMediaAccountsController(IDataRepository<SocialMediaAccount> dataRepo, IMapper mapper)
         {
             dataRepository = dataRepo;
             _mapper = mapper;
         }
 
-        /*[Authorize]
-        [UserAuthorize("userId")]*/
-        [HttpGet("{userId}/{officeId}")]
+        [HttpGet("id")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<RendezVousDTO>> GetRendezVousById(int userId, int officeId)
+        public async Task<ActionResult<SocialMediaAccount>> GetSocialById(int id)
         {
-            var rdv = await dataRepository.GetByIdsAsync(userId, officeId);
+            var like = await dataRepository.GetByIdAsync(id);
 
-            if (rdv == null)
+            if (like.Value == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<RendezVousDTO>(rdv.Value));
+            return Ok(_mapper.Map<SocialMediaAccount>(like.Value));
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RendezVousDTO>> PostRendezVous(RendezVousPostDTO rendezVous)
+        public async Task<ActionResult<SocialMediaAccount>>PostSocial(SocialPostDTO social)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await dataRepository.AddAsync(_mapper.Map<RendezVous>(rendezVous));
+            SocialMediaAccount sub = _mapper.Map<SocialMediaAccount>(social);
+            await dataRepository.AddAsync(sub);
 
-            return CreatedAtAction(nameof(GetRendezVousById), new { userId = rendezVous.UserId, officeId = rendezVous.OfficeId }, rendezVous);
-
+            return CreatedAtAction(nameof(GetSocialById), new { id = sub.SocialMediaAccountId }, sub);
         }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteRendezVous(int id)
+        public async Task<IActionResult> DeleteSocialMediaAccount(int id)
         {
-            var rendezVous = await dataRepository.GetByIdAsync(id);
-            if (rendezVous.Value == null)
+            var social = await dataRepository.GetByIdAsync(id);
+            if (social.Value == null)
             {
                 return NotFound();
             }
 
-            await dataRepository.DeleteAsync(rendezVous.Value);
+            await dataRepository.DeleteAsync(social.Value);
 
             return NoContent();
         }

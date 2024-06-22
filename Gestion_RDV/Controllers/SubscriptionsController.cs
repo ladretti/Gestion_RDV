@@ -57,7 +57,7 @@ namespace Gestion_RDV.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<SubscriptionPostDTO>> ReviewSubscription(SubscriptionPostDTO subscription)
+        public async Task<ActionResult<SubscriptionPostDTO>> PostSubscription(SubscriptionPostDTO subscription)
         {
             if (!ModelState.IsValid)
             {
