@@ -14,4 +14,12 @@ namespace Gestion_RDV.Models.DTO
         [JsonConverter(typeof(StringEnumConverter))]
         public UserRole Role { get; set; }
     }
+    public class PractitionerLoginDTO : UserLoginDTO
+    {
+        public OfficeSignInDTO Office { get; set; }
+    }
+    public class OfficeSignInDTO {
+        public int OfficeId { get; set; }
+    }
+
 }

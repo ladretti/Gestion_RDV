@@ -27,12 +27,14 @@ namespace Gestion_RDV.Controllers
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly IDataRepository<User> dataRepository;
+        private readonly IDataRepository<Office> dataRepositoryOffice;
 
-        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper)
+        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper, IDataRepository<Office> dataRepoOffice)
         {
             _config = config;
             dataRepository = dataRepo;
             _mapper = mapper;
+            dataRepositoryOffice = dataRepoOffice;
         }
 
         [AllowAnonymous]
@@ -77,6 +79,7 @@ namespace Gestion_RDV.Controllers
         {
             IActionResult response = Unauthorized();
             var user = dataRepository.GetByStringAsync(infos.Email).Result.Value;
+            dataRepositoryOffice.GetAllAsync();
             if (user == null)
             {
                 return Unauthorized("Utilisateur non trouvé.");
@@ -89,23 +92,29 @@ namespace Gestion_RDV.Controllers
             }
 
             var token = GenerateJwtToken(user);
-            UserLoginDTO userDto = _mapper.Map<UserLoginDTO>(user);
-            if (user != null)
+            object userDetailsDto;
+
+            switch (user.Role)
             {
-                var tokenString = token;
-                response = Ok(new
-                {
-                    token = tokenString,
-                    userDetails = userDto,
-                });
+                case UserRole.Practitioner:
+                    userDetailsDto = _mapper.Map<PractitionerLoginDTO>(user);
+                    break;
+                default:
+                    userDetailsDto = _mapper.Map<UserLoginDTO>(user);
+                    break;
             }
-            return response;
+
+            return Ok(new
+            {
+                token = token,
+                userDetails = userDetailsDto
+            });
         }
 
         private string GenerateJwtToken(User user)
         {
-            var claims = new List<Claim> { 
-                new Claim(JwtRegisteredClaimNames.Email, user.Email), 
+            var claims = new List<Claim> {
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString())
             };
 
