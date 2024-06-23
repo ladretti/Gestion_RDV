@@ -146,7 +146,7 @@ namespace Gestion_RDV.Controllers
                 var messageEntity = _mapper.Map<Message>(message);
                 await dataRepositoryMessage.AddAsync(messageEntity);
 
-                return CreatedAtAction(nameof(GetMessageByIds), new { conversationId = message.ConversationId, userId = message.UserId }, _mapper.Map<MessagePostDTO>(message));
+                return CreatedAtAction(nameof(GetMessageByIds), new { conversationId = message.ConversationId, userId = message.UserId }, messageEntity);
             }
             catch (Exception e)
             {

@@ -45,13 +45,13 @@ namespace Gestion_RDV.Controllers
         }
 
         // GET: api/Conversations/5
-        [Authorize]
+        /*[Authorize]*/
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Conversation>> GetConversationById(int id)
+        public async Task<ActionResult<Conversation>> GetConversationById(int conversationId)
         {
-            var conversation = await dataRepositoryConversation.GetByIdAsync(id);
+            var conversation = await dataRepositoryConversation.GetByIdAsync(conversationId);
 
             if (conversation == null)
             {
@@ -60,19 +60,48 @@ namespace Gestion_RDV.Controllers
             return Ok(conversation);
         }
 
+        /*[Authorize]*/
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Conversation>> PostPost(Conversation conversation)
+        public async Task<ActionResult<ConversationDTO>> PostConversation(ConversationPostDTO conversationDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await dataRepositoryConversation.AddAsync(conversation);
+            var conversationEntity = new Conversation
+            {
+                Name = conversationDto.ConversationName
+            };
 
-            return CreatedAtAction("GetConversationById", new { id = conversation.ConversationId }, conversation); // GetById : nom de l’action
+            try
+            {
+                await dataRepositoryConversation.AddAsync(conversationEntity);
+
+                foreach (var userId in conversationDto.UserIds)
+                {
+                    var conversationUserEntity = new ConversationUser
+                    {
+                        ConversationId = conversationEntity.ConversationId,
+                        UserId = userId
+                    };
+
+                    await dataRepositoryConversationUser.AddAsync(conversationUserEntity);
+                }
+                Conversation conv = _mapper.Map<Conversation>(conversationDto);
+
+               /* var resultDto = _mapper.Map<ConversationPostDTO>(conversationEntity);
+                resultDto.UserIds = conversationDto.UserIds; // Ajouter les UserIds au résultat*/
+
+                //return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, resultDto);
+                return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, _mapper.Map<ConversationDTO>(conv));
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest("Impossible de créer la conversation");
+            }
         }
 
         /*[Authorize]
