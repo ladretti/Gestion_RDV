@@ -35,10 +35,11 @@ namespace Gestion_RDV.Controllers
         {
             var rdv = await dataRepository.GetByIdAsync(adresseId);
 
-            if (rdv.Value == null)
-            {
+            if (rdv == null)
                 return NotFound();
-            }
+            if (rdv.Value == null)
+                return NotFound();
+
             return Ok(_mapper.Map<AddressDTO>(rdv.Value));
         }
 
@@ -79,16 +80,18 @@ namespace Gestion_RDV.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PutAddress(int adresseId, AddressDTO adresse)
         {
-            if (adresseId != adresse.AdresseId )
+            if (adresseId != adresse.AdresseId)
             {
                 return BadRequest();
             }
 
             var adresseToUpdate = await dataRepository.GetByIdAsync(adresseId);
             if (adresseToUpdate == null)
-            {
                 return NotFound();
-            }
+            if (adresseToUpdate.Value == null)
+                return NotFound();
+
+
             else
             {
                 await dataRepository.UpdateAsync(adresseToUpdate.Value, _mapper.Map<Address>(adresse));

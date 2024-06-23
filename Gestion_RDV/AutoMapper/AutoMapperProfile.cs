@@ -99,6 +99,7 @@ namespace Gestion_RDV.AutoMapper
 
             //Address
             CreateMap<AddressPostDTO, Address>();
+            CreateMap<AddressDTO, AddressPostDTO>();
             CreateMap<AddressDTO, Address>();
 
             //Comment
