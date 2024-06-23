@@ -114,7 +114,12 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<Prescription, PrescriptionDTO>();
             CreateMap<Diagnosis, DiagnosisDTO>();
 
+            //OfficeEquipment
 
+            CreateMap<OfficeEquipment, OfficeEquipmentDTO>();
+            CreateMap<OfficeEquipmentPostDTO, OfficeEquipment>();
+            CreateMap<Equipment, EquipmentDTO>();
+            CreateMap<EquipmentPostDTO, Equipment>();
 
         }
     }

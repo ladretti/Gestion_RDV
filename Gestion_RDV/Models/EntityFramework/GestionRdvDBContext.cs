@@ -35,6 +35,8 @@ namespace Gestion_RDV.Models.EntityFramework
         public DbSet<Diagnosis> Diagnoses { get; set; }
         public DbSet<Medication> Medications { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
+        public DbSet<OfficeEquipment> OfficeEquipments { get; set; }
+        public DbSet<Equipment> Equipments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -418,6 +420,11 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasForeignKey(e => e.AdresseId)
                       .HasConstraintName("FK_Office_Address")
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasMany(e => e.OfficeEquipments)
+                   .WithOne(p => p.Office)
+                   .HasForeignKey(p => p.OfficeId)
+                   .HasConstraintName("FK_OfficeEquipment_Office");
             });
             modelBuilder.Entity<Post>(entity =>
             {
@@ -698,104 +705,144 @@ namespace Gestion_RDV.Models.EntityFramework
                 });
 
 
-                modelBuilder.Entity<Diagnosis>(entity =>
+            modelBuilder.Entity<Diagnosis>(entity =>
+            {
+                entity.ToTable("t_e_diagnosis_dia");
+
+                entity.HasKey(e => e.DiagnosisId).HasName("PK_DiagnosisId");
+
+                entity.Property(e => e.DiagnosisId).HasColumnName("dia_id").IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.DiagnosisDate).HasColumnName("dia_diagnosis_date").IsRequired();
+                entity.Property(e => e.Code).HasColumnName("dia_code").IsRequired(false);
+                entity.Property(e => e.Description).HasColumnName("dia_description").IsRequired(false);
+                entity.Property(e => e.DiagnosisDetails).HasColumnName("dia_diagnosis_details").IsRequired(false);
+
+                entity.Property(e => e.UserId).HasColumnName("usr_id").IsRequired();
+                entity.Property(e => e.RendezVousId).HasColumnName("rdv_id").IsRequired();
+
+                entity.HasOne(d => d.User)
+                      .WithMany(p => p.Diagnoses)
+                      .HasForeignKey(d => d.UserId)
+                      .OnDelete(DeleteBehavior.Cascade)
+                      .HasConstraintName("FK_Diagnosis_User");
+
+                entity.HasOne(d => d.RendezVous)
+                      .WithMany(p => p.Diagnoses)
+                      .HasForeignKey(d => d.RendezVousId)
+                      .OnDelete(DeleteBehavior.Cascade)
+                      .HasConstraintName("FK_Diagnosis_RendezVous");
+
+                entity.HasMany(e => e.Prescriptions)
+                      .WithOne(p => p.Diagnosis)
+                      .HasForeignKey(p => p.DiagnosisId)
+                      .HasConstraintName("FK_Prescription_Diagnosis");
+            });
+
+            modelBuilder.Entity<MedicalInfo>(entity =>
+            {
+                entity.ToTable("t_e_medicalinfo_mif");
+
+                entity.HasKey(e => e.MedicalInfoId).HasName("PK_InfoId");
+
+                entity.Property(e => e.MedicalInfoId).HasColumnName("mif_id").IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.Category)
+                      .HasColumnName("mif_category")
+                      .HasConversion(
+                          v => v.ToString(),
+                          v => (FileType)Enum.Parse(typeof(FileType), v))
+                      .IsRequired();
+                entity.Property(e => e.Description).HasColumnName("mif_description").IsRequired(false);
+
+                entity.Property(e => e.UserId).HasColumnName("usr_id").IsRequired();
+
+                entity.HasOne(d => d.User)
+                      .WithMany(p => p.MedicalInfos)
+                      .HasForeignKey(d => d.UserId)
+                      .OnDelete(DeleteBehavior.Cascade)
+                      .HasConstraintName("FK_Diagnosis_User");
+
+                entity.HasCheckConstraint("CHK_MedicalInfo_Category", $"\"mif_category\" IN ({string.Join(", ", Enum.GetNames(typeof(FileType)).Select(f => $"'{f}'"))})");
+            });
+
+            modelBuilder.Entity<Medication>(entity =>
+            {
+                entity.ToTable("t_e_medication_med");
+
+                entity.HasKey(e => e.MedicationId).HasName("PK_Medication");
+
+                entity.Property(e => e.MedicationId).HasColumnName("med_id");
+                entity.Property(e => e.Name).HasColumnName("med_name").IsRequired();
+                entity.Property(e => e.Dosage).HasColumnName("med_dosage");
+
+                // Relationships
+                entity.HasMany(e => e.Prescriptions)
+                    .WithOne(p => p.Medication)
+                    .HasForeignKey(p => p.MedicationId)
+                    .HasConstraintName("FK_Prescription_Medication");
+            });
+
+            // Configuration for Prescription
+            modelBuilder.Entity<Prescription>(entity =>
+            {
+                entity.ToTable("t_e_prescription_pre");
+
+                entity.HasKey(e => e.PrescriptionId).HasName("PK_Prescription");
+
+                entity.Property(e => e.PrescriptionId).HasColumnName("pre_id");
+                entity.Property(e => e.Description).HasColumnName("pre_description").IsRequired(false);
+                entity.Property(e => e.DiagnosisId).HasColumnName("dia_id");
+                entity.Property(e => e.MedicationId).HasColumnName("med_id");
+
+                // Relationships
+                entity.HasOne(e => e.Diagnosis)
+                    .WithMany(d => d.Prescriptions)
+                    .HasForeignKey(e => e.DiagnosisId)
+                    .HasConstraintName("FK_Prescription_Diagnosis");
+
+                entity.HasOne(e => e.Medication)
+                    .WithMany(m => m.Prescriptions)
+                    .HasForeignKey(e => e.MedicationId)
+                    .HasConstraintName("FK_Prescription_Medication");
+            });
+            modelBuilder.Entity<Equipment>(entity =>
+            {
+                entity.ToTable("t_e_equipment_equ");
+
+                entity.HasKey(e => e.EquipmentId).HasName("PK_Equipment");
+
+                entity.Property(e => e.EquipmentId).HasColumnName("equ_id");
+                entity.Property(e => e.Name).HasColumnName("equ_name").IsRequired();
+
+                // Relationships
+                entity.HasMany(e => e.OfficeEquipments)
+                    .WithOne(p => p.Equipment)
+                    .HasForeignKey(p => p.EquipmentId)
+                    .HasConstraintName("FK_OfficeEquipment_Equipment");
+            });
+            modelBuilder.Entity<OfficeEquipment>(entity =>
                 {
-                    entity.ToTable("t_e_diagnosis_dia");
+                    entity.ToTable("t_j_office_equipment_ofe");
 
-                    entity.HasKey(e => e.DiagnosisId).HasName("PK_DiagnosisId");
+                    entity.HasKey(e => new { e.EquipmentId, e.OfficeId }).HasName("PK_OfficeEquipment");
 
-                    entity.Property(e => e.DiagnosisId).HasColumnName("dia_id").IsRequired().ValueGeneratedOnAdd();
-                    entity.Property(e => e.DiagnosisDate).HasColumnName("dia_diagnosis_date").IsRequired();
-                    entity.Property(e => e.Code).HasColumnName("dia_code").IsRequired(false);
-                    entity.Property(e => e.Description).HasColumnName("dia_description").IsRequired(false);
-                    entity.Property(e => e.DiagnosisDetails).HasColumnName("dia_diagnosis_details").IsRequired(false);
-
-                    entity.Property(e => e.UserId).HasColumnName("usr_id").IsRequired();
-                    entity.Property(e => e.RendezVousId).HasColumnName("rdv_id").IsRequired();
-
-                    entity.HasOne(d => d.User)
-                          .WithMany(p => p.Diagnoses)
-                          .HasForeignKey(d => d.UserId)
-                          .OnDelete(DeleteBehavior.Cascade)
-                          .HasConstraintName("FK_Diagnosis_User");
-
-                    entity.HasOne(d => d.RendezVous)
-                          .WithMany(p => p.Diagnoses)
-                          .HasForeignKey(d => d.RendezVousId)
-                          .OnDelete(DeleteBehavior.Cascade)
-                          .HasConstraintName("FK_Diagnosis_RendezVous");
-
-                    entity.HasMany(e => e.Prescriptions)
-                          .WithOne(p => p.Diagnosis)
-                          .HasForeignKey(p => p.DiagnosisId)
-                          .HasConstraintName("FK_Prescription_Diagnosis");
-                });
-
-                modelBuilder.Entity<MedicalInfo>(entity =>
-                {
-                    entity.ToTable("t_e_medicalinfo_mif");
-
-                    entity.HasKey(e => e.MedicalInfoId).HasName("PK_InfoId");
-
-                    entity.Property(e => e.MedicalInfoId).HasColumnName("mif_id").IsRequired().ValueGeneratedOnAdd();
-                    entity.Property(e => e.Category)
-                          .HasColumnName("mif_category")
-                          .HasConversion(
-                              v => v.ToString(),
-                              v => (FileType)Enum.Parse(typeof(FileType), v))
-                          .IsRequired();
-                    entity.Property(e => e.Description).HasColumnName("mif_description").IsRequired(false);
-
-                    entity.Property(e => e.UserId).HasColumnName("usr_id").IsRequired();
-
-                    entity.HasOne(d => d.User)
-                          .WithMany(p => p.MedicalInfos)
-                          .HasForeignKey(d => d.UserId)
-                          .OnDelete(DeleteBehavior.Cascade)
-                          .HasConstraintName("FK_Diagnosis_User");
-
-                    entity.HasCheckConstraint("CHK_MedicalInfo_Category", $"\"mif_category\" IN ({string.Join(", ", Enum.GetNames(typeof(FileType)).Select(f => $"'{f}'"))})");
-                });
-
-                modelBuilder.Entity<Medication>(entity =>
-                {
-                    entity.ToTable("t_e_medication_med");
-
-                    entity.HasKey(e => e.MedicationId).HasName("PK_Medication");
-
-                    entity.Property(e => e.MedicationId).HasColumnName("med_id");
-                    entity.Property(e => e.Name).HasColumnName("med_name").IsRequired();
-                    entity.Property(e => e.Dosage).HasColumnName("med_dosage");
+                    entity.Property(e => e.OfficeId).HasColumnName("ofc_id");
+                    entity.Property(e => e.EquipmentId).HasColumnName("equ_id");
+                    entity.Property(e => e.Etat).HasColumnName("ofe_state").IsRequired();
+                    entity.Property(e => e.FutureUpdate).HasColumnName("ofe_future_update").IsRequired();
+                    entity.Property(e => e.LastUpdate).HasColumnName("ofe_last_update").IsRequired();
 
                     // Relationships
-                    entity.HasMany(e => e.Prescriptions)
-                        .WithOne(p => p.Medication)
-                        .HasForeignKey(p => p.MedicationId)
-                        .HasConstraintName("FK_Prescription_Medication");
-                });
+                    entity.HasOne(e => e.Office)
+                     .WithMany(u => u.OfficeEquipments)
+                     .HasForeignKey(e => e.OfficeId)
+                     .HasConstraintName("FK_OfficeEquipment_Office")
+                     .OnDelete(DeleteBehavior.Cascade);
 
-                // Configuration for Prescription
-                modelBuilder.Entity<Prescription>(entity =>
-                {
-                    entity.ToTable("t_e_prescription_pre");
-
-                    entity.HasKey(e => e.PrescriptionId).HasName("PK_Prescription");
-
-                    entity.Property(e => e.PrescriptionId).HasColumnName("pre_id");
-                    entity.Property(e => e.Description).HasColumnName("pre_description").IsRequired(false);
-                    entity.Property(e => e.DiagnosisId).HasColumnName("dia_id");
-                    entity.Property(e => e.MedicationId).HasColumnName("med_id");
-
-                    // Relationships
-                    entity.HasOne(e => e.Diagnosis)
-                        .WithMany(d => d.Prescriptions)
-                        .HasForeignKey(e => e.DiagnosisId)
-                        .HasConstraintName("FK_Prescription_Diagnosis");
-
-                    entity.HasOne(e => e.Medication)
-                        .WithMany(m => m.Prescriptions)
-                        .HasForeignKey(e => e.MedicationId)
-                        .HasConstraintName("FK_Prescription_Medication");
+                    entity.HasOne(e => e.Equipment)
+                        .WithMany(o => o.OfficeEquipments)
+                        .HasForeignKey(e => e.EquipmentId)
+                        .HasConstraintName("FK_OfficeEquipment_Equipment")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
 

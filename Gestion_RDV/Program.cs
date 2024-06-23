@@ -38,6 +38,8 @@ builder.Services.AddScoped<IDataRepository<Diagnosis>, DiagnosisManager>();
 builder.Services.AddScoped<IDataRepository<MedicalInfo>, MedicalInfoManager>();
 builder.Services.AddScoped<IDataRepository<Prescription>,PrescriptionManager>();
 builder.Services.AddScoped<IDataRepository<Medication>, MedicationManager>();
+builder.Services.AddScoped<IDataRepository<OfficeEquipment>, OfficeEquipmentManager>();
+builder.Services.AddScoped<IDataRepository<Equipment>, EquipmentManager>();
 builder.Services.AddScoped<UserAuthorizationFilter>(provider =>
 {
     var routeKey = "userId";
