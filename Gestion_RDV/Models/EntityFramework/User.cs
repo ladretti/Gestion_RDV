@@ -12,17 +12,17 @@
         public int UserId { get; set; }
 
         [Column("usr_first_name"), Required]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Column("usr_last_name"), Required]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Column("usr_email"), Required]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "L'adresse email n'est pas valide.")] //marche pas
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Column("usr_password"), Required]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Column("usr_birth_date"), Required]
         public DateOnly BirthDate { get; set; }
@@ -31,10 +31,13 @@
         public bool Activated { get; set; } = false;
 
         [Column("usr_avatar")]
-        public string Avatar { get; set; }
+        public string? Avatar { get; set; }
 
         [Column("usr_secret_token")]
-        public string SecretToken { get; set; }
+        public string? SecretToken { get; set; }
+
+        [Column("usr_secret_token_validity")]
+        public DateTime? SecretTokenValidity { get; set; }
 
         [Column("usr_role"), Required]
         public UserRole Role { get; set; }
@@ -49,11 +52,11 @@
         public string? BloodType { get; set; }
 
         [Column("usr_sexe")]
-        public string Sexe { get; set; }
+        public string? Sexe { get; set; }
 
         [Column("usr_telephone")]
         [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Le numéro de téléphone n'est pas valide.")] //marche pas
-        public string Telephone { get; set; }
+        public string? Telephone { get; set; }
 
 
 
