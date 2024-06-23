@@ -103,10 +103,10 @@ namespace Gestion_RDV.Models.DataManager
 
                 return new ActionResult<IEnumerable<Message>>(messages);
             }
-            public async Task<ActionResult<IEnumerable<Message>>> GetMessagesPagedAsync(int conversationId, int pageIndex, int pageSize)
+            public async Task<ActionResult<IEnumerable<Message>>> GetMessagesPagedAsync(int conversationId, int pageIndex, int pageSize, DateTime? beforeDate = null)
             {
                 var messages = await _context.Messages
-                                    .Where(m => m.ConversationId == conversationId)
+                                    .Where(m => m.ConversationId == conversationId && m.Created >= beforeDate)
                                     .OrderByDescending(m => m.Created)
                                     .Skip(pageIndex * pageSize)
                                     .Take(pageSize)
