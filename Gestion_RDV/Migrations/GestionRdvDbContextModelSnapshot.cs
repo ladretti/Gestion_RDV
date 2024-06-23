@@ -533,6 +533,10 @@ namespace Gestion_RDV.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PrescriptionId"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("pre_description");
+
                     b.Property<int>("DiagnosisId")
                         .HasColumnType("integer")
                         .HasColumnName("dia_id");
@@ -540,10 +544,6 @@ namespace Gestion_RDV.Migrations
                     b.Property<int>("MedicationId")
                         .HasColumnType("integer")
                         .HasColumnName("med_id");
-
-                    b.Property<DateTime>("PrescriptionDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("pre_date");
 
                     b.HasKey("PrescriptionId")
                         .HasName("PK_Prescription");

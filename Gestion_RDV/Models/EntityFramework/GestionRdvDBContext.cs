@@ -778,7 +778,7 @@ namespace Gestion_RDV.Models.EntityFramework
                     entity.HasKey(e => e.PrescriptionId).HasName("PK_Prescription");
 
                     entity.Property(e => e.PrescriptionId).HasColumnName("pre_id");
-                    entity.Property(e => e.PrescriptionDate).HasColumnName("pre_date").IsRequired();
+                    entity.Property(e => e.Description).HasColumnName("pre_description").IsRequired(false);
                     entity.Property(e => e.DiagnosisId).HasColumnName("dia_id");
                     entity.Property(e => e.MedicationId).HasColumnName("med_id");
 
