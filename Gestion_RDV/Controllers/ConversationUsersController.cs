@@ -16,16 +16,12 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class ConversationUsersController : ControllerBase
     {
-        private readonly IDataRepositoryConversation<Conversation> dataRepositoryConversation;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
-        private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
-        public ConversationUsersController(IDataRepositoryConversation<Conversation> dataRepoConv, IDataRepository<ConversationUser> dataRepoConvUser, IDataRepository<User> dataRepoUser, IMapper mapper)
+        public ConversationUsersController(IDataRepository<ConversationUser> dataRepoConvUser, IMapper mapper)
         {
-            dataRepositoryConversation = dataRepoConv;
             dataRepositoryConversationUser = dataRepoConvUser;
-            dataRepositoryUser = dataRepoUser;
             _mapper = mapper;
         }
 
