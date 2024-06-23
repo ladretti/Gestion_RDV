@@ -16,16 +16,12 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class ConversationUsersController : ControllerBase
     {
-        private readonly IDataRepositoryConversation<Conversation> dataRepositoryConversation;
         private readonly IDataRepository<ConversationUser> dataRepositoryConversationUser;
-        private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IMapper _mapper;
 
-        public ConversationUsersController(IDataRepositoryConversation<Conversation> dataRepoConv, IDataRepository<ConversationUser> dataRepoConvUser, IDataRepository<User> dataRepoUser, IMapper mapper)
+        public ConversationUsersController(IDataRepository<ConversationUser> dataRepoConvUser, IMapper mapper)
         {
-            dataRepositoryConversation = dataRepoConv;
             dataRepositoryConversationUser = dataRepoConvUser;
-            dataRepositoryUser = dataRepoUser;
             _mapper = mapper;
         }
 
@@ -76,7 +72,7 @@ namespace Gestion_RDV.Controllers
         [HttpDelete("{userId}/{conversationId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAdresse(int userId, int conversationId)
+        public async Task<IActionResult> DeleteConversationUser(int userId, int conversationId)
         {
             var convUser = await dataRepositoryConversationUser.GetByIdsAsync(userId, conversationId);
             if (convUser.Value == null)
