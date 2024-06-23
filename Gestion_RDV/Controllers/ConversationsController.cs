@@ -71,6 +71,12 @@ namespace Gestion_RDV.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (conversationDto.UserIds == null || conversationDto.UserIds.Count < 2)
+            {
+                ModelState.AddModelError("UserIds", "Au moins deux utilisateurs doivent être renseigné.");
+                return BadRequest(ModelState);
+            }
+
             var conversationEntity = new Conversation
             {
                 Name = conversationDto.ConversationName
