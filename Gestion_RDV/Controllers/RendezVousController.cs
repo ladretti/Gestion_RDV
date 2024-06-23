@@ -10,6 +10,7 @@ using AutoMapper;
 using Gestion_RDV.Models.Repository;
 using Gestion_RDV.Models.DTO;
 using System.Runtime.Intrinsics.Arm;
+using Microsoft.Extensions.Hosting;
 
 namespace Gestion_RDV.Controllers
 {
@@ -53,12 +54,13 @@ namespace Gestion_RDV.Controllers
         {
             var rdv = await dataRepository.GetAllBySpecialIdAsync(officeId);
             await dataRepositoryUser.GetAllAsync();
+            var filteredRdv = rdv.Value.OrderBy(post => post.StartDate).ToList();
 
-            if (rdv == null)
+            if (filteredRdv == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<IEnumerable<RendezVousSpecialDTO>>(rdv.Value));
+            return Ok(_mapper.Map<IEnumerable<RendezVousSpecialDTO>>(filteredRdv));
         }
 
         [HttpGet("getRendezVousByUserId/{userId}")]
