@@ -46,7 +46,7 @@ namespace Gestion_RDV.Controllers
 
         // GET: api/Conversations/5
         /*[Authorize]*/
-        [HttpGet("{id}")]
+        [HttpGet("{conversationId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Conversation>> GetConversationById(int conversationId)
@@ -90,13 +90,8 @@ namespace Gestion_RDV.Controllers
 
                     await dataRepositoryConversationUser.AddAsync(conversationUserEntity);
                 }
-                Conversation conv = _mapper.Map<Conversation>(conversationDto);
 
-               /* var resultDto = _mapper.Map<ConversationPostDTO>(conversationEntity);
-                resultDto.UserIds = conversationDto.UserIds; // Ajouter les UserIds au résultat*/
-
-                //return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, resultDto);
-                return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, _mapper.Map<ConversationDTO>(conv));
+                return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, _mapper.Map<ConversationDTO>(conversationEntity));
             }
             catch (DbUpdateException ex)
             {
