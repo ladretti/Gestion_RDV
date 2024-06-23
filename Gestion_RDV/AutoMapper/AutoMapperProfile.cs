@@ -10,6 +10,8 @@ namespace Gestion_RDV.AutoMapper
         {
             CreateMap<Availability, AvailabilityDTO>();
             CreateMap<User, UserLoginDTO>();
+            CreateMap<User, PractitionerLoginDTO>();
+            CreateMap<Office, OfficeSignInDTO>();
             //Notification
             CreateMap<Notification, NotificationDetailsDTO>();
             CreateMap<Office, NotificationDetailsOfficeDTO>();

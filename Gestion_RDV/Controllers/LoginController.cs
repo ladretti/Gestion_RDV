@@ -27,15 +27,17 @@ namespace Gestion_RDV.Controllers
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly IDataRepository<User> dataRepository;
+        private readonly IDataRepository<Office> dataRepositoryOffice;
         private readonly IEmailService _emailService;
 
         private const int ConstValidityMinutes = 10;
 
-        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper, IEmailService emailService)
+        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper, IEmailService emailService,IDataRepository<Office> dataRepoOffice)
         {
             _config = config;
             dataRepository = dataRepo;
             _mapper = mapper;
+            dataRepositoryOffice = dataRepoOffice;
             this._emailService = emailService;
         }
 
@@ -82,6 +84,7 @@ namespace Gestion_RDV.Controllers
         {
             IActionResult response = Unauthorized();
             var user = dataRepository.GetByStringAsync(infos.Email).Result.Value;
+            dataRepositoryOffice.GetAllAsync();
             if (user == null)
             {
                 return Unauthorized("Utilisateur non trouvé.");
@@ -94,17 +97,23 @@ namespace Gestion_RDV.Controllers
             }
 
             var token = GenerateJwtToken(user);
-            UserLoginDTO userDto = _mapper.Map<UserLoginDTO>(user);
-            if (user != null)
+            object userDetailsDto;
+
+            switch (user.Role)
             {
-                var tokenString = token;
-                response = Ok(new
-                {
-                    token = tokenString,
-                    userDetails = userDto,
-                });
+                case UserRole.Practitioner:
+                    userDetailsDto = _mapper.Map<PractitionerLoginDTO>(user);
+                    break;
+                default:
+                    userDetailsDto = _mapper.Map<UserLoginDTO>(user);
+                    break;
             }
-            return response;
+
+            return Ok(new
+            {
+                token = token,
+                userDetails = userDetailsDto
+            });
         }
 
         private string GenerateJwtToken(User user)
