@@ -120,23 +120,5 @@ namespace Gestion_RDV.Controllers
 
             return Ok(conversations);
         }
-        /*[Authorize]
-        [UserAuthorize("userId")]*/
-        [HttpGet("getAll/{userId}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<ConversationDTO>>> GetAllConversationByUserId(int userId)
-        {
-            var conv = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
-            await dataRepositoryConversation.GetAllAsync();
-
-            //var conversations = await dataRepositoryConversation.GetConversationsWithUsersByUserIdAsync(userId);
-            if (conv == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(conv);
-        }
     }
 }

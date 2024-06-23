@@ -1,5 +1,4 @@
 using Gestion_RDV.AutoMapper;
-using Gestion_RDV.Email;
 using Gestion_RDV.Filters;
 using Gestion_RDV.Models.DataManager;
 using Gestion_RDV.Models.DataManager.API_Gymbrodyssey.Models.DataManager;
@@ -16,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
 builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>();
