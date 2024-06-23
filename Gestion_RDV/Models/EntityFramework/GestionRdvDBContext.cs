@@ -659,6 +659,10 @@ namespace Gestion_RDV.Models.EntityFramework
                           .HasColumnName("usr_secret_token")
                           .IsRequired(false);
 
+                    entity.Property(e => e.SecretTokenValidity)
+                          .HasColumnName("usr_secret_token_validity")
+                          .IsRequired(false);
+
                     entity.Property(e => e.Role)
                           .HasColumnName("usr_role")
                           .HasConversion(

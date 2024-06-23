@@ -19,9 +19,9 @@ namespace Gestion_RDV.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendEmail(EmailDTO email)
+        public async Task<IActionResult> SendEmail(EmailDTO email)
         {
-            _emailService.SendEmailAsync(email);
+            await _emailService.SendEmailAsync(email);
 
             return Ok("Email sent successfully");
         }

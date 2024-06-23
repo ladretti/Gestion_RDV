@@ -27,12 +27,16 @@ namespace Gestion_RDV.Controllers
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
         private readonly IDataRepository<User> dataRepository;
+        private readonly IEmailService _emailService;
 
-        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper)
+        private const int ConstValidityMinutes = 10;
+
+        public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper, IEmailService emailService)
         {
             _config = config;
             dataRepository = dataRepo;
             _mapper = mapper;
+            this._emailService = emailService;
         }
 
         [AllowAnonymous]
@@ -51,6 +55,7 @@ namespace Gestion_RDV.Controllers
             try
             {
                 await dataRepository.AddAsync(_mapper.Map<User>(user));
+                await SendConfirmationEmail(user.Email);
                 return StatusCode(StatusCodes.Status201Created);
             }
             catch (DbUpdateException ex)
@@ -104,8 +109,8 @@ namespace Gestion_RDV.Controllers
 
         private string GenerateJwtToken(User user)
         {
-            var claims = new List<Claim> { 
-                new Claim(JwtRegisteredClaimNames.Email, user.Email), 
+            var claims = new List<Claim> {
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString())
             };
 
@@ -138,6 +143,88 @@ namespace Gestion_RDV.Controllers
                 innerException = innerException.InnerException;
             }
             return false;
+        }
+
+        [HttpPost("{email}")]
+        public async Task<IActionResult> SendConfirmationEmail(string email)
+        {
+            var user = await dataRepository.GetByStringAsync(email);
+
+            if (user.Value == null)
+            {
+                return NotFound();
+            }
+
+            if (user.Value.Activated)
+            {
+                return BadRequest("Email déjà validé.");
+            }
+
+            string token = GenerateEmailConfirmationToken();
+
+            //Update user secret token
+            User userUpdated = user.Value;
+            userUpdated.SecretToken = token;
+            userUpdated.SecretTokenValidity = DateTime.UtcNow.AddMinutes(ConstValidityMinutes);
+            await dataRepository.UpdateAsync(user.Value, userUpdated);
+
+            var message = new EmailDTO
+            {
+                To = user.Value.Email,
+                Subject = "Email Confirmation Medic Place",
+                Body = $"Bonjour {user.Value.FirstName}, <br/><br/> Vous avez {ConstValidityMinutes} minutes pour confirmer votre adresse mail avec ce code : {token}"
+            };
+
+            await _emailService.SendEmailAsync(message);
+            return Ok("Email de confirmation envoyé.");
+        }
+
+        [HttpPost("{userId}/{token}")]
+        public async Task<IActionResult> VerifyEmail(int userId, string token)
+        {
+            var user = await dataRepository.GetByIdAsync(userId);
+
+            if (user.Value == null)
+            {
+                return NotFound();
+            }
+
+            if (user.Value.Activated)
+            {
+                return BadRequest("Email déjà validé.");
+            }
+
+            if (user.Value.SecretToken != token || user.Value.SecretTokenValidity < DateTime.UtcNow)
+            {
+                return BadRequest("Code de vérification invalide ou périmé.");
+                
+            }
+
+            // Valider l'utilisateur
+            User userUpdated = user.Value;
+            userUpdated.SecretToken = null;
+            userUpdated.SecretTokenValidity = null;
+            userUpdated.Activated = true;
+
+            await dataRepository.UpdateAsync(user.Value, userUpdated);
+
+            var message = new EmailDTO
+            {
+                To = user.Value.Email,
+                Subject = "Email Confirmation Medic Place",
+                Body = $"Bonjour {user.Value.FirstName}, <br/><br/> Votre email a bien été validé. Profitez pleinement de votre compte !"
+            };
+
+            await _emailService.SendEmailAsync(message);
+
+            return Ok("Email de confirmation envoyé.");
+        }
+        private string GenerateEmailConfirmationToken()
+        {
+            var random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 6)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
