@@ -29,6 +29,8 @@ namespace Gestion_RDV.Controllers
         private readonly IDataRepository<User> dataRepository;
         private readonly IEmailService _emailService;
 
+        private const int ConstValidityMinutes = 10;
+
         public LoginController(IConfiguration config, IDataRepository<User> dataRepo, IMapper mapper, IEmailService emailService)
         {
             _config = config;
@@ -143,7 +145,7 @@ namespace Gestion_RDV.Controllers
             return false;
         }
 
-        [HttpPost("{userId}")]
+        [HttpPost("{email}")]
         public async Task<IActionResult> SendConfirmationEmail(string email)
         {
             var user = await dataRepository.GetByStringAsync(email);
@@ -163,14 +165,14 @@ namespace Gestion_RDV.Controllers
             //Update user secret token
             User userUpdated = user.Value;
             userUpdated.SecretToken = token;
-            userUpdated.SecretTokenValidity = DateTime.UtcNow.AddMinutes(10);
+            userUpdated.SecretTokenValidity = DateTime.UtcNow.AddMinutes(ConstValidityMinutes);
             await dataRepository.UpdateAsync(user.Value, userUpdated);
 
             var message = new EmailDTO
             {
                 To = user.Value.Email,
                 Subject = "Email Confirmation Medic Place",
-                Body = $"Bonjour {user.Value.FirstName}, <br/><br/> Vous avez 10 minutes pour confirmer votre adresse mail avec ce code : {token}"
+                Body = $"Bonjour {user.Value.FirstName}, <br/><br/> Vous avez {ConstValidityMinutes} minutes pour confirmer votre adresse mail avec ce code : {token}"
             };
 
             await _emailService.SendEmailAsync(message);
