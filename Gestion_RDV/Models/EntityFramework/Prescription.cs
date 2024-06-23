@@ -9,8 +9,8 @@ namespace Gestion_RDV.Models.EntityFramework
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Column("pre_id")]
         public int PrescriptionId { get; set; }
 
-        [Column("pre_date"), Required]
-        public DateTime PrescriptionDate { get; set; }
+        [Column("pre_description")]
+        public string  Description { get; set; }
 
         // Foreign Key
         [Column("dia_id")]
