@@ -76,7 +76,7 @@ namespace Gestion_RDV.Controllers
         [HttpDelete("{userId}/{conversationId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAdresse(int userId, int conversationId)
+        public async Task<IActionResult> DeleteConversationUser(int userId, int conversationId)
         {
             var convUser = await dataRepositoryConversationUser.GetByIdsAsync(userId, conversationId);
             if (convUser.Value == null)
