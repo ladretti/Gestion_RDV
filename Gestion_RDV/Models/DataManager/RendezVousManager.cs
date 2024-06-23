@@ -74,9 +74,21 @@ namespace Gestion_RDV.Models.DataManager
                 return new ActionResult<RendezVous>(rendezVous);
             }
 
-            public Task<ActionResult<IEnumerable<RendezVous>>> GetAllByIdsAsync(int? id1, int? id2)
+            public async Task<ActionResult<IEnumerable<RendezVous>>> GetAllByIdsAsync(int? userId, int? officeId)
             {
-                throw new NotImplementedException();
+                if (userId == null && officeId == null)
+                {
+                    return new BadRequestResult();
+                }
+
+                var rendezVous = await _context.RendezVous.Where(s => (userId == null || s.UserId == userId) && (officeId == null || s.OfficeId == officeId)).ToListAsync();
+
+                if (rendezVous == null)
+                {
+                    return new NotFoundResult();
+                }
+
+                return new ActionResult<IEnumerable<RendezVous>>(rendezVous);
             }
 
             public Task<ActionResult<bool>> ExistsByIds(int id1, int id2)

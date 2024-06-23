@@ -19,13 +19,15 @@ namespace Gestion_RDV.Controllers
     {
         private readonly IDataRepository<RendezVous> dataRepository;
         private readonly IDataRepository<User> dataRepositoryUser;
+        private readonly IDataRepository<Office> dataRepositoryOffice;
         private readonly IMapper _mapper;
 
-        public RendezVousController(IDataRepository<RendezVous> dataRepo, IMapper mapper, IDataRepository<User> dataRepoUser)
+        public RendezVousController(IDataRepository<RendezVous> dataRepo, IMapper mapper, IDataRepository<User> dataRepoUser, IDataRepository<Office> dataRepoOffice)
         {
             dataRepository = dataRepo;
             _mapper = mapper;
             dataRepositoryUser = dataRepoUser;
+            dataRepositoryOffice = dataRepoOffice;
         }
 
         /*[Authorize]
@@ -57,6 +59,22 @@ namespace Gestion_RDV.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<IEnumerable<RendezVousSpecialDTO>>(rdv.Value));
+        }
+
+        [HttpGet("getRendezVousByUserId/{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<RendezVousByUserIdDTO>>> GetRendezVousByUserId(int userId)
+        {
+            var rdv = await dataRepository.GetAllByIdsAsync(userId, null);
+            await dataRepositoryOffice.GetAllAsync();
+            await dataRepositoryUser.GetAllAsync();
+
+            if (rdv == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<RendezVousByUserIdDTO>>(rdv.Value));
         }
 
         [HttpPost]

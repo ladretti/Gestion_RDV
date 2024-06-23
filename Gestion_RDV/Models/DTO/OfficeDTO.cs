@@ -10,6 +10,7 @@
         public AddressDTO Adresse { get; set; }
         public double Rating { get; set; }
     }
+
     public class OfficeUserDTO
     {
         public int UserId { get; set; }
