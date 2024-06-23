@@ -65,6 +65,8 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<RendezVous, RendezVousDTO>();
             CreateMap<UserSignInDTO, User>();
             CreateMap<RendezVous, RendezVousSpecialDTO>();
+            CreateMap<Office, RendezVousOfficeUserDTO>();
+            CreateMap<RendezVous, RendezVousByUserIdDTO>();
 
 
             //User
