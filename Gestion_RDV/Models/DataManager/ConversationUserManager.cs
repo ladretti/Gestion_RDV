@@ -31,7 +31,8 @@ namespace Gestion_RDV.Models.DataManager
 
         public async Task DeleteAsync(ConversationUser entity)
         {
-            throw new NotImplementedException();
+            _context.ConversationsUser.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ActionResult<IEnumerable<ConversationUser>>> GetAllAsync()
