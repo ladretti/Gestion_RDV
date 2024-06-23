@@ -70,5 +70,8 @@
         [InverseProperty("Office")]
         public virtual ICollection<SocialMediaAccount>? Socials { get; }
 
+        [InverseProperty("Office")]
+        public ICollection<OfficeEquipment>? OfficeEquipments { get; set; }
+
     }
 }
