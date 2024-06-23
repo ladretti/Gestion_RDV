@@ -34,6 +34,7 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<AddressDTO>> GetAdresseById(int adresseId)
         {
             var rdv = await dataRepository.GetByIdAsync(adresseId);
+
             if (rdv == null)
                 return NotFound();
             if (rdv.Value == null)
@@ -86,9 +87,11 @@ namespace Gestion_RDV.Controllers
 
             var adresseToUpdate = await dataRepository.GetByIdAsync(adresseId);
             if (adresseToUpdate == null)
-            {
                 return NotFound();
-            }
+            if (adresseToUpdate.Value == null)
+                return NotFound();
+
+
             else
             {
                 await dataRepository.UpdateAsync(adresseToUpdate.Value, _mapper.Map<Address>(adresse));

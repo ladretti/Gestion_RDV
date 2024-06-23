@@ -21,5 +21,13 @@
         public string Adresse { get; set; }
         public string Ville { get; set; }
         public int CodePostal { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is AddressPostDTO dTO &&
+                   this.Adresse == dTO.Adresse &&
+                   this.Ville == dTO.Ville &&
+                   this.CodePostal == dTO.CodePostal;
+        }
     }
 }
