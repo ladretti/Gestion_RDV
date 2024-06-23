@@ -92,7 +92,7 @@ namespace Gestion_RDV.Models.DataManager
                 var result = conversations.Select(c => new ConversationDTO
                 {
                     ConversationId = c.ConversationId,
-                    ConversationName = c.Name,
+                    Name = c.Name,
                     Users = c.ConversationsUser.Select(cu => new Conversation_UserDTO
                     {
                         UserId = cu.User.UserId,

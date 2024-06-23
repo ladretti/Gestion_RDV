@@ -8,7 +8,7 @@ namespace Gestion_RDV.Models.DTO
     public class ConversationDTO
     {
         public int ConversationId { get; set; }
-        public string? ConversationName { get; set; }
+        public string? Name { get; set; }
         public ICollection<Conversation_UserDTO>? Users { get; set; }
     }
     public class Conversation_UserDTO
