@@ -46,7 +46,7 @@ namespace Gestion_RDV.Controllers
 
         // GET: api/Conversations/5
         /*[Authorize]*/
-        [HttpGet("{id}")]
+        [HttpGet("{conversationId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<Conversation>> GetConversationById(int conversationId)
@@ -71,6 +71,12 @@ namespace Gestion_RDV.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (conversationDto.UserIds == null || conversationDto.UserIds.Count < 2)
+            {
+                ModelState.AddModelError("UserIds", "Au moins deux utilisateurs doivent être renseigné.");
+                return BadRequest(ModelState);
+            }
+
             var conversationEntity = new Conversation
             {
                 Name = conversationDto.ConversationName
@@ -90,13 +96,8 @@ namespace Gestion_RDV.Controllers
 
                     await dataRepositoryConversationUser.AddAsync(conversationUserEntity);
                 }
-                Conversation conv = _mapper.Map<Conversation>(conversationDto);
 
-               /* var resultDto = _mapper.Map<ConversationPostDTO>(conversationEntity);
-                resultDto.UserIds = conversationDto.UserIds; // Ajouter les UserIds au résultat*/
-
-                //return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, resultDto);
-                return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, _mapper.Map<ConversationDTO>(conv));
+                return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, _mapper.Map<ConversationDTO>(conversationEntity));
             }
             catch (DbUpdateException ex)
             {
@@ -118,6 +119,24 @@ namespace Gestion_RDV.Controllers
             }
 
             return Ok(conversations);
+        }
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
+        [HttpGet("getAll/{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<ConversationDTO>>> GetAllConversationByUserId(int userId)
+        {
+            var conv = await dataRepositoryConversationUser.GetAllBySpecialIdAsync(userId);
+            await dataRepositoryConversation.GetAllAsync();
+
+            //var conversations = await dataRepositoryConversation.GetConversationsWithUsersByUserIdAsync(userId);
+            if (conv == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(conv);
         }
     }
 }
