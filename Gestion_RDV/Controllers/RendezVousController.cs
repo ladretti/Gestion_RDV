@@ -18,12 +18,12 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class RendezVousController : ControllerBase
     {
-        private readonly IDataRepository<RendezVous> dataRepository;
+        private readonly IDataRepositoryRendezVous<RendezVous> dataRepository;
         private readonly IDataRepository<User> dataRepositoryUser;
         private readonly IDataRepository<Office> dataRepositoryOffice;
         private readonly IMapper _mapper;
 
-        public RendezVousController(IDataRepository<RendezVous> dataRepo, IMapper mapper, IDataRepository<User> dataRepoUser, IDataRepository<Office> dataRepoOffice)
+        public RendezVousController(IDataRepositoryRendezVous<RendezVous> dataRepo, IMapper mapper, IDataRepository<User> dataRepoUser, IDataRepository<Office> dataRepoOffice)
         {
             dataRepository = dataRepo;
             _mapper = mapper;
@@ -108,6 +108,22 @@ namespace Gestion_RDV.Controllers
             await dataRepository.DeleteAsync(rendezVous.Value);
 
             return NoContent();
+        }
+        /*[Authorize]
+       [UserAuthorize("userId")]*/
+        [HttpGet("GetRendezvousForTomorrowAsync/")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<RendezVous>>> GetTest()
+        {
+            var rdv = await dataRepository.GetRendezvousForTomorrowAsync();
+            await dataRepositoryUser.GetAllAsync();
+
+            if (rdv == null)
+            {
+                return NotFound();
+            }
+            return rdv;
         }
     }
 }
