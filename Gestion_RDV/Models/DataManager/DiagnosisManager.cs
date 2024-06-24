@@ -42,9 +42,11 @@ namespace Gestion_RDV.Models.DataManager
             throw new NotImplementedException();
         }
 
-        public Task<ActionResult<Diagnosis>> GetBySpecialIdAsync(int id)
+        public async Task<ActionResult<Diagnosis>> GetBySpecialIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var diagnosis = await _context.Diagnoses.FirstOrDefaultAsync(s => s.RendezVousId == id);
+            if (diagnosis == null) return new NotFoundResult();
+            return new ActionResult<Diagnosis>(diagnosis);
         }
 
         public Task<ActionResult<Diagnosis>> GetByStringAsync(string value)
