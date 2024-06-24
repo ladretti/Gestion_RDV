@@ -21,6 +21,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IDataRepositoryRendezVous<RendezVous>, RendezVousManager>();
 
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
 builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>();
@@ -31,7 +32,7 @@ builder.Services.AddScoped<IDataRepositoryMessage<Message>, MessageManager>();
 builder.Services.AddScoped<IDataRepository<Notification>, NotificationManager>();
 builder.Services.AddScoped<IDataRepository<Office>, OfficeManager>();
 builder.Services.AddScoped<IDataRepository<Post>, PostManager>();
-builder.Services.AddScoped<IDataRepositoryRendezVous<RendezVous>, RendezVousManager>();
+builder.Services.AddScoped<IDataRepository<RendezVous>, RendezVousManager>();
 builder.Services.AddScoped<IDataRepository<Review>, ReviewManager>();
 builder.Services.AddScoped<IDataRepository<SocialMediaAccount>, SocialMediaAccountManager>();
 builder.Services.AddScoped<IDataRepository<Subscription>, SubscriptionManager>();
