@@ -24,7 +24,7 @@ public class RecurringJobService : BackgroundService
         recurringJobManager.AddOrUpdate(
             "SendReminderEmailsJob",
             Job.FromExpression<IAppointmentService>(service => service.SendReminderEmails()),
-            "30 9 * * *"); // Cron expression (-2h for utc)
+            "00 6 * * *"); // Cron expression (-2h for utc)
 
         await Task.CompletedTask;
     }
