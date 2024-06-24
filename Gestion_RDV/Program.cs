@@ -4,6 +4,10 @@ using Gestion_RDV.Models.DataManager;
 using Gestion_RDV.Models.DataManager.API_Gymbrodyssey.Models.DataManager;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Services;
+using Hangfire;
+using Hangfire.Common;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
 builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>();
@@ -26,7 +31,7 @@ builder.Services.AddScoped<IDataRepositoryMessage<Message>, MessageManager>();
 builder.Services.AddScoped<IDataRepository<Notification>, NotificationManager>();
 builder.Services.AddScoped<IDataRepository<Office>, OfficeManager>();
 builder.Services.AddScoped<IDataRepository<Post>, PostManager>();
-builder.Services.AddScoped<IDataRepository<RendezVous>, RendezVousManager>();
+builder.Services.AddScoped<IDataRepositoryRendezVous<RendezVous>, RendezVousManager>();
 builder.Services.AddScoped<IDataRepository<Review>, ReviewManager>();
 builder.Services.AddScoped<IDataRepository<SocialMediaAccount>, SocialMediaAccountManager>();
 builder.Services.AddScoped<IDataRepository<Subscription>, SubscriptionManager>();
@@ -67,6 +72,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseDefaultTypeSerializer()
+    .UseMemoryStorage());
+
+builder.Services.AddHangfireServer();
+
+builder.Services.AddHostedService<RecurringJobService>(); // Ajoute le service pour gérer les jobs récurrents
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -110,8 +125,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-
 
 var app = builder.Build();
 

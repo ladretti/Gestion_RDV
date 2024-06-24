@@ -1,4 +1,5 @@
-﻿using Gestion_RDV.Models.EntityFramework;
+﻿using Gestion_RDV.Models.DTO;
+using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Gestion_RDV.Models.DataManager
 {
     namespace API_Gymbrodyssey.Models.DataManager
     {
-        public class RendezVousManager : IDataRepository<RendezVous>
+        public class RendezVousManager : IDataRepositoryRendezVous<RendezVous>
         {
             private readonly GestionRdvDbContext _context;
 
@@ -95,6 +96,19 @@ namespace Gestion_RDV.Models.DataManager
             {
                 throw new NotImplementedException();
             }
+
+            public async Task<ActionResult<IEnumerable<RendezVous>>> GetRendezvousForTomorrowAsync()
+            {
+                var tomorrow = DateTime.UtcNow.Date.AddDays(1); // Début du jour suivant
+
+                var startOfTomorrow = tomorrow.Date; // 00:00:00 du jour suivant
+                var endOfTomorrow = tomorrow.Date.AddDays(1).AddTicks(-1); // 23:59:59.9999999 du jour suivant
+
+                return await _context.RendezVous
+                    .Where(rv => rv.StartDate >= startOfTomorrow && rv.StartDate <= endOfTomorrow)
+                    .ToListAsync();
+            }
+
         }
     }
 
