@@ -78,6 +78,21 @@ namespace Gestion_RDV.Controllers
             }
             return Ok(_mapper.Map<IEnumerable<RendezVousByUserIdDTO>>(rdv.Value));
         }
+        [HttpGet("getPassedRendezVousByUserId/{userId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<IEnumerable<RendezVousByUserIdDTO>>> GetPassedRendezVousByUserId(int userId)
+        {
+            var rdv = await dataRepository.GetAllByIdsAsync(userId, null);
+            await dataRepositoryOffice.GetAllAsync();
+            await dataRepositoryUser.GetAllAsync();
+            var passedRdv = rdv.Value.Where(r => r.EndDate < DateTime.Now);
+            if (rdv == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<IEnumerable<RendezVousByUserIdDTO>>(passedRdv));
+        }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
