@@ -43,7 +43,7 @@ namespace Gestion_RDV.Controllers
         [HttpGet("generate-pdf/{id}")]
         public async Task<IActionResult> GeneratePrescriptionPdf(int id)
         {
-            var diagnosis = await dataRepository.GetByIdAsync(id);
+            var diagnosis = await dataRepository.GetBySpecialIdAsync(id);
             await dataRepositoryPrescription.GetAllAsync();
             await dataRepositoryMedication.GetAllAsync();
             var rdv = await dataRepositoryRendezVous.GetByIdAsync(diagnosis.Value.RendezVousId);
