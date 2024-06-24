@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_RDV.Models.EntityFramework;
+using AutoMapper;
+using Gestion_RDV.Models.DTO;
+using Gestion_RDV.Models.Repository;
+using Microsoft.Extensions.Hosting;
 
 namespace Gestion_RDV.Controllers
 {
@@ -13,111 +17,86 @@ namespace Gestion_RDV.Controllers
     [ApiController]
     public class AddressesController : ControllerBase
     {
-        private readonly GestionRdvDbContext _context;
+        private readonly IDataRepository<Address> dataRepository;
+        private readonly IMapper _mapper;
 
-        public AddressesController(GestionRdvDbContext context)
+        public AddressesController(IDataRepository<Address> dataRepo, IMapper mapper)
         {
-            _context = context;
+            dataRepository = dataRepo;
+            _mapper = mapper;
         }
 
-        // GET: api/Addresses
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Address>>> GetAddresses()
+        /*[Authorize]
+        [UserAuthorize("userId")]*/
+        [HttpGet("{adresseId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<AddressDTO>> GetAdresseById(int adresseId)
         {
-          if (_context.Addresses == null)
-          {
-              return NotFound();
-          }
-            return await _context.Addresses.ToListAsync();
+            var rdv = await dataRepository.GetByIdAsync(adresseId);
+
+            if (rdv == null)
+                return NotFound();
+            if (rdv.Value == null)
+                return NotFound();
+
+            return Ok(_mapper.Map<AddressDTO>(rdv.Value));
         }
 
-        // GET: api/Addresses/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Address>> GetAddress(int id)
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<AddressDTO>> PostAdresse(AddressPostDTO adresse)
         {
-          if (_context.Addresses == null)
-          {
-              return NotFound();
-          }
-            var address = await _context.Addresses.FindAsync(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-            if (address == null)
+            Address adress = _mapper.Map<Address>(adresse);
+            await dataRepository.AddAsync(_mapper.Map<Address>(adress));
+
+            return CreatedAtAction(nameof(GetAdresseById), new { adresseId = adress.AdresseId }, _mapper.Map<AddressDTO>(adress));
+
+        }
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteAdresse(int id)
+        {
+            var adresse = await dataRepository.GetByIdAsync(id);
+            if (adresse.Value == null)
             {
                 return NotFound();
             }
 
-            return address;
-        }
+            await dataRepository.DeleteAsync(adresse.Value);
 
-        // PUT: api/Addresses/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(int id, Address address)
+            return NoContent();
+        }
+        [HttpPut("{adresseId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PutAddress(int adresseId, AddressDTO adresse)
         {
-            if (id != address.AdresseId)
+            if (adresseId != adresse.AdresseId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(address).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AddressExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Addresses
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(Address address)
-        {
-          if (_context.Addresses == null)
-          {
-              return Problem("Entity set 'GestionRdvDbContext.Addresses'  is null.");
-          }
-            _context.Addresses.Add(address);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAddress", new { id = address.AdresseId }, address);
-        }
-
-        // DELETE: api/Addresses/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAddress(int id)
-        {
-            if (_context.Addresses == null)
-            {
+            var adresseToUpdate = await dataRepository.GetByIdAsync(adresseId);
+            if (adresseToUpdate == null)
                 return NotFound();
-            }
-            var address = await _context.Addresses.FindAsync(id);
-            if (address == null)
-            {
+            if (adresseToUpdate.Value == null)
                 return NotFound();
+
+
+            else
+            {
+                await dataRepository.UpdateAsync(adresseToUpdate.Value, _mapper.Map<Address>(adresse));
+                return NoContent();
             }
-
-            _context.Addresses.Remove(address);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool AddressExists(int id)
-        {
-            return (_context.Addresses?.Any(e => e.AdresseId == id)).GetValueOrDefault();
         }
     }
 }

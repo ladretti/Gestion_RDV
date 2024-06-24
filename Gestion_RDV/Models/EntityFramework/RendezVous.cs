@@ -29,8 +29,10 @@
         //ForeignKey
         [Column("usr_id")]
         public int UserId { get; set; }
-         [Column("ofc_id")]
+        [Column("ofc_id")]
         public int OfficeId { get; set; }
+        [Column("avb_id")]
+        public int AvailabilityId { get; set; }
 
         // Navigation property
         [ForeignKey("UserId"), InverseProperty("RendezVous")]
@@ -38,6 +40,9 @@
 
         [ForeignKey("OfficeId"), InverseProperty("RendezVous")]
         public Office? Office { get; set; }
+
+         [ForeignKey("AvailabilityId"), InverseProperty("RendezVous")]
+        public Availability? Availability { get; set; }
 
         [InverseProperty("RendezVous")]
         public Review? Review { get; set; }
@@ -47,6 +52,9 @@
 
         [InverseProperty("RendezVous")]
         public Facture? Facture { get; set; }
+
+        [InverseProperty("RendezVous")]
+        public ICollection<Diagnosis>? Diagnoses { get; set; }
 
     }
 

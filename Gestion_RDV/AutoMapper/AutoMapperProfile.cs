@@ -10,6 +10,8 @@ namespace Gestion_RDV.AutoMapper
         {
             CreateMap<Availability, AvailabilityDTO>();
             CreateMap<User, UserLoginDTO>();
+            CreateMap<User, PractitionerLoginDTO>();
+            CreateMap<Office, OfficeSignInDTO>();
             //Notification
             CreateMap<Notification, NotificationDetailsDTO>();
             CreateMap<Office, NotificationDetailsOfficeDTO>();
@@ -43,12 +45,17 @@ namespace Gestion_RDV.AutoMapper
                 .ForMember(dest => dest.NbLike, opt => opt.MapFrom(src => src.LikesReview.Count(l => l.IsLiked)))
                 .ForMember(dest => dest.NbDislike, opt => opt.MapFrom(src => src.LikesReview.Count(l => !l.IsLiked)));
             CreateMap<RendezVous, ReviewRendezVousDTO>();
-            CreateMap<Comment, CommentDTO>();
+            CreateMap<Comment, CommentReviewDTO>();
 
 
             //Conversation
-            CreateMap<Conversation, Conversation_UserDTO>();
+            CreateMap<Conversation, ConversationDTO>();
             CreateMap<User, Conversation_UserDTO>();
+            CreateMap<Conversation, ConversationPostDTO>();
+
+            //ConversationUser
+            CreateMap<ConversationUserDTO, ConversationUser>();
+
 
             //Message
             CreateMap<Message, MessageDTO>();
@@ -59,9 +66,14 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<RendezVousPostDTO, RendezVous>();
             CreateMap<RendezVous, RendezVousDTO>();
             CreateMap<UserSignInDTO, User>();
+            CreateMap<RendezVous, RendezVousSpecialDTO>();
+            CreateMap<Office, RendezVousOfficeUserDTO>();
+            CreateMap<RendezVous, RendezVousByUserIdDTO>();
+
 
             //User
             CreateMap<User, UserDetailDTO>();
+            CreateMap<User, UserMedicalDetailDTO>();
 
             //Availability
             CreateMap<AvailabilityPostDTO, Availability>();
@@ -81,6 +93,42 @@ namespace Gestion_RDV.AutoMapper
 
             CreateMap<FacturePostDTO, Facture>();
             CreateMap<Facture, FactureDTO>();
+
+            //Social
+            CreateMap<SocialPostDTO, SocialMediaAccount>();
+
+            //Address
+            CreateMap<AddressPostDTO, Address>();
+            CreateMap<AddressDTO, AddressPostDTO>();
+            CreateMap<AddressDTO, Address>();
+
+            //Comment
+            CreateMap<Comment, CommentDTO>();
+            CreateMap<CommentPostDTO, Comment>();
+
+            //MedicalInfo
+            CreateMap<MedicalInfo, MedicalInfoDTO>();
+
+
+
+            CreateMap<Medication, MedicationDTO>();
+            CreateMap<Prescription, PrescriptionDTO>();
+            CreateMap<Diagnosis, DiagnosisDTO>();
+
+            //OfficeEquipment
+
+            CreateMap<OfficeEquipment, OfficeEquipmentDTO>();
+            CreateMap<OfficeEquipmentPostDTO, OfficeEquipment>();
+            CreateMap<Equipment, EquipmentDTO>();
+            CreateMap<EquipmentPostDTO, Equipment>();
+
+            CreateMap<Office, OfficeStatsDTO>()
+            .ForMember(dest => dest.NbSub, opt => opt.MapFrom(src => src.Subscriptions.Count))
+            .ForMember(dest => dest.NbRdvPasse, opt => opt.MapFrom(src => src.RendezVous.Count(r => r.StartDate < DateTime.Now)))
+            .ForMember(dest => dest.NbRdvAVenir, opt => opt.MapFrom(src => src.RendezVous.Count(r => r.StartDate >= DateTime.Now)))
+            .ForMember(dest => dest.TotalReviews, opt => opt.MapFrom(src => src.RendezVous.Count(r => r.Review != null)))
+            .ForMember(dest => dest.AverageReviewNote, opt => opt.MapFrom(src => src.RendezVous.Where(r => r.Review != null).Select(r => r.Review.Note).DefaultIfEmpty(0).Average()))
+            .ForMember(dest => dest.NbFollowers, opt => opt.MapFrom(src => src.Subscriptions.Count()));
         }
     }
 }

@@ -33,13 +33,14 @@ namespace Gestion_RDV.Controllers
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetAvailabilitiesByOfficeId(int officeId)
         {
             var availabilities = await dataRepository.GetAllBySpecialIdAsync(officeId);
+            var filteredavailabilities = availabilities.Value.OrderBy(availabilities => availabilities.StartDate).ToList();
 
-            if (availabilities == null)
+            if (filteredavailabilities == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<IEnumerable<AvailabilityDTO>>(availabilities.Value));
+            return Ok(_mapper.Map<IEnumerable<AvailabilityDTO>>(filteredavailabilities));
 
         }
 

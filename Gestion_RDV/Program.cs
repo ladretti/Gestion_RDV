@@ -1,10 +1,13 @@
 using Gestion_RDV.AutoMapper;
-using Gestion_RDV.Email;
 using Gestion_RDV.Filters;
 using Gestion_RDV.Models.DataManager;
 using Gestion_RDV.Models.DataManager.API_Gymbrodyssey.Models.DataManager;
 using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
+using Gestion_RDV.Services;
+using Hangfire;
+using Hangfire.Common;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,7 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
-builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IDataRepositoryRendezVous<RendezVous>, RendezVousManager>();
 
 builder.Services.AddScoped<IDataRepository<Address>, AddressManager>();
 builder.Services.AddScoped<IDataRepository<Availability>, AvailabilityManager>();
@@ -35,6 +40,12 @@ builder.Services.AddScoped<IDataRepository<User>, UserManager>();
 builder.Services.AddScoped<IDataRepository<ConversationUser>, ConversationUserManager>();
 builder.Services.AddScoped<IDataRepository<LikePost>, LikePostManager>();
 builder.Services.AddScoped<IDataRepository<LikeReview>, LikeReviewManager>();
+builder.Services.AddScoped<IDataRepository<Diagnosis>, DiagnosisManager>();
+builder.Services.AddScoped<IDataRepository<MedicalInfo>, MedicalInfoManager>();
+builder.Services.AddScoped<IDataRepository<Prescription>,PrescriptionManager>();
+builder.Services.AddScoped<IDataRepository<Medication>, MedicationManager>();
+builder.Services.AddScoped<IDataRepository<OfficeEquipment>, OfficeEquipmentManager>();
+builder.Services.AddScoped<IDataRepository<Equipment>, EquipmentManager>();
 builder.Services.AddScoped<UserAuthorizationFilter>(provider =>
 {
     var routeKey = "userId";
@@ -62,6 +73,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseDefaultTypeSerializer()
+    .UseMemoryStorage());
+
+builder.Services.AddHangfireServer();
+
+builder.Services.AddHostedService<RecurringJobService>(); // Ajoute le service pour gérer les jobs récurrents
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -105,8 +126,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-
 
 var app = builder.Build();
 

@@ -9,6 +9,7 @@ namespace Gestion_RDV.Models.DTO
         public string Description { get; set; }
         public double Prix { get; set; }
         public int UserId { get; set; }
+        public int AvailabilityId { get; set; }
         public int OfficeId { get; set; }
     }
 }

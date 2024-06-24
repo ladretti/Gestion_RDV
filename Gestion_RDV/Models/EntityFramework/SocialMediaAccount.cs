@@ -21,6 +21,6 @@ namespace Gestion_RDV.Models.EntityFramework
 
         //Inverse Property
         [ForeignKey("OfficeId"), InverseProperty("Socials")]
-        public Office Office { get; set; }
+        public Office? Office { get; set; }
     }
 }

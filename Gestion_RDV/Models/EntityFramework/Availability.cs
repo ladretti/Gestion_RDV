@@ -24,6 +24,8 @@ namespace Gestion_RDV.Models.EntityFramework
         //Inverse Property
         [ForeignKey("OfficeId"), InverseProperty("Availabilities")]
         public Office Office { get; set; }
+        [InverseProperty("Availability")]
+        public RendezVous RendezVous { get; set; }
 
     }
 }

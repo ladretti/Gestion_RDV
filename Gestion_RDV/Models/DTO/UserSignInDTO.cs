@@ -1,4 +1,9 @@
-﻿namespace Gestion_RDV.Models.DTO
+﻿using Gestion_RDV.Models.EntityFramework;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+
+
+namespace Gestion_RDV.Models.DTO
 {
     public class UserSignInDTO
     {
@@ -7,6 +12,7 @@
         public DateOnly BirthDate { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Role { get; set; }
+        public string Sexe { get; set; }
+        public UserRole Role { get; set; }
     }
 }

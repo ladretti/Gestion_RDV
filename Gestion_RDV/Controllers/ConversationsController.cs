@@ -45,13 +45,13 @@ namespace Gestion_RDV.Controllers
         }
 
         // GET: api/Conversations/5
-        [Authorize]
-        [HttpGet("{id}")]
+        /*[Authorize]*/
+        [HttpGet("{conversationId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Conversation>> GetConversationById(int id)
+        public async Task<ActionResult<Conversation>> GetConversationById(int conversationId)
         {
-            var conversation = await dataRepositoryConversation.GetByIdAsync(id);
+            var conversation = await dataRepositoryConversation.GetByIdAsync(conversationId);
 
             if (conversation == null)
             {
@@ -60,19 +60,49 @@ namespace Gestion_RDV.Controllers
             return Ok(conversation);
         }
 
+        /*[Authorize]*/
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<Conversation>> PostPost(Conversation conversation)
+        public async Task<ActionResult<ConversationDTO>> PostConversation(ConversationPostDTO conversationDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await dataRepositoryConversation.AddAsync(conversation);
+            if (conversationDto.UserIds == null || conversationDto.UserIds.Count < 2)
+            {
+                ModelState.AddModelError("UserIds", "Au moins deux utilisateurs doivent être renseigné.");
+                return BadRequest(ModelState);
+            }
 
-            return CreatedAtAction("GetConversationById", new { id = conversation.ConversationId }, conversation); // GetById : nom de l’action
+            var conversationEntity = new Conversation
+            {
+                Name = conversationDto.ConversationName
+            };
+
+            try
+            {
+                await dataRepositoryConversation.AddAsync(conversationEntity);
+
+                foreach (var userId in conversationDto.UserIds)
+                {
+                    var conversationUserEntity = new ConversationUser
+                    {
+                        ConversationId = conversationEntity.ConversationId,
+                        UserId = userId
+                    };
+
+                    await dataRepositoryConversationUser.AddAsync(conversationUserEntity);
+                }
+
+                return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversationEntity.ConversationId }, _mapper.Map<ConversationDTO>(conversationEntity));
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest("Impossible de créer la conversation");
+            }
         }
 
         /*[Authorize]
