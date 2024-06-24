@@ -109,21 +109,5 @@ namespace Gestion_RDV.Controllers
 
             return NoContent();
         }
-        /*[Authorize]
-       [UserAuthorize("userId")]*/
-        [HttpGet("GetRendezvousForTomorrowAsync/")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<RendezVous>>> GetTest()
-        {
-            var rdv = await dataRepository.GetRendezvousForTomorrowAsync();
-            await dataRepositoryUser.GetAllAsync();
-
-            if (rdv == null)
-            {
-                return NotFound();
-            }
-            return rdv;
-        }
     }
 }

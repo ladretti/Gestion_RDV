@@ -21,11 +21,10 @@ public class RecurringJobService : BackgroundService
         using var scope = _serviceProvider.CreateScope();
         var recurringJobManager = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
 
-        // Configure le job récurrent pour appeler SendReminderEmails toutes les minutes
         recurringJobManager.AddOrUpdate(
             "SendReminderEmailsJob",
             Job.FromExpression<IAppointmentService>(service => service.SendReminderEmails()),
-            "* * * * *"); // Cron expression pour chaque minute
+            "00 6 * * *"); // Cron expression (-2h for utc)
 
         await Task.CompletedTask;
     }

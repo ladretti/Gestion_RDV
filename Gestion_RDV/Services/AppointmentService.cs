@@ -3,6 +3,7 @@ using Gestion_RDV.Models.EntityFramework;
 using Gestion_RDV.Models.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Abstractions;
 
 namespace Gestion_RDV.Services
 {
@@ -11,18 +12,21 @@ namespace Gestion_RDV.Services
         private readonly IDataRepositoryRendezVous<RendezVous> _rendezVousRepository;
         private readonly IDataRepository<User> _dataRepositoryUser;
         private readonly IEmailService _emailService;
+        private ILogger<AppointmentService> logger;
 
-        public AppointmentService(IDataRepositoryRendezVous<RendezVous> rdvRepo, IEmailService emailService, IDataRepository<User> dataRepositoryUser)
+        public AppointmentService(IDataRepositoryRendezVous<RendezVous> rdvRepo, IEmailService emailService, IDataRepository<User> dataRepositoryUser, ILogger<AppointmentService> log)
         {
             _rendezVousRepository = rdvRepo;
             _emailService = emailService;
             _dataRepositoryUser = dataRepositoryUser;
+            logger = log;
         }
 
         public async Task SendReminderEmails()
         {
             var rendezVousToRemind = await _rendezVousRepository.GetRendezvousForTomorrowAsync();
             await _dataRepositoryUser.GetAllAsync();
+            logger.LogInformation("bite2cheval" + DateTime.Now);
 
             if (rendezVousToRemind.Value == null)
             {

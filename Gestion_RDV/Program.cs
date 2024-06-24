@@ -79,7 +79,6 @@ builder.Services.AddHangfire(configuration => configuration
 
 builder.Services.AddHangfireServer();
 
-/*builder.Services.AddHostedService<BackgroundWorkerService>();*/
 builder.Services.AddHostedService<RecurringJobService>(); // Ajoute le service pour gérer les jobs récurrents
 
 
@@ -126,8 +125,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-
-
 
 app.UseCors(
         options => options.WithOrigins("https://localhost:7153").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
