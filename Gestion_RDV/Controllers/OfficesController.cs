@@ -78,6 +78,38 @@ namespace Gestion_RDV.Controllers
 
             return Ok(_mapper.Map<OfficeDetailDTO>(office.Value)); ;
         }
+        [HttpGet("DataOffice/{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<OfficeStatsDTO>> GetDataOfficeById(int id)
+        {
+            var office = await dataRepository.GetByIdAsync(id);
+            if (office == null)
+            {
+                return NotFound();
+            }
+
+            var user = await dataRepositoryUser.GetByIdAsync(office.Value.UserId);
+            var address = await dataRepositoryAddress.GetByIdAsync(office.Value.AdresseId);
+            var rendezVous = await dataRepositoryRendezVous.GetAllAsync();
+            var reviews = await dataRepositoryReview.GetAllAsync();
+            var subscriptions = await dataRepositorySub.GetAllAsync();
+            var socials = await dataRepositorySocial.GetAllAsync();
+
+            // Map office to OfficeStatsDTO
+            var officeStatsDto = _mapper.Map<OfficeStatsDTO>(office.Value);
+
+            // Additional calculations (if needed)
+/*            officeStatsDto.NbRdvPasse = rendezVous.Count(r => r.OfficeId == id && r.StartDate < DateTime.Now && r.EtatId == 1);
+            officeStatsDto.NbRdvAVenir = rendezVous.Count(r => r.OfficeId == id && r.StartDate >= DateTime.Now && r.EtatId == 1);
+            officeStatsDto.NbRdvAnnule = rendezVous.Count(r => r.OfficeId == id && r.EtatId == 3);
+            officeStatsDto.TotalReviews = reviews.Count(r => r.RendezVous.OfficeId == id);
+            officeStatsDto.AverageReviewNote = reviews.Where(r => r.RendezVous.OfficeId == id).Average(r => r.Note);
+            officeStatsDto.NbFollowers = socials.Count(s => s.OfficeId == id && s.Type == "Follower");
+            officeStatsDto.NbPosts = socials.Count(s => s.OfficeId == id && s.Type == "Post");*/
+
+            return Ok(officeStatsDto);
+        }
 
         [HttpPost]
         [ProducesResponseType(201)]

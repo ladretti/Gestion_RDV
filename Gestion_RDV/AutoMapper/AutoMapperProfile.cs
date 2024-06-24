@@ -122,6 +122,15 @@ namespace Gestion_RDV.AutoMapper
             CreateMap<Equipment, EquipmentDTO>();
             CreateMap<EquipmentPostDTO, Equipment>();
 
+            CreateMap<Office, OfficeStatsDTO>()
+            .ForMember(dest => dest.NbSub, opt => opt.MapFrom(src => src.Subscriptions.Count))
+            .ForMember(dest => dest.NbRdvPasse, opt => opt.MapFrom(src => src.RendezVous.Count(r => r.StartDate < DateTime.Now)))
+            .ForMember(dest => dest.NbRdvAVenir, opt => opt.MapFrom(src => src.RendezVous.Count(r => r.StartDate >= DateTime.Now)))
+            .ForMember(dest => dest.TotalReviews, opt => opt.MapFrom(src => src.RendezVous.Count(r => r.Review != null)))
+            .ForMember(dest => dest.AverageReviewNote, opt => opt.MapFrom(src => src.RendezVous.Where(r => r.Review != null).Average(r => r.Review.Note)))
+            //.ForMember(dest => dest.TotalLikes, opt => opt.MapFrom(src => src.RendezVous.SelectMany(r => r.Review.LikesReview).Count(l => l.IsLiked)))
+            //.ForMember(dest => dest.TotalDislikes, opt => opt.MapFrom(src => src.RendezVous.SelectMany(r => r.Review.LikesReview).Count(l => !l.IsLiked)))
+            .ForMember(dest => dest.NbFollowers, opt => opt.MapFrom(src => src.Subscriptions.Count()));
         }
     }
 }
