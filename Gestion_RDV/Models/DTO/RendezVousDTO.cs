@@ -11,6 +11,7 @@ namespace Gestion_RDV.Models.DTO
         public string Description { get; set; }
         public double Prix { get; set; }
         public string? FichierJoint { get; set; }
+        public int AvailabilityId { get; set; }
         public int UserId { get; set; }
         public int OfficeId { get; set; }
     }
@@ -21,6 +22,7 @@ namespace Gestion_RDV.Models.DTO
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
         public double Prix { get; set; }
+        public int AvailabilityId { get; set; }
         public string FichierJoint { get; set; }
         public OfficeUserDTO User { get; set; }
 
@@ -32,6 +34,7 @@ namespace Gestion_RDV.Models.DTO
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
         public double Prix { get; set; }
+        public int AvailabilityId { get; set; }
         public string FichierJoint { get; set; }
         public RendezVousOfficeUserDTO Office { get; set; }
 

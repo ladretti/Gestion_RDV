@@ -110,6 +110,11 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasForeignKey(d => d.OfficeId)
                       .OnDelete(DeleteBehavior.Cascade)
                       .HasConstraintName("FK_Availability_Office");
+
+                entity.HasOne(d => d.RendezVous)
+                .WithOne(p => p.Availability)
+                .HasForeignKey<RendezVous>(d => d.AvailabilityId)
+                .OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<Comment>(entity =>
             {
@@ -494,6 +499,10 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasColumnName("ofc_id")
                       .IsRequired();
 
+                entity.Property(e => e.AvailabilityId)
+                      .HasColumnName("avb_id")
+                      .IsRequired();
+
                 entity.HasOne(e => e.User)
                       .WithMany(u => u.RendezVous)
                       .HasForeignKey(e => e.UserId)
@@ -517,6 +526,12 @@ namespace Gestion_RDV.Models.EntityFramework
                       .HasForeignKey<Facture>(f => f.RendezVousId)
                       .HasConstraintName("FK_Facture_RendezVous")
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(d => d.Availability)
+                .WithOne(p => p.RendezVous)
+                .HasForeignKey<RendezVous>(d => d.AvailabilityId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             });
             modelBuilder.Entity<Review>(entity =>
             {
