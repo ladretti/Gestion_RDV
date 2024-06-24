@@ -1,6 +1,7 @@
 ﻿using Gestion_RDV.Models.EntityFramework;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gestion_RDV.Models.DTO
 {
@@ -12,6 +13,8 @@ namespace Gestion_RDV.Models.DTO
         public string Email { get; set; }
         public string Avatar { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
+        [Column("usr_activated")]
+        public bool Activated { get; set; }
         public UserRole Role { get; set; }
     }
     public class PractitionerLoginDTO : UserLoginDTO
