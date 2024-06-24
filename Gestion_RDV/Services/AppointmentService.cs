@@ -24,9 +24,9 @@ namespace Gestion_RDV.Services
 
         public async Task SendReminderEmails()
         {
+            logger.LogInformation("SendReminderEmails started at :" + DateTime.Now);
             var rendezVousToRemind = await _rendezVousRepository.GetRendezvousForTomorrowAsync();
             await _dataRepositoryUser.GetAllAsync();
-            logger.LogInformation("bite2cheval" + DateTime.Now);
 
             if (rendezVousToRemind.Value == null)
             {
@@ -35,14 +35,17 @@ namespace Gestion_RDV.Services
 
             foreach (var rv in rendezVousToRemind.Value)
             {
-                var message = new EmailDTO
+                if (rv.User != null)
                 {
-                    To = rv.User.Email,
-                    Subject = "Rappel de Rendez-vous",
-                    Body = $"Bonjour {rv.User.FirstName},<br/><br/> Ceci est un rappel pour votre rendez-vous le {rv.StartDate:dd/MM/yyyy} à {rv.StartDate:HH:mm}.<br/><br/> Description: {rv.Description}"
-                };
+                    var message = new EmailDTO
+                    {
+                        To = rv.User.Email,
+                        Subject = "Rappel de Rendez-vous",
+                        Body = $"Bonjour {rv.User.FirstName},<br/><br/> Ceci est un rappel pour votre rendez-vous le {rv.StartDate:dd/MM/yyyy} à {rv.StartDate:HH:mm}.<br/><br/> Description: {rv.Description}"
+                    };
 
-                await _emailService.SendEmailAsync(message);
+                    await _emailService.SendEmailAsync(message);
+                }
             }
         }
     }
